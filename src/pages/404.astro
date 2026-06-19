@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { site } from '../data/site'
+---
+
+<BaseLayout
+  title="Página no encontrada"
+  description="Esta página no existe."
+  noIndex={true}
+>
+  <section class="min-h-[80svh] flex flex-col items-center justify-center text-center px-6 bg-background pt-24">
+    <p class="font-body font-semibold text-[0.65rem] tracking-[0.25em] uppercase text-accent mb-4">
+      Error 404
+    </p>
+    <h1 class="font-heading font-bold text-foreground mb-4" style="font-size: clamp(2.25rem, 5vw, 3.5rem); line-height: 1.08;">
+      Esta página no existe
+    </h1>
+    <p class="font-body font-light text-base text-foreground/55 max-w-md mb-10">
+      Puede que hayas seguido un enlace incorrecto o que la página haya sido movida.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 items-center">
+      <a
+        href="/catalogo"
+        class="bg-accent text-white rounded-full px-6 py-3.5 font-body font-semibold text-sm tracking-wider uppercase inline-flex items-center gap-2 hover:opacity-90 transition-opacity"
+      >
+        Ver catálogo
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <a
+        href="/"
+        class="liquid-glass rounded-full px-6 py-3.5 font-body font-semibold text-sm tracking-wider uppercase text-foreground hover:opacity-80 transition-opacity"
+      >
+        Ir al inicio
+      </a>
+    </div>
+  </section>
+</BaseLayout>

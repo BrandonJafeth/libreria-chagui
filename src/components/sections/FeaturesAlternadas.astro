@@ -1,0 +1,56 @@
+---
+export interface FeatureRow {
+  eyebrow: string
+  title: string
+  text: string
+  imageSrc?: string
+  imageAlt?: string
+}
+
+interface Props {
+  rows: FeatureRow[]
+}
+const { rows } = Astro.props
+---
+
+<section class="bg-background py-20 md:py-28 px-6">
+  <div class="max-w-5xl mx-auto flex flex-col gap-20">
+    {rows.map((row, i) => (
+      <div class={`reveal flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-10 md:gap-14`}>
+
+        <!-- Media -->
+        <div class="w-full md:w-1/2 shrink-0">
+          <div class="liquid-glass rounded-3xl overflow-hidden aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-background to-card">
+            {row.imageSrc ? (
+              <img
+                src={row.imageSrc}
+                alt={row.imageAlt ?? row.title}
+                class="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="font-heading text-[5rem] leading-none opacity-[0.08] select-none">
+                {row.title.charAt(0)}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="w-full md:w-1/2">
+          <p class="font-body font-semibold text-[0.62rem] tracking-[0.28em] uppercase text-accent mb-3">
+            {row.eyebrow}
+          </p>
+          <h2 class="font-heading font-bold text-foreground leading-[1.05]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem);">
+            {row.title}
+          </h2>
+          <div class="w-10 h-0.5 my-5 bg-accent rounded-full"></div>
+          <p class="font-body font-light text-sm md:text-base text-foreground/60 leading-[1.72]">
+            {row.text}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

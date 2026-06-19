@@ -1,1 +1,110 @@
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/poppins/700.css';
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+
 @import "tailwindcss";
+
+@theme {
+  --color-background: hsl(37 33% 96%);
+  --color-foreground: hsl(0 0% 17%);
+  --color-card:       hsl(0 0% 100%);
+  --color-accent:     hsl(6 63% 46%);
+  --color-accent-2:   hsl(211 50% 36%);
+  --color-accent-3:   hsl(36 80% 58%);
+  --font-heading:     'Poppins', sans-serif;
+  --font-body:        'Inter', sans-serif;
+}
+
+/* ── Liquid Glass ── */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-strong {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.07),
+    0 8px 32px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Animations ── */
+@keyframes scroll-line {
+  0%   { transform: translateY(-100%); opacity: 1; }
+  100% { transform: translateY(300%);  opacity: 0; }
+}
+
+@keyframes hero-in {
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.hero-in {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(8px);
+  animation: hero-in 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity  0.65s cubic-bezier(0.25, 0.1, 0.25, 1) var(--d, 0s),
+    transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) var(--d, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in,
+  .reveal {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ── Cuaderno de cuadros (signature texture) ── */
+.cuaderno-bg {
+  background-image:
+    repeating-linear-gradient(
+      transparent 0px, transparent 23px,
+      rgba(43, 43, 43, 0.045) 23px, rgba(43, 43, 43, 0.045) 24px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 23px,
+      rgba(43, 43, 43, 0.045) 23px, rgba(43, 43, 43, 0.045) 24px
+    );
+}
+
+/* ── Card solid (non-glass) ── */
+.card-solid {
+  background: var(--color-card);
+  border: 1px solid rgba(43, 43, 43, 0.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
+}

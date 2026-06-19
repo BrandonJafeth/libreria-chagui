@@ -1,11 +1,100 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro'
+import HeroHome from '../components/sections/HeroHome.astro'
+import FeaturesGrid from '../components/sections/FeaturesGrid.astro'
+import ProductGrid from '../components/sections/ProductGrid.astro'
+import ServicesGrid from '../components/sections/ServicesGrid.astro'
+import CtaBanner from '../components/sections/CtaBanner.astro'
+import { getFeatured } from '../lib/products'
+import { serviceGroups } from '../data/services'
+import { site } from '../data/site'
+import type { FeatureCard } from '../components/sections/FeaturesGrid.astro'
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const featured = getFeatured(4)
+
+// 3-4 representative services for home preview
+const featuredServices = [
+  { categoria: 'Servicios', servicios: serviceGroups.flatMap(g => g.servicios).filter(s => ['imp-1', 'sub-1', 'dis-1', 'fot-1'].includes(s.id)) }
+]
+
+// icon = nombre Ant Design sin "ant-design:" y sin "-outlined" (FeaturesGrid los agrega)
+const categoryCards: FeatureCard[] = [
+  {
+    icon: 'read',
+    image: 'https://picsum.photos/seed/chagui-escolar-2024/900/620',
+    title: 'Escolar',
+    text: 'Cuadernos, lápices, mochilas y todo para el cole.',
+    href: '/catalogo?tipo=Escolar',
+    iconColor: 'accent-2',
+  },
+  {
+    icon: 'file-text',
+    image: 'https://picsum.photos/seed/chagui-oficina-2024/700/620',
+    title: 'Oficina',
+    text: 'Artículos de papelería y oficina para tu día a día.',
+    href: '/catalogo?tipo=Oficina',
+    iconColor: 'foreground',
+  },
+  {
+    icon: 'laptop',
+    image: 'https://picsum.photos/seed/chagui-tech-2024/700/620',
+    title: 'Tecnología',
+    text: 'Accesorios y artículos de tecnología.',
+    href: '/catalogo?tipo=Tecnología',
+    iconColor: 'accent-3',
+  },
+  {
+    icon: 'tool',
+    image: 'https://picsum.photos/seed/chagui-servicios-2024/900/620',
+    title: 'Servicios',
+    text: 'Impresión, sublimación, diseño y fotografía.',
+    href: '/servicios',
+    iconColor: 'accent',
+  },
+]
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+  title="Inicio"
+  description="Librería y Bazar Chagui en Hatillo: artículos escolares, de oficina, tecnología, impresiones, copias, sublimación, diseño y fotografía. Mirá el catálogo y consultá directo por WhatsApp."
+>
+  <HeroHome
+    badgeInner="Chagui"
+    badgeText="Librería y bazar en Hatillo"
+    heading={`Todo para la escuela,\nla oficina y tu creatividad`}
+    subtext="Útiles escolares, artículos de oficina, manualidades y mucho más. Mirá nuestro catálogo y escribinos directo por WhatsApp."
+    ctaPrimary={{ label: 'Ver catálogo', href: '/catalogo' }}
+    ctaSecondary={{ label: 'Consultar por WhatsApp', href: site.contact.whatsappBase }}
+  />
+
+  <FeaturesGrid
+    heading="Comprá por categoría"
+    subtext="Encontrá rápido lo que necesitás."
+    cards={categoryCards}
+  />
+
+  {featured.length > 0 && (
+    <ProductGrid
+      products={featured}
+      heading="Productos destacados"
+      subtext="Algunos de nuestros favoritos."
+      viewAllHref="/catalogo"
+      viewAllLabel="Ver todo el catálogo"
+    />
+  )}
+
+  <ServicesGrid
+    heading="Nuestros servicios"
+    subtext="Además de productos, ofrecemos impresión, sublimación, diseño y fotografía."
+    groups={featuredServices}
+  />
+
+  <CtaBanner
+    eyebrow="Estamos para ayudarte"
+    heading="¿Tenés una consulta?"
+    subtext="Escribinos por WhatsApp y te atendemos con gusto."
+    buttonLabel="Escribir por WhatsApp"
+    buttonHref={site.contact.whatsappBase}
+    external={true}
+  />
+</BaseLayout>

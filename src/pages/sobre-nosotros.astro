@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/sections/PageHero.astro'
+import FeaturesAlternadas from '../components/sections/FeaturesAlternadas.astro'
+import CtaBanner from '../components/sections/CtaBanner.astro'
+import { site } from '../data/site'
+---
+
+<BaseLayout
+  title="Sobre nosotros"
+  description="Conocé a Librería y Bazar Chagui, tu librería de confianza en Hatillo."
+>
+  <PageHero
+    eyebrow="Sobre nosotros"
+    heading="Tu librería de confianza en Hatillo"
+    subtext="Más que una librería, un lugar donde encontrás productos y servicios con atención cercana."
+    breadcrumb="Sobre nosotros"
+  />
+
+  <FeaturesAlternadas
+    rows={[
+      {
+        eyebrow: 'Nuestra historia',
+        title: 'Cerca de la comunidad',
+        text: 'Librería y Bazar Chagui nació para darle a la comunidad de Hatillo un lugar donde conseguir artículos escolares, de oficina y tecnología, junto con servicios de impresión, sublimación, diseño y fotografía, con buen precio y atención cercana.',
+      },
+      {
+        eyebrow: 'Dónde estamos',
+        title: 'Fácil de encontrar',
+        text: 'Nos ubicamos en Hatillo, de la rotonda 75 metros norte, mano derecha — diagonal al C.C. Plaza América. Pasá a visitarnos o escribinos por WhatsApp para cualquier consulta.',
+      },
+    ]}
+  />
+
+  <CtaBanner
+    eyebrow="Visitanos"
+    heading="Pasá a conocernos"
+    subtext="O escribinos por WhatsApp para cualquier consulta."
+    buttonLabel="Escribir por WhatsApp"
+    buttonHref={site.contact.whatsappBase}
+    external={true}
+  />
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+import type { Product } from '../../lib/products'
+import { formatPrice } from '../../lib/format'
+
+interface Props {
+  product: Product
+  delay?: number
+}
+const { product, delay = 0 } = Astro.props
+
+const primaryImage = product.imagenes[0]
+const delayStyle = delay > 0 ? `--d: ${delay}s` : undefined
+const isPlaceholder = !primaryImage || primaryImage.includes('PLACEHOLDER')
+---
+
+<a
+  href={`/producto/${product.slug}`}
+  class="reveal group card-solid rounded-2xl overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-300 relative"
+  style={delayStyle}
+>
+  <!-- Accent bar top -->
+  <div class={`h-1 w-full ${product.estado === 'agotado' ? 'bg-foreground/10' : 'bg-accent'}`}></div>
+
+  <!-- Image -->
+  <div class="aspect-square overflow-hidden relative bg-background">
+    {product.tipos.length > 0 && (
+      <span class="absolute top-3 left-3 z-10 rounded-full px-2.5 py-0.5 text-[10px] font-body font-semibold uppercase tracking-wide bg-accent-2/10 text-accent-2">
+        {product.tipos[0]}
+      </span>
+    )}
+    {product.estado === 'agotado' && (
+      <span class="absolute top-3 right-3 z-10 rounded-full px-2.5 py-0.5 text-[10px] font-body font-medium uppercase tracking-wide bg-foreground/8 text-foreground/45">
+        Agotado
+      </span>
+    )}
+    {isPlaceholder ? (
+      <div
+        class="w-full h-full flex items-center justify-center group-hover:scale-[1.04] transition-transform duration-500"
+        style={`background: ${
+          product.tipos[0] === 'Escolar'    ? 'linear-gradient(135deg, hsl(211 50% 93%), hsl(211 50% 87%))' :
+          product.tipos[0] === 'Oficina'    ? 'linear-gradient(135deg, hsl(0 0% 93%), hsl(0 0% 87%))' :
+          product.tipos[0] === 'Tecnología' ? 'linear-gradient(135deg, hsl(36 80% 93%), hsl(36 80% 86%))' :
+                                              'linear-gradient(135deg, hsl(6 63% 93%), hsl(6 63% 87%))'
+        }`}
+      >
+        <span class="font-heading font-black leading-none select-none" style="font-size: 4.5rem; color: rgba(0,0,0,0.06);">
+          {product.nombre.charAt(0).toUpperCase()}
+        </span>
+      </div>
+    ) : (
+      <img
+        src={primaryImage}
+        alt={product.nombre}
+        class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
+  </div>
+
+  <!-- Info -->
+  <div class="p-4 flex flex-col gap-1.5 flex-1">
+    <p class="font-heading text-sm font-semibold text-foreground leading-snug">{product.nombre}</p>
+    <p class={`font-heading text-lg font-bold ${product.estado === 'agotado' ? 'text-foreground/30' : 'text-accent'}`}>
+      {formatPrice(product.precio)}
+    </p>
+  </div>
+</a>

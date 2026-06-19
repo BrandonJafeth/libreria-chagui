@@ -1,0 +1,36 @@
+---
+interface Props {
+  eyebrow: string
+  heading: string
+  subtext?: string
+  breadcrumb?: string
+}
+const { eyebrow, heading, subtext, breadcrumb } = Astro.props
+---
+
+<section class="pt-36 pb-14 md:pt-44 md:pb-20 text-center bg-background px-6">
+  {breadcrumb && (
+    <p class="text-xs text-foreground/35 mb-4">
+      <a href="/" class="hover:text-foreground/60 transition-colors">Inicio</a>
+      <span class="mx-1">/</span>
+      <span>{breadcrumb}</span>
+    </p>
+  )}
+
+  <p class="hero-in font-body font-semibold text-[0.65rem] tracking-[0.25em] uppercase text-accent mb-4" style="--d: 0s">
+    {eyebrow}
+  </p>
+
+  <h1
+    class="hero-in font-heading font-bold text-foreground leading-[1.08]"
+    style="--d: 0.15s; font-size: clamp(2.25rem, 5vw, 3.75rem);"
+  >
+    {heading}
+  </h1>
+
+  {subtext && (
+    <p class="hero-in font-body font-light text-base text-foreground/55 max-w-xl mx-auto mt-4" style="--d: 0.30s">
+      {subtext}
+    </p>
+  )}
+</section>

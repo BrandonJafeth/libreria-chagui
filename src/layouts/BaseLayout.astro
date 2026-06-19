@@ -1,0 +1,96 @@
+---
+import Navbar from '../components/Navbar.astro'
+import Footer from '../components/Footer.astro'
+import '../styles/global.css'
+import { site } from '../data/site'
+
+interface Props {
+  title: string
+  description?: string
+  ogImage?: string
+  noIndex?: boolean
+}
+
+const {
+  title,
+  description = site.description,
+  ogImage,
+  noIndex = false,
+} = Astro.props
+
+const fullTitle = title === 'Inicio' ? site.name : `${site.name} | ${title}`
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://libreriachagui.com')
+const ogImageUrl = ogImage ?? `${site.domain}/og-image.jpg`
+const isHome = Astro.url.pathname === '/'
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Store',
+  name: site.name,
+  url: site.domain,
+  telephone: site.contact.phone,
+  image: site.logo,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.contact.address,
+    addressLocality: 'Hatillo',
+    addressRegion: 'San José',
+    addressCountry: 'CR',
+  },
+  sameAs: [site.social.instagram, site.social.facebook, site.social.tiktok],
+}
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {isHome && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+  </head>
+  <body class="bg-background text-foreground font-body antialiased">
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible')
+              io.unobserve(e.target)
+            }
+          }
+        },
+        { rootMargin: '0px 0px -80px 0px' }
+      )
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el))
+    </script>
+  </body>
+</html>

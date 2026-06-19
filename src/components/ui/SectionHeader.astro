@@ -1,0 +1,19 @@
+---
+interface Props {
+  heading: string
+  subtext?: string
+  class?: string
+}
+const { heading, subtext, class: cls = '' } = Astro.props
+---
+
+<div class={`text-center max-w-2xl mx-auto ${cls}`}>
+  <h2 class="font-heading font-bold text-foreground leading-[1.08]" style="font-size: clamp(1.75rem, 4vw, 2.75rem)">
+    {heading}
+  </h2>
+  {subtext && (
+    <p class="font-body font-light text-base text-foreground/55 mt-3 leading-relaxed">
+      {subtext}
+    </p>
+  )}
+</div>

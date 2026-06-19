@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/sections/PageHero.astro'
+import ServicesGrid from '../components/sections/ServicesGrid.astro'
+import CtaBanner from '../components/sections/CtaBanner.astro'
+import { serviceGroups } from '../data/services'
+import { site } from '../data/site'
+---
+
+<BaseLayout
+  title="Servicios"
+  description="Servicios de impresión, copias, sublimación de camisetas y tazas, diseño de tarjetas y afiches, fotografía y edición en Librería y Bazar Chagui, Hatillo. Consultá por WhatsApp."
+>
+  <PageHero
+    eyebrow="Nuestros servicios"
+    heading="Más que una librería"
+    subtext="Impresión, sublimación, diseño y fotografía con la misma atención cercana de siempre. Consultá por WhatsApp y con gusto te cotizamos."
+    breadcrumb="Servicios"
+  />
+
+  <ServicesGrid groups={serviceGroups} />
+
+  <CtaBanner
+    eyebrow="¿Necesitás un servicio?"
+    heading="Consultanos sin compromiso"
+    subtext="Escribinos por WhatsApp y te cotizamos lo que necesités."
+    buttonLabel="Consultar por WhatsApp"
+    buttonHref={site.contact.whatsappBase}
+    external={true}
+  />
+</BaseLayout>

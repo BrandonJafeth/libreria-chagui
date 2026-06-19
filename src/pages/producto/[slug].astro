@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ProductCard from '../../components/ui/ProductCard.astro'
+import CtaBanner from '../../components/sections/CtaBanner.astro'
+import ProductGallery from '../../components/islands/ProductGallery'
+import VariantSelector from '../../components/islands/VariantSelector'
+import { getProducts, getProductBySlug, getRelated } from '../../lib/products'
+import { formatPrice } from '../../lib/format'
+import { site } from '../../data/site'
+
+export function getStaticPaths() {
+  return getProducts().map((p) => ({
+    params: { slug: p.slug },
+    props:  { product: p },
+  }))
+}
+
+const { product } = Astro.props
+const related = getRelated(product, 4)
+
+const ogImage = product.imagenes[0] && !product.imagenes[0].includes('PLACEHOLDER')
+  ? product.imagenes[0]
+  : undefined
+
+const descSeo = product.descripcion.replace(/\n/g, ' ').slice(0, 155)
+---
+
+<BaseLayout
+  title={product.nombre}
+  description={descSeo}
+  ogImage={ogImage}
+>
+  <!-- Product Detail -->
+  <section class="bg-background pt-32 pb-16 md:pt-40 md:pb-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
+
+        <!-- Gallery -->
+        <div class="reveal">
+          <ProductGallery
+            images={product.imagenes}
+            alt={product.nombre}
+            client:visible
+          />
+        </div>
+
+        <!-- Info -->
+        <div class="reveal flex flex-col" style="--d: 0.12s">
+          <!-- Tipo badge -->
+          <div class="flex flex-wrap gap-2 mb-4">
+            {product.tipos.slice(0, 2).map((tipo) => (
+              <span class="bg-accent-2/10 text-accent-2 rounded-full px-3 py-1 text-xs font-body font-medium uppercase tracking-wide">
+                {tipo}
+              </span>
+            ))}
+          </div>
+
+          <!-- Name -->
+          <h1 class="font-heading font-bold text-foreground" style="font-size: clamp(1.75rem, 4vw, 2.5rem); line-height: 1.1;">
+            {product.nombre}
+          </h1>
+
+          <!-- Price -->
+          <p class="font-heading text-3xl mt-4" style={`color: ${product.estado === 'agotado' ? 'rgba(43,43,43,0.4)' : 'hsl(6 63% 46%)'}`}>
+            {formatPrice(product.precio)}
+          </p>
+
+          <!-- Estado -->
+          <div class="flex items-center gap-2 mt-3">
+            <span class={`inline-block w-2 h-2 rounded-full ${product.estado === 'disponible' ? 'bg-green-500' : 'bg-foreground/25'}`}></span>
+            <span class={`text-sm font-body ${product.estado === 'disponible' ? 'text-accent-2' : 'text-foreground/50'}`}>
+              {product.estado === 'disponible' ? 'Disponible' : 'Agotado'}
+            </span>
+          </div>
+
+          <!-- Variant selector + CTA (island) -->
+          <div class="mt-6">
+            <VariantSelector product={product} client:visible />
+          </div>
+
+          <!-- Short description -->
+          <p class="font-body font-light text-sm text-foreground/60 leading-relaxed mt-6">
+            {product.descripcion.split('\n')[0]}
+          </p>
+        </div>
+      </div>
+
+      <!-- Long description -->
+      <div class="bg-card rounded-3xl p-8 md:p-10 mt-12 max-w-4xl mx-auto reveal">
+        <h2 class="font-heading font-semibold text-xl text-foreground mb-4">Descripción</h2>
+        <div class="font-body font-light text-foreground/70 leading-[1.72] whitespace-pre-line text-sm md:text-base">
+          {product.descripcion}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related products -->
+  {related.length > 0 && (
+    <section class="bg-background py-16 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="font-heading font-bold text-2xl text-foreground mb-8 reveal">Productos relacionados</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+          {related.map((p, i) => (
+            <ProductCard product={p} delay={i * 0.08} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CtaBanner
+    eyebrow="¿Necesitás ayuda?"
+    heading="Consultar por WhatsApp"
+    subtext="Escribinos y te atendemos con gusto."
+    buttonLabel="Consultar por WhatsApp"
+    buttonHref={site.contact.whatsappBase}
+    external={true}
+  />
+</BaseLayout>

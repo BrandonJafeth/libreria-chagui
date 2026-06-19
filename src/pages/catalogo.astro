@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PageHero from '../components/sections/PageHero.astro'
+import CtaBanner from '../components/sections/CtaBanner.astro'
+import CatalogFilters from '../components/islands/CatalogFilters'
+import { getProducts, getTipos } from '../lib/products'
+import { site } from '../data/site'
+
+const products = getProducts()
+const tipos = getTipos()
+---
+
+<BaseLayout
+  title="Catálogo"
+  description="Mirá todos los productos de Librería y Bazar Chagui: útiles escolares, artículos de oficina, manualidades y más. Consultá disponibilidad por WhatsApp."
+>
+  <PageHero
+    eyebrow="Nuestro catálogo"
+    heading="Todo lo que necesitás, en un solo lugar"
+    subtext="Explorá nuestros productos por categoría. ¿No ves lo que buscás? Escribinos por WhatsApp y con gusto te ayudamos."
+    breadcrumb="Catálogo"
+  />
+
+  <section class="bg-background py-10 md:py-16 px-6 pb-20">
+    <div class="max-w-6xl mx-auto">
+      <CatalogFilters
+        products={products}
+        tipos={tipos}
+        client:visible
+      />
+    </div>
+  </section>
+
+  <CtaBanner
+    eyebrow="¿Buscás algo en especial?"
+    heading="Escribinos y te ayudamos"
+    subtext="Si no encontrás un producto en el catálogo, consultanos directo por WhatsApp."
+    buttonLabel="Consultar por WhatsApp"
+    buttonHref={site.contact.whatsappBase}
+    external={true}
+  />
+</BaseLayout>
