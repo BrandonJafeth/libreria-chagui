@@ -1,0 +1,152 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro'
+import Icon from '../ui/Icon.astro'
+
+interface BentoItem {
+  id: string
+  nombre: string
+  descripcion: string
+  icono: string
+  accent: string
+  tint: string
+}
+
+interface Props {
+  heading?: string
+  subtext?: string
+  items: BentoItem[]
+}
+
+const { heading, subtext, items } = Astro.props
+
+const WA_BASE = 'https://api.whatsapp.com/send?phone=50663595383&text='
+function serviceWA(nombre: string) {
+  return WA_BASE + encodeURIComponent(`Hola buenas, me interesa el servicio de: ${nombre}`)
+}
+---
+
+<section class="bg-background py-16 md:py-20 px-6">
+  <div class="max-w-5xl mx-auto">
+
+    {heading && (
+      <div class="reveal mb-10">
+        <SectionHeader {heading} {subtext} />
+      </div>
+    )}
+
+    <div class="bento-grid">
+      {items.map((item, i) => {
+        const isMain = i === 0
+        const isBottom = i === 3
+        return (
+          <a
+            href={serviceWA(item.nombre)}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative overflow-hidden rounded-3xl border border-foreground/[0.06] bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/[0.08]"
+            class:list={{
+              'bento-main': isMain,
+              'bento-bottom': isBottom,
+              'p-6 md:p-8': isMain,
+              'p-6 md:p-7': isBottom,
+              'p-5 md:p-6': !isMain && !isBottom,
+            }}
+            style={`--accent: ${item.accent}; --tint: ${item.tint}`}
+          >
+            {isMain && (
+              <div class="absolute -right-6 -top-6 opacity-[0.05] pointer-events-none leading-none" aria-hidden="true">
+                <Icon name={item.icono} size={100} style={`color: ${item.accent}`} />
+              </div>
+            )}
+
+            <div class="absolute top-0 left-0 w-full h-1.5"
+                 style={`background: ${item.accent}`} />
+
+            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                 style={`background: linear-gradient(160deg, ${item.tint}, transparent 60%)`} />
+
+            <div class="relative z-10 flex flex-col h-full gap-6">
+
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                     style={`background: ${item.tint}`}>
+                  <Icon name={item.icono} size={18} style={`color: ${item.accent}`} />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <h3 class="font-heading font-bold text-foreground leading-tight"
+                        style={`font-size: ${isMain ? 'clamp(1rem, 2.2vw, 1.3rem)' : isBottom ? 'clamp(0.95rem, 1.8vw, 1.15rem)' : '0.9rem'}`}>
+                      {item.nombre}
+                    </h3>
+                    {isMain && (
+                      <span class="shrink-0 text-[0.5rem] font-semibold tracking-[0.22em] uppercase px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/40">
+                        Popular
+                      </span>
+                    )}
+                    {isBottom && (
+                      <span class="shrink-0 text-[0.5rem] font-semibold tracking-[0.22em] uppercase px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/40">
+                        Ver más &rarr;
+                      </span>
+                    )}
+                  </div>
+                  <p class="font-body text-xs font-light text-foreground/50 leading-relaxed mt-0.5">
+                    {item.descripcion}
+                  </p>
+                </div>
+              </div>
+
+              {isMain && (
+                <div class="flex flex-wrap gap-1.5 ml-[3.25rem]">
+                  <span class="text-[0.5rem] font-medium px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/45">Blanco y negro</span>
+                  <span class="text-[0.5rem] font-medium px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/45">Color</span>
+                  <span class="text-[0.5rem] font-medium px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/45">Al instante</span>
+                </div>
+              )}
+
+              {isMain && (
+                <div class="ml-[3.25rem] mt-1 pt-2.5 border-t border-foreground/[0.06]">
+                  <p class="font-body text-[0.55rem] text-foreground/35 leading-relaxed">
+                    B&N desde <strong style={`color: ${item.accent}`}>₡50</strong> · Color desde <strong style={`color: ${item.accent}`}>₡100</strong>
+                  </p>
+                  <p class="font-body text-[0.55rem] text-foreground/35 mt-0.5">
+                    Descuento por volumen en trabajos grandes.
+                  </p>
+                </div>
+              )}
+
+              <div class="flex items-center gap-2 text-[0.55rem] font-body font-semibold tracking-[0.16em] uppercase opacity-50 group-hover:opacity-100 transition-all duration-300 mt-auto"
+                   style={`color: ${item.accent}`}>
+                Consultar por WhatsApp
+                <span class="inline-block transition-transform duration-300 group-hover:translate-x-0.5">
+                  <Icon name="chevron-right" size={9} />
+                </span>
+              </div>
+            </div>
+          </a>
+        )
+      })}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .bento-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 1.6fr 1fr;
+    }
+
+    .bento-main {
+      grid-row: span 2;
+    }
+
+    .bento-bottom {
+      grid-column: span 2;
+    }
+  }
+</style>

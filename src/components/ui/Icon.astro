@@ -3,8 +3,9 @@ interface Props {
   name: string
   size?: number
   class?: string
+  style?: string
 }
-const { name, size = 20, class: cls = '' } = Astro.props
+const { name, size = 20, class: cls = '', style = '' } = Astro.props
 
 type IconDef = { d: string; fill?: boolean }
 
@@ -49,6 +50,7 @@ const icon = icons[name]
     stroke-linecap="round"
     stroke-linejoin="round"
     class={cls}
+    style={style}
     aria-hidden="true"
     set:html={icon.d}
   />
