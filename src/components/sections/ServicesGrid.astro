@@ -1,5 +1,6 @@
 ---
 import SectionHeader from '../ui/SectionHeader.astro'
+import Icon from '../ui/Icon.astro'
 import type { ServiceGroup } from '../../data/services'
 
 interface Props {
@@ -14,39 +15,44 @@ function serviceWA(nombre: string) {
   return WA_BASE + encodeURIComponent(`Hola buenas, me interesa el servicio de: ${nombre}`)
 }
 
-const catConfig: Record<string, { accent: string; bg: string }> = {
-  'Impresión':   { accent: '#2E5C8A', bg: 'rgba(46,92,138,0.09)'  },
-  'Sublimación': { accent: '#C0392B', bg: 'rgba(192,57,43,0.09)'  },
-  'Diseño':      { accent: '#B87C20', bg: 'rgba(232,163,61,0.11)' },
-  'Fotografía':  { accent: '#4A5568', bg: 'rgba(74,85,104,0.08)'  },
-  'Servicios':   { accent: '#C0392B', bg: 'rgba(192,57,43,0.09)'  },
+const fallbackConfig: Record<string, { accent: string; tint: string }> = {
+  'Impresión':   { accent: '#2E5C8A', tint: 'rgba(46,92,138,0.09)'  },
+  'Sublimación': { accent: '#C0392B', tint: 'rgba(192,57,43,0.09)'  },
+  'Diseño':      { accent: '#B87C20', tint: 'rgba(232,163,61,0.11)' },
+  'Fotografía':  { accent: '#4A5568', tint: 'rgba(74,85,104,0.08)'  },
+  'Servicios':   { accent: '#C0392B', tint: 'rgba(192,57,43,0.09)'  },
 }
 
-const icons: Record<string, string> = {
-  printer:
-    `<path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>`,
-  copy:
-    `<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>`,
-  shirt:
-    `<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/>`,
-  coffee:
-    `<path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>`,
-  'id-card':
-    `<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 16s.875-4 5-4 5 4 5 4"/><circle cx="12" cy="9" r="2"/>`,
-  'file-text':
-    `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><line x1="10" x2="16" y1="13" y2="13"/><line x1="10" x2="14" y1="17" y2="17"/>`,
-  palette:
-    `<circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>`,
-  camera:
-    `<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>`,
-  wand:
-    `<path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/>`,
+function cfgFor(group: ServiceGroup) {
+  const fb = fallbackConfig[group.categoria] ?? fallbackConfig['Servicios']
+  return { accent: group.accent ?? fb.accent, tint: group.tint ?? fb.tint }
 }
 
-const showCategoryHeaders =
-  groups.length > 1 || (groups.length === 1 && groups[0].categoria !== 'Servicios')
+function slugify(s: string) {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+}
 
+const useTabs = groups.length > 1
 const totalServices = groups.reduce((acc, g) => acc + g.servicios.length, 0)
+
+// CSS generada por categoría:
+// 1. Muestra el panel cuyo radio está activo (:has del contenedor).
+// 2. Pinta la label del radio activo usando el adyacente (+), sin
+//    contaminar las demás labels como haría peer-checked (~).
+const tabCss = groups
+  .map((g) => {
+    const id = slugify(g.categoria)
+    const accent = cfgFor(g).accent
+    return [
+      `.svc-tabs:has(#svc-tab-${id}:checked) [data-panel="${id}"]{display:block}`,
+      `#svc-tab-${id}:checked+label[for="svc-tab-${id}"]{background:${accent}!important;color:#fff!important;border-color:transparent!important}`,
+    ].join('\n')
+  })
+  .join('\n')
 ---
 
 <section class="bg-background py-20 md:py-28 px-6">
@@ -58,95 +64,181 @@ const totalServices = groups.reduce((acc, g) => acc + g.servicios.length, 0)
       </div>
     )}
 
-    <div class="space-y-14">
-      {groups.map((group, gi) => {
-        const cfg = catConfig[group.categoria] ?? catConfig['Servicios']
-        return (
-          <div class="reveal" style={`--d: ${gi * 0.1}s`}>
+    {useTabs ? (
+      <div class="svc-tabs reveal">
+        <style set:html={tabCss} />
 
-            {showCategoryHeaders && (
-              <div class="flex items-center gap-3 mb-7">
-                <span
-                  class="block w-[3px] h-6 rounded-full flex-shrink-0"
-                  style={`background: ${cfg.accent}`}
-                />
-                <h2 class="font-heading font-bold text-xl text-foreground tracking-tight">
-                  {group.categoria}
-                </h2>
-                <span
-                  class="font-body text-[0.6rem] font-semibold tracking-[0.18em] uppercase px-2 py-0.5 rounded-full border"
-                  style={`color: ${cfg.accent}; border-color: ${cfg.accent}4D; background: ${cfg.bg}`}
-                >
-                  {group.servicios.length}&nbsp;{group.servicios.length === 1 ? 'servicio' : 'servicios'}
-                </span>
-              </div>
-            )}
+        <fieldset class="border-0 p-0 m-0">
+          <legend class="sr-only">Categoría de servicios</legend>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {group.servicios.map((svc) => (
-                <a
-                  href={serviceWA(svc.nombre)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group bg-card rounded-2xl p-6 border border-foreground/[0.06] flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/[0.07]"
-                >
-                  <div
-                    class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
-                    style={`background: ${cfg.bg}`}
+          <div class="flex flex-wrap gap-2 mb-8 overflow-x-auto -mx-1 px-1 pb-1">
+            {groups.map((g, gi) => {
+              const id = slugify(g.categoria)
+              return (
+                <Fragment>
+                  <input
+                    type="radio"
+                    name="svc-tab"
+                    id={`svc-tab-${id}`}
+                    class="peer sr-only"
+                    checked={gi === 0}
+                  />
+                  <label
+                    for={`svc-tab-${id}`}
+                    class="svc-badge shrink-0 cursor-pointer select-none px-5 py-2.5 rounded-full font-body font-semibold text-sm border border-foreground/10 bg-card text-foreground/60 transition-all duration-300"
+                    style={`--badge-accent: ${cfgFor(g).accent}`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke={cfg.accent}
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                      set:html={icons[svc.icono] ?? icons['file-text']}
-                    />
-                  </div>
-
-                  <div class="flex-1">
-                    <h3 class="font-heading font-semibold text-[0.95rem] text-foreground leading-snug mb-2">
-                      {svc.nombre}
-                    </h3>
-                    <p class="font-body text-sm font-light text-foreground/50 leading-relaxed">
-                      {svc.descripcion}
-                    </p>
-                  </div>
-
-                  <div
-                    class="flex items-center gap-1.5 text-[0.65rem] font-body font-semibold tracking-[0.14em] uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-200"
-                    style={`color: ${cfg.accent}`}
-                  >
-                    Consultar por WhatsApp
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="11"
-                      height="11"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="group-hover:translate-x-0.5 transition-transform duration-200"
-                      aria-hidden="true"
-                    >
-                      <path d="m9 18 6-6-6-6"/>
-                    </svg>
-                  </div>
-                </a>
-              ))}
-            </div>
-
+                    {g.categoria}
+                  </label>
+                </Fragment>
+              )
+            })}
           </div>
-        )
-      })}
-    </div>
+        </fieldset>
+
+        <div class="svc-panels">
+          {groups.map((g) => {
+            const cfg = cfgFor(g)
+            const id = slugify(g.categoria)
+            return (
+              <div class="svc-panel" data-panel={id}>
+
+                <div
+                  class="rounded-3xl p-8 md:p-10 mb-6 flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-10"
+                  style={`background: ${cfg.tint}`}
+                >
+                  <div class="flex-1">
+                    <span
+                      class="font-body text-[0.65rem] font-semibold tracking-[0.22em] uppercase"
+                      style={`color: ${cfg.accent}`}
+                    >
+                      {g.categoria}
+                    </span>
+                    <h3 class="font-heading font-bold text-2xl md:text-3xl text-foreground mt-2 mb-3 leading-tight">
+                      {g.titulo ?? g.categoria}
+                    </h3>
+                    {g.descripcion && (
+                      <p class="font-body text-foreground/60 leading-relaxed max-w-md mb-6">
+                        {g.descripcion}
+                      </p>
+                    )}
+                    <a
+                      href={serviceWA(g.categoria)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 rounded-full px-5 py-3 font-body font-semibold text-sm text-white hover:opacity-90 active:scale-[0.98] transition-all duration-150"
+                      style={`background: ${cfg.accent}`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                      Consultar por WhatsApp
+                    </a>
+                  </div>
+
+                  <div class="hidden sm:block relative w-32 h-28 shrink-0 mx-auto md:mx-0" aria-hidden="true">
+                    <div
+                      class="absolute inset-0 m-auto w-16 h-16 rounded-2xl flex items-center justify-center"
+                      style={`background: ${cfg.accent}1A`}
+                    >
+                      <Icon name={g.servicios[0]?.icono ?? 'file-text'} size={26} class="" style={`color: ${cfg.accent}`} />
+                    </div>
+                    {g.servicios.slice(1, 3).map((svc, i) => (
+                      <div
+                        class="absolute w-10 h-10 rounded-xl bg-card shadow-sm flex items-center justify-center"
+                        style={`top: ${i === 0 ? '-4px' : '64%'}; ${i === 0 ? 'right: 4px' : 'left: 0'}`}
+                      >
+                        <Icon name={svc.icono} size={18} style={`color: ${cfg.accent}`} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {g.servicios.map((svc, si) => (
+                    <a
+                      href={serviceWA(svc.nombre)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="svc-card group bg-card rounded-2xl p-6 border border-foreground/[0.06] flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/[0.07]"
+                      style={`--d: ${si * 0.06}s`}
+                    >
+                      <div
+                        class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
+                        style={`background: ${cfg.tint}`}
+                      >
+                        <Icon name={svc.icono} size={22} style={`color: ${cfg.accent}`} />
+                      </div>
+
+                      <div class="flex-1">
+                        <h3 class="font-heading font-semibold text-[0.95rem] text-foreground leading-snug mb-2">
+                          {svc.nombre}
+                        </h3>
+                        <p class="font-body text-sm font-light text-foreground/50 leading-relaxed">
+                          {svc.descripcion}
+                        </p>
+                      </div>
+
+                      <div
+                        class="flex items-center gap-1.5 text-[0.65rem] font-body font-semibold tracking-[0.14em] uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-200"
+                        style={`color: ${cfg.accent}`}
+                      >
+                        Consultar por WhatsApp
+                        <Icon name="chevron-right" size={11} class="group-hover:translate-x-0.5 transition-transform duration-200" />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    ) : (
+      <div class="space-y-14">
+        {groups.map((group, gi) => {
+          const cfg = cfgFor(group)
+          return (
+            <div class="reveal" style={`--d: ${gi * 0.1}s`}>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {group.servicios.map((svc) => (
+                  <a
+                    href={serviceWA(svc.nombre)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group bg-card rounded-2xl p-6 border border-foreground/[0.06] flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/[0.07]"
+                  >
+                    <div
+                      class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
+                      style={`background: ${cfg.tint}`}
+                    >
+                      <Icon name={svc.icono} size={22} style={`color: ${cfg.accent}`} />
+                    </div>
+
+                    <div class="flex-1">
+                      <h3 class="font-heading font-semibold text-[0.95rem] text-foreground leading-snug mb-2">
+                        {svc.nombre}
+                      </h3>
+                      <p class="font-body text-sm font-light text-foreground/50 leading-relaxed">
+                        {svc.descripcion}
+                      </p>
+                    </div>
+
+                    <div
+                      class="flex items-center gap-1.5 text-[0.65rem] font-body font-semibold tracking-[0.14em] uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-200"
+                      style={`color: ${cfg.accent}`}
+                    >
+                      Consultar por WhatsApp
+                      <Icon name="chevron-right" size={11} class="group-hover:translate-x-0.5 transition-transform duration-200" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )}
 
     {totalServices <= 4 && (
       <div class="reveal mt-10 pt-8 border-t border-foreground/8" style="--d: 0.3s">
@@ -155,10 +247,43 @@ const totalServices = groups.reduce((acc, g) => acc + g.servicios.length, 0)
           class="inline-flex items-center gap-2 font-body font-semibold text-sm text-accent hover:opacity-75 transition-opacity uppercase tracking-wider"
         >
           Ver todos los servicios
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          <Icon name="arrow-up-right" size={14} />
         </a>
       </div>
     )}
 
   </div>
 </section>
+
+{useTabs && (
+  <script>
+    const tabs = document.querySelectorAll<HTMLInputElement>('.svc-tabs input[name="svc-tab"]')
+
+    tabs.forEach((input) => {
+      input.addEventListener('change', () => {
+        const id = input.id.replace('svc-tab-', '')
+        const panel = document.querySelector<HTMLElement>(`.svc-panel[data-panel="${id}"]`)
+        if (!panel) return
+
+        panel.classList.remove('is-animating')
+        // Forzar reflow para poder re-disparar la animación en cada cambio de tab.
+        void panel.offsetWidth
+        panel.classList.add('is-animating')
+      })
+    })
+  </script>
+)}
+
+<style>
+  .svc-panel {
+    display: none;
+  }
+
+  .svc-badge:hover {
+    box-shadow: 0 4px 20px -4px color-mix(in srgb, var(--badge-accent) 30%, transparent);
+  }
+
+  .svc-badge:active {
+    scale: 0.97;
+  }
+</style>

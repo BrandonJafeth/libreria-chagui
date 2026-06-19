@@ -7,12 +7,24 @@ export interface Service {
 
 export interface ServiceGroup {
   categoria: string
+  /** Título corto para el panel destacado del tab, ej. "Productos personalizados" (opcional). */
+  titulo?: string
+  /** Descripción corta para el panel destacado del tab (opcional). */
+  descripcion?: string
+  /** Color de acento de la categoría, ej. '#2E5C8A' (opcional, hay fallback en ServicesGrid). */
+  accent?: string
+  /** Tint/fondo suave del acento, ej. 'rgba(46,92,138,0.09)' (opcional). */
+  tint?: string
   servicios: Service[]
 }
 
 export const serviceGroups: ServiceGroup[] = [
   {
     categoria: 'Impresión',
+    titulo: 'Impresiones y copias al instante',
+    descripcion: 'Imprimí documentos y trabajos, o sacá copias rápidas y a buen precio, en blanco y negro o a color.',
+    accent: '#2E5C8A',
+    tint: 'rgba(46,92,138,0.09)',
     servicios: [
       {
         id: 'imp-1',
@@ -30,6 +42,10 @@ export const serviceGroups: ServiceGroup[] = [
   },
   {
     categoria: 'Sublimación',
+    titulo: 'Productos personalizados',
+    descripcion: 'Personalizamos camisetas, tazas y más con el diseño o imagen que quieras. Ideal para regalos, eventos o tu negocio.',
+    accent: '#C0392B',
+    tint: 'rgba(192,57,43,0.09)',
     servicios: [
       {
         id: 'sub-1',
@@ -47,6 +63,10 @@ export const serviceGroups: ServiceGroup[] = [
   },
   {
     categoria: 'Diseño',
+    titulo: 'Diseño gráfico a tu medida',
+    descripcion: 'Diseñamos e imprimimos tarjetas de presentación, afiches y material promocional para tu negocio o evento.',
+    accent: '#B87C20',
+    tint: 'rgba(232,163,61,0.11)',
     servicios: [
       {
         id: 'dis-1',
@@ -70,6 +90,10 @@ export const serviceGroups: ServiceGroup[] = [
   },
   {
     categoria: 'Fotografía',
+    titulo: 'Fotografía y edición profesional',
+    descripcion: 'Te acompañamos con sesiones de fotografía y editamos/retocamos tus fotos para que queden como las imaginás.',
+    accent: '#4A5568',
+    tint: 'rgba(74,85,104,0.08)',
     servicios: [
       {
         id: 'fot-1',
