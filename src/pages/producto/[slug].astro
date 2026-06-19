@@ -8,15 +8,16 @@ import { getProducts, getProductBySlug, getRelated } from '../../lib/products'
 import { formatPrice } from '../../lib/format'
 import { site } from '../../data/site'
 
-export function getStaticPaths() {
-  return getProducts().map((p) => ({
+export async function getStaticPaths() {
+  const products = await getProducts()
+  return products.map((p) => ({
     params: { slug: p.slug },
     props:  { product: p },
   }))
 }
 
 const { product } = Astro.props
-const related = getRelated(product, 4)
+const related = await getRelated(product, 4)
 
 const ogImage = product.imagenes[0] && !product.imagenes[0].includes('PLACEHOLDER')
   ? product.imagenes[0]

@@ -11,7 +11,9 @@ export default function ProductGallery({ images, alt }: Props) {
   if (images.length === 0) {
     return (
       <div className="aspect-square rounded-3xl overflow-hidden bg-gradient-to-br from-card to-background flex items-center justify-center border border-white/60">
-        <span className="font-sans text-[4rem] leading-none opacity-[0.08] select-none">📦</span>
+        <span className="font-sans font-black text-[4rem] leading-none opacity-[0.06] select-none">
+          {alt ? alt.charAt(0).toUpperCase() : ''}
+        </span>
       </div>
     )
   }
@@ -23,7 +25,9 @@ export default function ProductGallery({ images, alt }: Props) {
       {/* Main image */}
       <div className="aspect-square rounded-3xl overflow-hidden border border-white/60 bg-gradient-to-br from-card to-background flex items-center justify-center" style={{ boxShadow: '0 2px 8px rgba(0,0,0,.07), 0 8px 32px rgba(0,0,0,.05), inset 0 1px 0 rgba(255,255,255,1)' }}>
         {isPlaceholder(images[active]) ? (
-          <span className="font-sans text-[5rem] leading-none opacity-[0.06] select-none">📦</span>
+          <span className="font-sans font-black text-[5rem] leading-none opacity-[0.06] select-none">
+            {alt ? alt.charAt(0).toUpperCase() : ''}
+          </span>
         ) : (
           <img
             src={images[active]}
@@ -50,7 +54,9 @@ export default function ProductGallery({ images, alt }: Props) {
               aria-label={`Ver imagen ${i + 1}`}
             >
               {isPlaceholder(src) ? (
-                <span className="text-lg opacity-20">📦</span>
+                <span className="font-sans font-black text-2xl opacity-[0.06] select-none">
+                  {alt ? alt.charAt(0).toUpperCase() : ''}
+                </span>
               ) : (
                 <img src={src} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
               )}

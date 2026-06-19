@@ -6,8 +6,8 @@ import CatalogFilters from '../components/islands/CatalogFilters'
 import { getProducts, getTipos } from '../lib/products'
 import { site } from '../data/site'
 
-const products = getProducts()
-const tipos = getTipos()
+const products = await getProducts()
+const tipos = await getTipos()
 ---
 
 <BaseLayout

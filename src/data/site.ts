@@ -13,14 +13,14 @@ export const site = {
   ],
   cta: {
     label: 'WhatsApp',
-    href: 'https://api.whatsapp.com/send?phone=50663595383&text=Hola%20buenas%2C%20era%20para%20realizar%20una%20consulta%20%F0%9F%98%80',
+    href: 'https://api.whatsapp.com/send?phone=50663595383&text=Hola%20buenas%2C%20era%20para%20realizar%20una%20consulta',
   },
   contact: {
     phone: '+506 6359 5383',
     whatsapp: '50663595383',
     address: 'Hatillo, de la rotonda 75 metros norte, mano derecha — diagonal al C.C. Plaza América',
     whatsappBase:
-      'https://api.whatsapp.com/send?phone=50663595383&text=Hola%20buenas%2C%20era%20para%20realizar%20una%20consulta%20%F0%9F%98%80',
+      'https://api.whatsapp.com/send?phone=50663595383&text=Hola%20buenas%2C%20era%20para%20realizar%20una%20consulta',
   },
   social: {
     instagram: 'https://www.instagram.com/libreria_chagui/',

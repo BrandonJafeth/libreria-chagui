@@ -10,13 +10,13 @@ function formatPrice(n: number): string {
   return '₡' + n.toLocaleString('es-CR')
 }
 
-const tipoMeta: Record<string, { emoji: string; bg: string; accent: string }> = {
-  'Escolar':    { emoji: '✏️', bg: 'linear-gradient(145deg, #FDF0D8 0%, #F9E4B4 100%)', accent: '#B87C20' },
-  'Oficina':    { emoji: '📎', bg: 'linear-gradient(145deg, #EBF2FA 0%, #D8E8F5 100%)', accent: '#2E5C8A' },
-  'Tecnología': { emoji: '⚡', bg: 'linear-gradient(145deg, #F1F3F5 0%, #E4E7EA 100%)', accent: '#4A5568' },
+const tipoMeta: Record<string, { bg: string; accent: string }> = {
+  'Escolar':    { bg: 'linear-gradient(145deg, #FDF0D8 0%, #F9E4B4 100%)', accent: '#B87C20' },
+  'Oficina':    { bg: 'linear-gradient(145deg, #EBF2FA 0%, #D8E8F5 100%)', accent: '#2E5C8A' },
+  'Tecnología': { bg: 'linear-gradient(145deg, #F1F3F5 0%, #E4E7EA 100%)', accent: '#4A5568' },
 }
 
-const fallbackMeta = { emoji: '📦', bg: 'linear-gradient(145deg, #FAF7F2 0%, #F0EBE3 100%)', accent: '#C0392B' }
+const fallbackMeta = { bg: 'linear-gradient(145deg, #FAF7F2 0%, #F0EBE3 100%)', accent: '#C0392B' }
 
 function getPlaceholderMeta(tipos: string[]) {
   for (const t of tipos) {
@@ -69,7 +69,9 @@ function ProductCard({ product }: { product: Product }) {
             className="w-full h-full flex flex-col items-center justify-center gap-3 transition-transform duration-500 group-hover:scale-[1.04]"
             style={{ opacity: isAgotado ? 0.45 : 1 }}
           >
-            <span className="text-[3.2rem] leading-none select-none">{meta.emoji}</span>
+            <span className="font-sans font-black leading-none select-none" style={{ fontSize: '3.5rem', color: 'rgba(0,0,0,0.06)' }}>
+              {product.nombre.charAt(0).toUpperCase()}
+            </span>
             <span
               className="text-[0.55rem] font-bold tracking-[0.22em] uppercase select-none"
               style={{ color: meta.accent, opacity: 0.55 }}
@@ -148,7 +150,7 @@ export default function CatalogFilters({ products, tipos }: Props) {
                   fontFamily: 'Poppins, sans-serif',
                 }}
               >
-                {m ? `${m.emoji} ${t}` : t}
+                {t}
               </button>
             )
           })}
@@ -213,7 +215,7 @@ export default function CatalogFilters({ products, tipos }: Props) {
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-24">
-          <p className="text-3xl mb-3 select-none">🔍</p>
+          <svg className="mx-auto mb-4 opacity-20" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <p style={{ color: 'rgba(43,43,43,0.4)', fontSize: '0.9rem', fontFamily: 'Inter, sans-serif' }}>
             Sin resultados para esta búsqueda.
           </p>

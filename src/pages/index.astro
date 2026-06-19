@@ -10,7 +10,7 @@ import { serviceGroups } from '../data/services'
 import { site } from '../data/site'
 import type { FeatureCard } from '../components/sections/FeaturesGrid.astro'
 
-const featured = getFeatured(4)
+const featured = await getFeatured(4)
 
 // 3-4 representative services for home preview
 const featuredServices = [
@@ -21,7 +21,7 @@ const featuredServices = [
 const categoryCards: FeatureCard[] = [
   {
     icon: 'read',
-    image: 'https://picsum.photos/seed/chagui-escolar-2024/900/620',
+    image: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781889185/productos-escolares_ku9skf.jpg',
     title: 'Escolar',
     text: 'Cuadernos, lápices, mochilas y todo para el cole.',
     href: '/catalogo?tipo=Escolar',
@@ -29,7 +29,7 @@ const categoryCards: FeatureCard[] = [
   },
   {
     icon: 'file-text',
-    image: 'https://picsum.photos/seed/chagui-oficina-2024/700/620',
+    image: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781889185/productos-oficina_w17o35.jpg',
     title: 'Oficina',
     text: 'Artículos de papelería y oficina para tu día a día.',
     href: '/catalogo?tipo=Oficina',
@@ -37,7 +37,7 @@ const categoryCards: FeatureCard[] = [
   },
   {
     icon: 'laptop',
-    image: 'https://picsum.photos/seed/chagui-tech-2024/700/620',
+    image: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781889187/productos-tecnologia_a252jo.jpg',
     title: 'Tecnología',
     text: 'Accesorios y artículos de tecnología.',
     href: '/catalogo?tipo=Tecnología',
@@ -45,7 +45,7 @@ const categoryCards: FeatureCard[] = [
   },
   {
     icon: 'tool',
-    image: 'https://picsum.photos/seed/chagui-servicios-2024/900/620',
+    image: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781889185/servicios-libreriachagui_imu69k.jpg',
     title: 'Servicios',
     text: 'Impresión, sublimación, diseño y fotografía.',
     href: '/servicios',
