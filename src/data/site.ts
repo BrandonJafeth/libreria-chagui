@@ -2,7 +2,7 @@ export const site = {
   name: 'Librería y Bazar Chagui',
   domain: 'https://libreriachagui.com',
   description:
-    'Librería y Bazar Chagui en Hatillo: artículos escolares, de oficina, tecnología, impresiones, copias, sublimación, diseño y fotografía. Mirá el catálogo y consultá por WhatsApp.',
+    'Librería y Bazar Chagui. Impresiones, fotografías, todo para oficina. Nos ubicamos en Hatillo diagonal al C.C. Plaza América, por la bomba.',
   logo: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781842073/libreria-chagui-logo_gxpybl.jpg',
   nav: [
     { label: 'Inicio',         href: '/' },
