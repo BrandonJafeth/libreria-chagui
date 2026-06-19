@@ -53,12 +53,6 @@ function serviceWA(nombre: string) {
             }}
             style={`--accent: ${item.accent}; --tint: ${item.tint}`}
           >
-            {isMain && (
-              <div class="absolute -right-6 -top-6 opacity-[0.05] pointer-events-none leading-none" aria-hidden="true">
-                <Icon name={item.icono} size={100} style={`color: ${item.accent}`} />
-              </div>
-            )}
-
             <div class="absolute top-0 left-0 w-full h-1.5"
                  style={`background: ${item.accent}`} />
 
@@ -79,17 +73,17 @@ function serviceWA(nombre: string) {
                       {item.nombre}
                     </h3>
                     {isMain && (
-                      <span class="shrink-0 text-[0.5rem] font-semibold tracking-[0.22em] uppercase px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/40">
+                      <span class="shrink-0 text-[0.6rem] font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full border border-foreground/[0.08] text-foreground/50">
                         Popular
                       </span>
                     )}
                     {isBottom && (
-                      <span class="shrink-0 text-[0.5rem] font-semibold tracking-[0.22em] uppercase px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/40">
+                      <span class="shrink-0 text-[0.6rem] font-semibold tracking-[0.2em] uppercase px-3 py-1 rounded-full border border-foreground/[0.08] text-foreground/50">
                         Ver más &rarr;
                       </span>
                     )}
                   </div>
-                  <p class="font-body text-xs font-light text-foreground/50 leading-relaxed mt-0.5">
+                  <p class="font-body text-sm font-light text-foreground/50 leading-relaxed mt-1">
                     {item.descripcion}
                   </p>
                 </div>
@@ -97,18 +91,18 @@ function serviceWA(nombre: string) {
 
               {isMain && (
                 <div class="flex flex-wrap gap-1.5 ml-[3.25rem]">
-                  <span class="text-[0.5rem] font-medium px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/45">Blanco y negro</span>
-                  <span class="text-[0.5rem] font-medium px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/45">Color</span>
-                  <span class="text-[0.5rem] font-medium px-2.5 py-1 rounded-full border border-foreground/[0.08] text-foreground/45">Al instante</span>
+                  <span class="text-[0.65rem] font-medium px-3 py-1 rounded-full border border-foreground/[0.08] text-foreground/50">Blanco y negro</span>
+                  <span class="text-[0.65rem] font-medium px-3 py-1 rounded-full border border-foreground/[0.08] text-foreground/50">Color</span>
+                  <span class="text-[0.65rem] font-medium px-3 py-1 rounded-full border border-foreground/[0.08] text-foreground/50">Al instante</span>
                 </div>
               )}
 
               {isMain && (
                 <div class="ml-[3.25rem] mt-1 pt-2.5 border-t border-foreground/[0.06]">
-                  <p class="font-body text-[0.55rem] text-foreground/35 leading-relaxed">
+                  <p class="font-body text-xs text-foreground/45 leading-relaxed">
                     B&N desde <strong style={`color: ${item.accent}`}>₡50</strong> · Color desde <strong style={`color: ${item.accent}`}>₡100</strong>
                   </p>
-                  <p class="font-body text-[0.55rem] text-foreground/35 mt-0.5">
+                  <p class="font-body text-xs text-foreground/45 mt-0.5">
                     Descuento por volumen en trabajos grandes.
                   </p>
                 </div>

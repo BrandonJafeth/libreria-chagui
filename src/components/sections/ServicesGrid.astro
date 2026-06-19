@@ -143,14 +143,6 @@ const tabCss = groups
                     >
                       <Icon name={g.servicios[0]?.icono ?? 'file-text'} size={26} class="" style={`color: ${cfg.accent}`} />
                     </div>
-                    {g.servicios.slice(1, 3).map((svc, i) => (
-                      <div
-                        class="absolute w-10 h-10 rounded-xl bg-card shadow-sm flex items-center justify-center"
-                        style={`top: ${i === 0 ? '-4px' : '64%'}; ${i === 0 ? 'right: 4px' : 'left: 0'}`}
-                      >
-                        <Icon name={svc.icono} size={18} style={`color: ${cfg.accent}`} />
-                      </div>
-                    ))}
                   </div>
                 </div>
 
