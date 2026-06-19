@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import HeroHome from '../components/sections/HeroHome.astro'
 import FeaturesGrid from '../components/sections/FeaturesGrid.astro'
 import ProductGrid from '../components/sections/ProductGrid.astro'
-import ServicesGrid from '../components/sections/ServicesGrid.astro'
+import BentoHomeServices from '../components/sections/BentoHomeServices.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
 import { getFeatured } from '../lib/products'
 import { serviceGroups } from '../data/services'
@@ -12,10 +12,17 @@ import type { FeatureCard } from '../components/sections/FeaturesGrid.astro'
 
 const featured = await getFeatured(4)
 
-// 3-4 representative services for home preview
-const featuredServices = [
-  { categoria: 'Servicios', servicios: serviceGroups.flatMap(g => g.servicios).filter(s => ['imp-1', 'sub-1', 'dis-1', 'fot-1'].includes(s.id)) }
-]
+// Build service items with their category color configs for the bento grid
+const svcConfig: Record<string, { accent: string; tint: string }> = {
+  'imp-1': { accent: '#2E5C8A', tint: 'rgba(46,92,138,0.09)' },
+  'sub-1': { accent: '#C0392B', tint: 'rgba(192,57,43,0.09)' },
+  'dis-1': { accent: '#B87C20', tint: 'rgba(232,163,61,0.11)' },
+  'fot-1': { accent: '#4A5568', tint: 'rgba(74,85,104,0.08)' },
+}
+const bentoServices = serviceGroups
+  .flatMap(g => g.servicios)
+  .filter(s => ['imp-1', 'sub-1', 'dis-1', 'fot-1'].includes(s.id))
+  .map(s => ({ ...s, ...svcConfig[s.id]! }))
 
 // icon = nombre Ant Design sin "ant-design:" y sin "-outlined" (FeaturesGrid los agrega)
 const categoryCards: FeatureCard[] = [
@@ -83,10 +90,10 @@ const categoryCards: FeatureCard[] = [
     />
   )}
 
-  <ServicesGrid
+  <BentoHomeServices
     heading="Nuestros servicios"
     subtext="Además de productos, ofrecemos impresión, sublimación, diseño y fotografía."
-    groups={featuredServices}
+    items={bentoServices}
   />
 
   <CtaBanner
