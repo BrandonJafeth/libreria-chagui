@@ -34,13 +34,13 @@ const colSpans = [
 ]
 ---
 
-<section class="bg-background py-20 md:py-28 px-6">
+<section class="bg-background py-12 md:py-28 px-6">
   <div class="max-w-6xl mx-auto">
     <div class="reveal mb-12">
       <SectionHeader {heading} {subtext} />
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 auto-rows-[270px] lg:auto-rows-[305px]">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 auto-rows-[220px] sm:auto-rows-[250px] lg:auto-rows-[305px]">
       {cards.map((card, i) => {
         const gradStops = gradients[card.iconColor] ?? gradients['foreground']
         const span = colSpans[i] ?? ''

@@ -14,7 +14,7 @@ Package manager: **pnpm**. Node >= 22.12.0 required.
 
 ## Stack
 
-Astro 6 + Tailwind CSS v4 + React (islands only) + Fontsource fonts. Static generation — no backend.
+Astro 6 + Tailwind CSS v4 + React (islands only) + Fontsource Inter. Static generation — no backend.
 
 ## Architecture
 
@@ -27,30 +27,65 @@ Astro 6 + Tailwind CSS v4 + React (islands only) + Fontsource fonts. Static gene
 - `CatalogFilters.tsx` — filters + renders its own product grid, `client:visible`
 - `VariantSelector.tsx` — color/variant state + WhatsApp CTA builder, `client:visible`
 
-All other interactivity (navbar mobile, scroll shadow) uses vanilla `<script>` in `.astro` files.
+All other interactivity (navbar mobile, scroll-to-top) uses vanilla `<script>` in `.astro` files.
 
-**Layout chain:** page → `BaseLayout.astro` → `Navbar` + `<slot>` + `Footer` + IntersectionObserver script.
+**Layout chain:** page → `BaseLayout.astro` → `Navbar` + `<slot>` + `Footer` + floating WA button + scroll-to-top + IntersectionObserver.
 
-**Styling:** Tailwind v4 tokens defined in `src/styles/global.css` under `@theme {}` (no `tailwind.config.js`). Liquid-glass utilities also in `global.css`. Fonts via Fontsource imports at top of `global.css` — no Google Fonts `<link>`.
+**Styling:** Tailwind v4 tokens in `src/styles/global.css` under `@theme {}` (no `tailwind.config.js`). Fonts via Fontsource imports — no Google Fonts. Single font: **Inter** (400/500/600/700).
 
-**Reveal animations:** `.reveal` class + IntersectionObserver in BaseLayout. Set delay with `style="--d: 0.12s"`. Hero animations use `.hero-in` with CSS animation.
+**Reveal animations:** `.reveal` + IntersectionObserver in BaseLayout. Delay via `style="--d: 0.12s"`. Hero uses `.hero-in` CSS animation.
 
-## Key files
+## Design system — Ferrari adapted to Chagui light palette
 
-- `src/data/site.ts` — all nav links, contact info, social URLs, WhatsApp base URL
-- `src/data/products.ts` — quemado catalog (shape matches future Supabase table)
-- `src/data/services.ts` — services grouped by category (no prices, WhatsApp only)
-- `src/lib/format.ts` — `formatPrice(n)` → `₡12.500`
+Ferrari editorial principles applied to a **light/crema canvas**. NOT a dark site.
+
+**Rule: sharp corners everywhere.** No `rounded-full` or `rounded-xl` on buttons or major cards.
+
+**Rule: single accent.** `text-accent` / `bg-accent` (Rojo Chagui) appears only on primary CTAs, prices, and active nav underline. Never decorative.
+
+**Rule: WhatsApp = floating icon only.** Do not add WhatsApp pills or prominent buttons. The floating icon in BaseLayout handles all contact. Inline WA links (footer, service cards, catalog/product CTAs) are acceptable if contextually justified — but NOT in every CTA on every page.
+
+**Rule: CTA diversity.** Each page's CtaBanner should lead somewhere meaningful, not always WhatsApp:
+- `index.astro` → `/catalogo`
+- `servicios.astro` → `/catalogo`
+- `sobre-nosotros.astro` → `/contacto`
+- `catalogo.astro` → WA (can't find product = valid)
+- `producto/[slug].astro` → WA (product inquiry = valid)
+
+**Rule: uppercase + tracking on nav and CTAs.**
+- Nav links: `text-[12px] font-semibold tracking-[0.65px] uppercase`
+- CTA labels: `text-[13px] font-bold tracking-[1.4px] uppercase`
 
 ## Palette tokens
 
 ```
-bg-background  → #FAF7F2 crema
-bg-card        → #FFFFFF
-text-accent    → #C0392B rojo Chagui (buttons, prices, CTAs)
-text-accent-2  → #2E5C8A azul (badges, links)
-text-accent-3  → #E8A33D amarillo (accents)
-text-foreground → #2B2B2B
+bg-background  → hsl(37 33% 96%)  crema
+bg-card        → hsl(0 0% 100%)   white
+text-accent    → hsl(6 63% 46%)   rojo Chagui — CTAs, prices, active
+text-accent-2  → hsl(211 50% 36%) azul — info icons, location
+text-accent-3  → hsl(36 80% 58%) amarillo — accents (scarce)
+text-foreground → hsl(0 0% 17%)  dark text
+```
+
+## Key files
+
+- `src/data/site.ts` — nav links, contact info, social URLs, WhatsApp base URL
+- `src/data/products.ts` — quemado catalog (matches future Supabase shape)
+- `src/data/services.ts` — services by category (4 groups: Impresión, Sublimación, Diseño, Fotografía)
+- `src/lib/format.ts` — `formatPrice(n)` → `₡12.500`
+
+## CtaBanner props
+
+```ts
+interface Props {
+  eyebrow: string
+  heading: string
+  subtext: string
+  buttonLabel: string
+  buttonHref: string
+  external?: boolean          // true for external URLs (WhatsApp, etc.)
+  buttonIcon?: 'whatsapp' | 'arrow'  // defaults to 'arrow'
+}
 ```
 
 ## TODO before launch
@@ -59,5 +94,4 @@ text-foreground → #2B2B2B
 - Dominio real en `astro.config.mjs` y `src/data/site.ts`
 - Horario del negocio en `src/data/site.ts`
 - Embed de Google Maps real en `src/pages/contacto.astro`
-- Ajustar/agregar servicios en `src/data/services.ts`
 - Migración futura a Supabase: reescribir solo `src/lib/products.ts`

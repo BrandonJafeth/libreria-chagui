@@ -70,14 +70,18 @@ import { site } from '../data/site'
         </div>
       </div>
 
-      <!-- Google Maps embed placeholder -->
-      <!-- TODO: reemplazar con embed real de Google Maps de Hatillo / Plaza América -->
-      <div class="reveal mt-12 rounded-2xl overflow-hidden bg-card border border-foreground/8 h-64 flex items-center justify-center" style="--d: 0.25s">
-        <div class="text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-accent-2/40 mx-auto mb-3" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          <p class="text-xs text-foreground/30">Mapa · Hatillo, de la rotonda 75m norte</p>
-          <p class="text-xs text-foreground/20 mt-1">TODO: pegar iframe de Google Maps</p>
-        </div>
+      <!-- Google Maps -->
+      <div class="reveal mt-12 rounded-2xl overflow-hidden" style="--d: 0.25s; border: 1px solid rgba(43,43,43,0.08);">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.265640183685!2d-84.10121512520762!3d9.911819990189127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e39ad3e12521%3A0xd88ddc26ab6162e!2sLibrer%C3%ADa%20Chagui!5e0!3m2!1ses!2scr!4v1781912155775!5m2!1ses!2scr"
+          width="100%"
+          height="420"
+          style="border:0; display:block;"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ubicación Librería Chagui en Google Maps"
+        ></iframe>
       </div>
     </div>
   </section>

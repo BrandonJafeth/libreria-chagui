@@ -6,31 +6,101 @@ interface Props {
   breadcrumb?: string
 }
 const { eyebrow, heading, subtext, breadcrumb } = Astro.props
+
+const ghost = (breadcrumb ?? eyebrow.split(' ').at(-1) ?? eyebrow).toUpperCase()
 ---
 
-<section class="pt-36 pb-14 md:pt-44 md:pb-20 text-center bg-background px-6">
-  {breadcrumb && (
-    <p class="text-xs text-foreground/35 mb-4">
-      <a href="/" class="hover:text-foreground/60 transition-colors">Inicio</a>
-      <span class="mx-1">/</span>
-      <span>{breadcrumb}</span>
-    </p>
-  )}
+<section class="relative overflow-hidden bg-background flex min-h-[38vh] sm:min-h-[42vh] md:min-h-[48vh]">
 
-  <p class="hero-in font-body font-semibold text-[0.65rem] tracking-[0.25em] uppercase text-accent mb-4" style="--d: 0s">
-    {eyebrow}
-  </p>
+  <!-- ── LEFT: Content ── -->
+  <div class="relative z-10 flex flex-col justify-center
+              px-6 sm:px-8 md:pl-28 lg:pl-36
+              pr-6 md:pr-10
+              pt-24 sm:pt-28 md:pt-36
+              pb-10 sm:pb-12 md:pb-14
+              flex-1">
 
-  <h1
-    class="hero-in font-heading font-bold text-foreground leading-[1.08]"
-    style="--d: 0.15s; font-size: clamp(2.25rem, 5vw, 3.75rem);"
+    <!-- Cuaderno texture -->
+    <div class="absolute inset-0 cuaderno-bg pointer-events-none" aria-hidden="true"></div>
+
+    <!-- Red margin line — solo md+ -->
+    <div
+      class="absolute left-18 lg:left-26 top-0 bottom-0 w-px hidden md:block"
+      style="background: hsl(6 63% 46% / 0.20);"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative z-10 max-w-2xl">
+
+      <!-- Breadcrumb -->
+      {breadcrumb && (
+        <p class="hero-in text-[11px] mb-4 sm:mb-5 flex items-center gap-1.5" style="--d: 0s; color: rgba(43,43,43,0.35);">
+          <a href="/" class="hover:opacity-70 transition-opacity">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <span>{breadcrumb}</span>
+        </p>
+      )}
+
+      <!-- Eyebrow -->
+      <div class="hero-in flex items-center gap-3 mb-4 sm:mb-5" style="--d: 0.05s">
+        <div class="w-4 h-px bg-accent/70 shrink-0"></div>
+        <p class="font-body font-semibold text-[0.62rem] sm:text-[0.65rem] tracking-[0.25em] sm:tracking-[0.28em] uppercase text-accent">
+          {eyebrow}
+        </p>
+      </div>
+
+      <!-- Heading -->
+      <h1
+        class="hero-in font-heading font-black text-foreground leading-none tracking-tighter"
+        style="--d: 0.12s; font-size: clamp(2.2rem, 7.5vw, 6rem);"
+      >
+        {heading}
+      </h1>
+
+      {subtext && (
+        <p
+          class="hero-in font-body text-sm sm:text-base md:text-lg leading-relaxed mt-4 sm:mt-5 max-w-sm sm:max-w-lg"
+          style="--d: 0.26s; color: rgba(43,43,43,0.52);"
+        >
+          {subtext}
+        </p>
+      )}
+
+      <!-- Bottom accent -->
+      <div class="hero-in flex items-center gap-3 mt-6 sm:mt-8" style="--d: 0.34s" aria-hidden="true">
+        <div class="h-px w-8" style="background: hsl(6 63% 46% / 0.65);"></div>
+        <div class="h-px w-20" style="background: rgba(43,43,43,0.07);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT: Decorative panel — solo lg+ ── -->
+  <div
+    class="hidden lg:flex items-center justify-center shrink-0 relative overflow-hidden"
+    style="width: 38%; background: var(--color-card);"
+    aria-hidden="true"
   >
-    {heading}
-  </h1>
+    <div class="absolute inset-0 cuaderno-bg opacity-60 pointer-events-none"></div>
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(ellipse at 60% 50%, hsl(6 63% 46% / 0.06) 0%, transparent 65%);"
+    ></div>
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: linear-gradient(to right, var(--color-background) 0%, transparent 16%);"
+    ></div>
 
-  {subtext && (
-    <p class="hero-in font-body font-light text-base text-foreground/55 max-w-xl mx-auto mt-4" style="--d: 0.30s">
-      {subtext}
+    <p
+      class="relative font-heading font-black uppercase leading-none tracking-tighter select-none translate-x-12"
+      style="font-size: clamp(7rem, 13vw, 12rem); color: rgba(43,43,43,0.055);"
+    >
+      {ghost}
     </p>
-  )}
+
+    <div
+      class="absolute right-0 top-0 bottom-0 w-0.75"
+      style="background: hsl(6 63% 46% / 0.25);"
+    ></div>
+  </div>
+
 </section>
