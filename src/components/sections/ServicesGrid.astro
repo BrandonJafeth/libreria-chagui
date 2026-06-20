@@ -32,6 +32,13 @@ function slugify(s: string) {
     .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-')
 }
 
+const categoryImages: Record<string, string> = {
+  'Impresión':   'https://res.cloudinary.com/daqragn9m/image/upload/v1781919506/libreria-chagui-impresion_m4fuav.jpg',
+  'Sublimación': 'https://res.cloudinary.com/daqragn9m/image/upload/v1781919412/libreria-chagui-sublimacion_qnpjju.jpg',
+  'Diseño':      'https://res.cloudinary.com/daqragn9m/image/upload/v1781919585/libreria-chagui-tarjetas-de-presentacion_osklxc.jpg',
+  'Fotografía':  'https://res.cloudinary.com/daqragn9m/image/upload/v1781919651/libreria-chagui-foto-pasaporte_t7d0ms.jpg',
+}
+
 const useTabs = groups.length > 1
 
 // CSS puro para mostrar panel activo y marcar tab activo
@@ -80,9 +87,9 @@ const tabCss = groups.map((g) => {
                     class="svc-tab-label shrink-0 cursor-pointer select-none
                            pb-3 pt-1
                            font-body font-bold text-[0.68rem] tracking-[0.2em] uppercase
-                           text-foreground/35 opacity-70
+                           text-foreground/55
                            border-b-2 border-transparent -mb-px
-                           transition-all duration-200 hover:text-foreground/60"
+                           transition-all duration-200 hover:text-foreground/80"
                     style={`--tab-accent: ${cfg.accent}`}
                   >
                     {g.categoria}
@@ -149,14 +156,24 @@ const tabCss = groups.map((g) => {
                     </a>
                   </div>
 
-                  {/* Right: large muted number */}
-                  <div
-                    class="hidden md:block select-none font-heading font-black leading-none text-[7rem] lg:text-[9rem] shrink-0"
-                    style={`color: ${cfg.accent}14`}
-                    aria-hidden="true"
-                  >
-                    {String(groups.findIndex(gr => gr.categoria === g.categoria) + 1).padStart(2, '0')}
-                  </div>
+                  {/* Right: service photo */}
+                  {categoryImages[g.categoria] && (
+                    <div class="hidden md:block relative shrink-0 w-52 lg:w-64 self-stretch overflow-hidden -my-10 -mr-10">
+                      <img
+                        src={categoryImages[g.categoria]}
+                        alt={g.categoria}
+                        class="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      {/* Left fade to blend with card */}
+                      <div
+                        class="absolute inset-0 pointer-events-none"
+                        style="background: linear-gradient(to right, white 0%, rgba(255,255,255,0.88) 18%, rgba(255,255,255,0.55) 35%, rgba(255,255,255,0.18) 55%, transparent 72%)"
+                        aria-hidden="true"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* ── Service cards ── */}
@@ -186,7 +203,7 @@ const tabCss = groups.map((g) => {
                         >
                           {svc.nombre}
                         </h3>
-                        <p class="font-body text-[0.82rem] text-foreground/45 leading-relaxed">
+                        <p class="font-body text-[0.82rem] text-foreground/65 leading-relaxed">
                           {svc.descripcion}
                         </p>
                       </div>
@@ -242,7 +259,7 @@ const tabCss = groups.map((g) => {
                           style="font-size: clamp(1rem, 2vw, 1.15rem)">
                         {svc.nombre}
                       </h3>
-                      <p class="font-body text-[0.82rem] text-foreground/45 leading-relaxed">
+                      <p class="font-body text-[0.82rem] text-foreground/65 leading-relaxed">
                         {svc.descripcion}
                       </p>
                     </div>
