@@ -129,7 +129,8 @@ const categoryLabel: Record<string, string> = {
                 src={img}
                 alt={item.nombre}
                 class="absolute inset-0 w-full h-full object-cover
-                       opacity-40 saturate-0 scale-[1.08]
+                       opacity-75 saturate-50 scale-[1.08]
+                       sm:opacity-45 sm:saturate-0
                        group-hover:opacity-100 group-hover:saturate-100 group-hover:scale-100
                        transition-all duration-500 ease-out"
                 loading="lazy"
@@ -145,7 +146,7 @@ const categoryLabel: Record<string, string> = {
             {/* Arrow — desktop */}
             <div
               class="shrink-0 hidden md:flex w-9 h-9 items-center justify-center
-                     border border-foreground/[0.08] group-hover:border-foreground/20
+                     border border-foreground/8 group-hover:border-foreground/20
                      transition-colors duration-300"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
