@@ -7,7 +7,6 @@ import BentoHomeServices from '../components/sections/BentoHomeServices.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
 import { getFeatured } from '../lib/products'
 import { serviceGroups } from '../data/services'
-import { site } from '../data/site'
 import type { FeatureCard } from '../components/sections/FeaturesGrid.astro'
 
 const featured = await getFeatured(4)
@@ -69,7 +68,7 @@ const categoryCards: FeatureCard[] = [
     badgeInner="Chagui"
     badgeText="Librería y bazar en Hatillo"
     heading={`Todo para la escuela,\nla oficina y tu creatividad`}
-    subtext="Útiles escolares, artículos de oficina, manualidades y mucho más. Mirá nuestro catálogo y escribinos directo por WhatsApp."
+    subtext="La forma más rápida de contactarnos es por WhatsApp. También nos encontrás en nuestras redes sociales o visitándonos en nuestra tienda en Hatillo."
     ctaPrimary={{ label: 'Ver catálogo', href: '/catalogo' }}
     ctaSecondary={{ label: 'Ver servicios', href: '/servicios' }}
   />

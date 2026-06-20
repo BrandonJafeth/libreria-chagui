@@ -3,7 +3,7 @@ export const site = {
   domain: 'https://libreriachagui.com',
   description:
     'Librería y Bazar Chagui. Impresiones, fotografías, todo para oficina. Nos ubicamos en Hatillo diagonal al C.C. Plaza América, por la bomba.',
-  logo: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781842073/libreria-chagui-logo_gxpybl.jpg',
+  logo: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781916229/logo-libreria-chagui-png-removebg-preview_anqdcg.png',
   nav: [
     { label: 'Inicio',         href: '/' },
     { label: 'Catálogo',       href: '/catalogo' },
