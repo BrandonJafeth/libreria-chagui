@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+
 import { site } from '../data/site'
 
 const pathname = Astro.url.pathname
@@ -18,10 +20,12 @@ function isActive(href: string): boolean {
 
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2.5 shrink-0">
-      <img
+      <Image
         src={site.logo}
         alt={site.name}
         height="72"
+        width="107"
+        inferSize={true}
         class="h-20 w-auto object-contain rounded-md"
         loading="eager"
         style="max-width: 240px;"

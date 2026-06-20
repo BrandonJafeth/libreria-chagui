@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+
 interface Props {
   eyebrow: string
   heading: string
@@ -84,10 +86,11 @@ const ghost = (breadcrumb ?? eyebrow.split(' ').at(-1) ?? eyebrow).toUpperCase()
   >
     {image ? (
       <>
-        <img
+        <Image
           src={image}
           alt={imageAlt ?? ''}
           class="absolute inset-0 w-full h-full object-cover"
+          inferSize={true}
           loading="eager"
           decoding="async"
         />

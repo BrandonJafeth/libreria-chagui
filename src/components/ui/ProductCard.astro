@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+
 import type { Product } from '../../lib/products'
 import { formatPrice } from '../../lib/format'
 
@@ -48,10 +50,11 @@ const isPlaceholder = !primaryImage || primaryImage.includes('PLACEHOLDER')
         </span>
       </div>
     ) : (
-      <img
+      <Image
         src={primaryImage}
         alt={product.nombre}
         class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+        inferSize={true}
         loading="lazy"
         decoding="async"
       />

@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+
 export interface FeatureRow {
   eyebrow: string
   title: string
@@ -22,10 +24,11 @@ const { rows } = Astro.props
         <div class="w-full md:w-1/2 shrink-0">
           <div class="liquid-glass rounded-3xl overflow-hidden aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-background to-card">
             {row.imageSrc ? (
-              <img
+              <Image
                 src={row.imageSrc}
                 alt={row.imageAlt ?? row.title}
                 class="w-full h-full object-cover"
+                inferSize={true}
                 loading="lazy"
                 decoding="async"
               />

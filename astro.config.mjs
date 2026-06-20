@@ -8,5 +8,5 @@ export default defineConfig({
   site: 'https://libreriafchagui.com',
   integrations: [react(), sitemap(), icon()],
   vite: { plugins: [tailwindcss()] },
-  image: { domains: ['res.cloudinary.com'] },
+  image: { domains: ['res.cloudinary.com', 'zhmpgxpvxitzrfrbitmp.supabase.co'] },
 })

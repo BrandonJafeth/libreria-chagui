@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/sections/PageHero.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
 import { site } from '../data/site'
+import { Image } from 'astro:assets'
 ---
 
 <BaseLayout
@@ -65,10 +66,11 @@ import { site } from '../data/site'
 
       <!-- Imagen sangra al borde derecho -->
       <div class="relative overflow-hidden" style="min-height: 360px;">
-        <img
+        <Image
           src="https://res.cloudinary.com/daqragn9m/image/upload/v1781890376/libreria-chagui_i6uexr.jpg"
           alt="Interior de Librería Chagui"
           class="absolute inset-0 w-full h-full object-cover"
+          inferSize={true}
           loading="lazy"
           decoding="async"
         />
@@ -118,10 +120,11 @@ import { site } from '../data/site'
 
       <!-- Imagen sangra al borde izquierdo -->
       <div class="relative overflow-hidden order-2 md:order-1" style="min-height: 360px;">
-        <img
+        <Image
           src="https://res.cloudinary.com/daqragn9m/image/upload/v1781890375/hatillo-sanjose_xu61if.jpg"
           alt="Vista de Hatillo, San José"
           class="absolute inset-0 w-full h-full object-cover"
+          inferSize={true}
           loading="lazy"
           decoding="async"
         />

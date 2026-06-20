@@ -33,6 +33,8 @@ export default function ProductGallery({ images, alt }: Props) {
             src={images[active]}
             alt={`${alt} — imagen ${active + 1}`}
             className="w-full h-full object-cover"
+            width={600}
+            height={600}
             loading="eager"
             fetchPriority="high"
           />
@@ -58,7 +60,7 @@ export default function ProductGallery({ images, alt }: Props) {
                   {alt ? alt.charAt(0).toUpperCase() : ''}
                 </span>
               ) : (
-                <img src={src} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                <img src={src} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" width={64} height={64} loading="lazy" />
               )}
             </button>
           ))}

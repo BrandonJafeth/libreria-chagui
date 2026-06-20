@@ -94,6 +94,8 @@ function ProductCard({ product }: { product: Product }) {
             src={product.imagenes[0]}
             alt={product.nombre}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            width={400}
+            height={400}
             loading="lazy"
             decoding="async"
           />
