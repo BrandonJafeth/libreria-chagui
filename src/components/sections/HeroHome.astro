@@ -17,7 +17,7 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
   <div
     class="relative z-10 flex flex-col justify-start lg:justify-center
            px-6 sm:px-8 md:px-14 lg:pl-20 xl:pl-28
-           pt-32 sm:pt-36 lg:pt-32 lg:pb-12
+           pt-24 sm:pt-28 lg:pt-32 pb-8 sm:pb-10 lg:pb-12
            lg:flex-1"
   >
 
@@ -105,10 +105,10 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
     </div>
   </div>
 
-  <!-- ── RIGHT: Product photo — desktop only ── -->
+  <!-- ── RIGHT: Product photo — banner on mobile, side column on desktop ── -->
   <div
     class="relative overflow-hidden
-           hidden lg:block
+           block h-52 sm:h-64
            lg:h-auto lg:w-[52%] xl:w-[54%] lg:shrink-0"
   >
     <img
@@ -133,16 +133,6 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
       aria-hidden="true"
     ></div>
 
-    <!-- Stat badge -->
-    <div class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-10 lg:-left-6 lg:right-auto liquid-glass px-4 sm:px-5 py-3 sm:py-4">
-      <p class="font-heading font-bold text-xl sm:text-2xl leading-none" style="color: hsl(6 63% 46%);">+200</p>
-      <p
-        class="font-body text-[10px] sm:text-[11px] font-semibold tracking-[0.18em] uppercase mt-1"
-        style="color: rgba(43,43,43,0.45);"
-      >
-        productos
-      </p>
-    </div>
   </div>
 
 </section>
