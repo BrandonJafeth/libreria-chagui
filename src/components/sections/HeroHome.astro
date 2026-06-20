@@ -28,7 +28,7 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
       <div class="w-5 h-px bg-accent/70 shrink-0"></div>
       <span
         class="text-[10px] sm:text-[10.5px] font-semibold tracking-[0.22em] sm:tracking-[0.26em] uppercase"
-        style="color: rgba(43,43,43,0.75);"
+        style="color: rgba(43,43,43,0.85);"
       >
         Hatillo · San José · CR
       </span>
@@ -54,7 +54,7 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
     <!-- Proposition -->
     <p
       class="hero-in font-heading font-semibold leading-snug mb-3 md:mb-4 max-w-xs sm:max-w-sm"
-      style="--d: 0.34s; font-size: clamp(0.95rem, 2vw, 1.3rem); color: hsl(0 0% 17% / 0.88);"
+      style="--d: 0.34s; font-size: clamp(0.95rem, 2vw, 1.3rem); color: hsl(0 0% 17% / 0.95);"
     >
       {heading}
     </p>
@@ -62,7 +62,7 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
     <!-- Subtext — hidden on smallest screens to save vertical space -->
     <p
       class="hero-in font-body text-base md:text-[16px] font-medium leading-relaxed mb-7 md:mb-10 max-w-xs sm:max-w-sm md:max-w-88"
-      style="--d: 0.46s; color: rgba(43,43,43,0.88);"
+      style="--d: 0.46s; color: rgba(43,43,43,0.95);"
     >
       {subtext}
     </p>
@@ -85,8 +85,8 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
         href={ctaSecondary.href}
         class="px-6 sm:px-8 py-3 sm:py-3.5 font-semibold text-[12px] sm:text-[13px] tracking-[1.4px] uppercase
                inline-flex items-center gap-2
-               text-foreground/65 hover:text-foreground active:scale-[0.98] transition-all duration-150"
-        style="border: 1px solid rgba(43,43,43,0.18);"
+               text-foreground/85 hover:text-foreground active:scale-[0.98] transition-all duration-150"
+        style="border: 1px solid rgba(43,43,43,0.3);"
       >
         {ctaSecondary.label}
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
