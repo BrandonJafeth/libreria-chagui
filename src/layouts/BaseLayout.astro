@@ -118,6 +118,30 @@ const breadcrumbSchema = !isHome ? {
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!-- Preconnect: Google Fonts (non-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Poppins cargado de forma asíncrona: no bloquea el renderizado -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" />
+    </noscript>
+
+    {isHome && (
+      <!-- Preload de la imagen LCP del hero -->
+      <link
+        rel="preload"
+        as="image"
+        href="https://res.cloudinary.com/daqragn9m/image/upload/w_720,h_1080,c_fill,f_webp,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg"
+        fetchpriority="high"
+      />
+    )}
+
     <!-- LocalBusiness + BookStore schema (todas las páginas) -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
 
@@ -220,6 +244,34 @@ const breadcrumbSchema = !isHome ? {
           el.addEventListener('mouseleave', shrink)
         })
       }
+    </script>
+
+    <!-- Mapa lazy: carga el iframe solo cuando el usuario hace clic -->
+    <script is:inline>
+      (function () {
+        const facade = document.getElementById('map-facade')
+        const container = document.getElementById('map-container')
+        if (!facade || !container) return
+
+        function loadMap() {
+          facade.style.display = 'none'
+          container.style.display = 'block'
+          container.style.height = '280px'
+          const iframe = document.createElement('iframe')
+          iframe.src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.265640183685!2d-84.10121512520762!3d9.911819990189127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e39ad3e12521%3A0xd88ddc26ab6162e!2sLibrer%C3%ADa%20Chagui!5e0!3m2!1ses!2scr!4v1781912155775!5m2!1ses!2scr'
+          iframe.width = '100%'
+          iframe.height = '280'
+          iframe.style.cssText = 'border:0; display:block;'
+          iframe.allowFullscreen = true
+          iframe.loading = 'lazy'
+          iframe.referrerPolicy = 'no-referrer-when-downgrade'
+          iframe.title = 'Ubicaci\u00f3n Librer\u00eda Chagui en Google Maps'
+          container.appendChild(iframe)
+        }
+
+        facade.addEventListener('click', loadMap)
+        facade.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') loadMap() })
+      })()
     </script>
   </body>
 </html>

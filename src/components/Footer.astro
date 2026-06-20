@@ -125,18 +125,43 @@ const year = new Date().getFullYear()
       </div>
     </div>
 
-    <!-- Map -->
+    <!-- Map — lazy facade: avoids 395 KiB de Google Maps JS en carga inicial -->
     <div class="mt-10 rounded-xl overflow-hidden" style="border: 1px solid rgba(43,43,43,0.08);">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.265640183685!2d-84.10121512520762!3d9.911819990189127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e39ad3e12521%3A0xd88ddc26ab6162e!2sLibrer%C3%ADa%20Chagui!5e0!3m2!1ses!2scr!4v1781912155775!5m2!1ses!2scr"
-        width="100%"
-        height="280"
-        style="border:0; display:block;"
-        allowfullscreen
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Ubicación Librería Chagui en Google Maps"
-      ></iframe>
+      <div
+        id="map-facade"
+        role="button"
+        tabindex="0"
+        aria-label="Ver ubicación en Google Maps (click para cargar el mapa)"
+        class="relative w-full cursor-pointer group"
+        style="height: 280px; background: hsl(37 33% 93%);"
+      >
+        <!-- Static map preview via Google Static Maps -->
+        <img
+          src="https://maps.googleapis.com/maps/api/staticmap?center=9.911819,+-84.099190&zoom=16&size=800x280&markers=color:red%7C9.911819,-84.099190&style=element:geometry%7Ccolor:0xf5f0e8&style=feature:road%7Celement:geometry%7Ccolor:0xffffff&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY"
+          alt="Mapa de ubicación Librería Chagui"
+          class="w-full h-full object-cover"
+          width="800"
+          height="280"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        />
+        <!-- Overlay con botón de carga -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-3
+                    bg-foreground/[0.03] group-hover:bg-foreground/[0.07] transition-colors duration-200">
+          <div class="flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-background shadow-sm
+                      text-[12px] font-semibold tracking-wide text-foreground/80 border border-foreground/10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Clic para ver el mapa interactivo
+          </div>
+          <p class="text-[11px] text-foreground/45">De la rotonda de Hatillo, 75 m norte</p>
+        </div>
+      </div>
+      <!-- El iframe real se inserta aquí al hacer clic -->
+      <div id="map-container" style="display:none;"></div>
     </div>
 
     <!-- Bottom bar -->
