@@ -140,8 +140,10 @@ const breadcrumbSchema = !isHome ? {
     <button
       id="scroll-top"
       aria-label="Volver arriba"
-      class="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full flex items-center justify-center text-white/50 hover:text-white transition-all duration-200 opacity-0 invisible"
-      style="background:#252525; border:1px solid #3a3a3a;"
+      class="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 opacity-0 invisible hover:scale-110 active:scale-95"
+      style="background: hsl(0 0% 100%); border: 1.5px solid hsl(6 63% 46%); color: hsl(6 63% 46%); box-shadow: 0 2px 12px rgba(0,0,0,0.12);"
+      onmouseenter="this.style.background='hsl(6 63% 46%)';this.style.color='white'"
+      onmouseleave="this.style.background='hsl(0 0% 100%)';this.style.color='hsl(6 63% 46%)'"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="m18 15-6-6-6 6"/>
