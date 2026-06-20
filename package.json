@@ -29,9 +29,13 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3"
+    "@types/react-dom": "^19.2.3",
+    "wrangler": "^4.102.0"
   },
   "pnpm": {
-    "allowBuild": ["workerd", "sharp"]
+    "allowBuild": [
+      "workerd",
+      "sharp"
+    ]
   }
 }
