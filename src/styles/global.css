@@ -185,3 +185,12 @@
   scrollbar-width: thin;
   scrollbar-color: hsl(6 63% 46% / 0.35) transparent;
 }
+
+/* ── Hidden scrollbar for horizontal tab nav ── */
+.svc-tabs-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.svc-tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
