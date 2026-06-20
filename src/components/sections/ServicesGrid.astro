@@ -69,34 +69,37 @@ const tabCss = groups.map((g) => {
         <fieldset class="border-0 p-0 m-0">
           <legend class="sr-only">Categoría de servicios</legend>
 
-          <div class="flex gap-6 sm:gap-10 border-b border-foreground/8 mb-10 overflow-x-auto -mx-1 px-1">
-            {groups.map((g, gi) => {
-              const id  = slugify(g.categoria)
-              const cfg = cfgFor(g)
-              return (
-                <Fragment>
-                  <input
-                    type="radio"
-                    name="svc-tab"
-                    id={`svc-tab-${id}`}
-                    class="sr-only"
-                    checked={gi === 0}
-                  />
-                  <label
-                    for={`svc-tab-${id}`}
-                    class="svc-tab-label shrink-0 cursor-pointer select-none
-                           pb-3 pt-1
-                           font-body font-bold text-[0.68rem] tracking-[0.2em] uppercase
-                           text-foreground/55
-                           border-b-2 border-transparent -mb-px
-                           transition-all duration-200 hover:text-foreground/80"
-                    style={`--tab-accent: ${cfg.accent}`}
-                  >
-                    {g.categoria}
-                  </label>
-                </Fragment>
-              )
-            })}
+          <!-- full-bleed scroll wrapper: clips tab overflow so it never leaks to page level -->
+          <div class="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0 scrollbar-none">
+            <div class="flex gap-6 sm:gap-10 border-b border-foreground/8 mb-10 min-w-max">
+              {groups.map((g, gi) => {
+                const id  = slugify(g.categoria)
+                const cfg = cfgFor(g)
+                return (
+                  <Fragment>
+                    <input
+                      type="radio"
+                      name="svc-tab"
+                      id={`svc-tab-${id}`}
+                      class="sr-only"
+                      checked={gi === 0}
+                    />
+                    <label
+                      for={`svc-tab-${id}`}
+                      class="svc-tab-label shrink-0 cursor-pointer select-none
+                             pb-3 pt-1
+                             font-body font-bold text-[0.68rem] tracking-[0.2em] uppercase
+                             text-foreground/55
+                             border-b-2 border-transparent -mb-px
+                             transition-all duration-200 hover:text-foreground/80"
+                      style={`--tab-accent: ${cfg.accent}`}
+                    >
+                      {g.categoria}
+                    </label>
+                  </Fragment>
+                )
+              })}
+            </div>
           </div>
         </fieldset>
 

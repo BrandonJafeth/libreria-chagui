@@ -4,8 +4,10 @@ interface Props {
   heading: string
   subtext?: string
   breadcrumb?: string
+  image?: string
+  imageAlt?: string
 }
-const { eyebrow, heading, subtext, breadcrumb } = Astro.props
+const { eyebrow, heading, subtext, breadcrumb, image, imageAlt } = Astro.props
 
 const ghost = (breadcrumb ?? eyebrow.split(' ').at(-1) ?? eyebrow).toUpperCase()
 ---
@@ -74,28 +76,51 @@ const ghost = (breadcrumb ?? eyebrow.split(' ').at(-1) ?? eyebrow).toUpperCase()
     </div>
   </div>
 
-  <!-- ── RIGHT: Decorative panel — solo lg+ ── -->
+  <!-- ── RIGHT: Photo or decorative panel — solo lg+ ── -->
   <div
     class="hidden lg:flex items-center justify-center shrink-0 relative overflow-hidden"
     style="width: 38%; background: var(--color-card);"
-    aria-hidden="true"
+    aria-hidden={image ? 'false' : 'true'}
   >
-    <div class="absolute inset-0 cuaderno-bg opacity-60 pointer-events-none"></div>
-    <div
-      class="absolute inset-0 pointer-events-none"
-      style="background: radial-gradient(ellipse at 60% 50%, hsl(6 63% 46% / 0.06) 0%, transparent 65%);"
-    ></div>
-    <div
-      class="absolute inset-0 pointer-events-none"
-      style="background: linear-gradient(to right, var(--color-background) 0%, transparent 16%);"
-    ></div>
-
-    <p
-      class="relative font-heading font-black uppercase leading-none tracking-tighter select-none translate-x-12"
-      style="font-size: clamp(7rem, 13vw, 12rem); color: rgba(43,43,43,0.055);"
-    >
-      {ghost}
-    </p>
+    {image ? (
+      <>
+        <img
+          src={image}
+          alt={imageAlt ?? ''}
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+        <!-- fade edge toward left content -->
+        <div
+          class="absolute inset-0 pointer-events-none"
+          style="background: linear-gradient(to right, var(--color-background) 0%, transparent 22%);"
+        ></div>
+        <!-- subtle red tint overlay -->
+        <div
+          class="absolute inset-0 pointer-events-none"
+          style="background: hsl(6 63% 46% / 0.04);"
+        ></div>
+      </>
+    ) : (
+      <>
+        <div class="absolute inset-0 cuaderno-bg opacity-60 pointer-events-none"></div>
+        <div
+          class="absolute inset-0 pointer-events-none"
+          style="background: radial-gradient(ellipse at 60% 50%, hsl(6 63% 46% / 0.06) 0%, transparent 65%);"
+        ></div>
+        <div
+          class="absolute inset-0 pointer-events-none"
+          style="background: linear-gradient(to right, var(--color-background) 0%, transparent 16%);"
+        ></div>
+        <p
+          class="relative font-heading font-black uppercase leading-none tracking-tighter select-none translate-x-12"
+          style="font-size: clamp(7rem, 13vw, 12rem); color: rgba(43,43,43,0.055);"
+        >
+          {ghost}
+        </p>
+      </>
+    )}
 
     <div
       class="absolute right-0 top-0 bottom-0 w-0.75"

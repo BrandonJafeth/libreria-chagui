@@ -1,40 +1,180 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/sections/PageHero.astro'
-import FeaturesAlternadas from '../components/sections/FeaturesAlternadas.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
 import { site } from '../data/site'
 ---
 
 <BaseLayout
-  title="Sobre nosotros"
-  description="Conocé a Librería y Bazar Chagui, tu librería de confianza en Hatillo."
+  title="Quiénes Somos | Librería en Hatillo, San José"
+  description="Conocé a Librería y Bazar Chagui, tu librería y bazar de confianza en Hatillo, San José, Costa Rica. Comunidad, precio justo y atención cercana desde el barrio."
+  keywords="librería Hatillo historia, librería bazar San José, Chagui librería Hatillo, tienda útiles San José"
 >
   <PageHero
     eyebrow="Sobre nosotros"
     heading="Tu librería de confianza en Hatillo"
     subtext="Más que una librería, un lugar donde encontrás productos y servicios con atención cercana."
     breadcrumb="Sobre nosotros"
+    image="https://res.cloudinary.com/daqragn9m/image/upload/v1781921500/libreria-chagui-nosotros_cwyzse.jpg"
+    imageAlt="Equipo de Librería y Bazar Chagui"
   />
 
-  <FeaturesAlternadas
-    rows={[
-      {
-        eyebrow: 'Nuestra historia',
-        title: 'Cerca de la comunidad',
-        text: 'Librería y Bazar Chagui nació para darle a la comunidad de Hatillo un lugar donde conseguir artículos escolares, de oficina y tecnología, junto con servicios de impresión, sublimación, diseño y fotografía, con buen precio y atención cercana.',
-        imageSrc: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781890376/libreria-chagui_i6uexr.jpg',
-        imageAlt: 'Interior de Librería Chagui',
-      },
-      {
-        eyebrow: 'Dónde estamos',
-        title: 'Fácil de encontrar',
-        text: 'Nos ubicamos en Hatillo, de la rotonda 75 metros norte, mano derecha — diagonal al C.C. Plaza América. Pasá a visitarnos o escribinos por WhatsApp para cualquier consulta.',
-        imageSrc: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781890375/hatillo-sanjose_xu61if.jpg',
-        imageAlt: 'Vista de Hatillo, San José',
-      },
-    ]}
-  />
+  <!-- ══ MANIFESTO ════════════════════════════════════════════ -->
+  <section class="bg-background px-6 pt-16 pb-12 md:pt-24 md:pb-20">
+    <div class="max-w-4xl mx-auto text-center reveal">
+      <p
+        class="font-heading font-black text-foreground leading-tight"
+        style="font-size: clamp(2rem, 5vw, 3.5rem); text-wrap: balance; letter-spacing: -0.02em;"
+      >
+        Somos la tienda del barrio,<br />
+        <span class="text-accent">para la gente del barrio.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ HISTORIA — texto izq, imagen sangra a la derecha ═══ -->
+  <section class="bg-background overflow-hidden">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 items-stretch">
+
+      <!-- Texto -->
+      <div class="flex flex-col justify-center px-6 md:pl-16 lg:pl-24 py-14 md:py-24 reveal">
+        <h2
+          class="font-heading font-black text-foreground leading-tight mb-6"
+          style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); text-wrap: balance; letter-spacing: -0.02em;"
+        >
+          Cerca de la comunidad
+        </h2>
+        <p
+          class="font-body text-base leading-relaxed"
+          style="color: rgba(43,43,43,0.58); max-width: 48ch;"
+        >
+          Librería y Bazar Chagui nació para darle a la comunidad de Hatillo un lugar
+          donde conseguir artículos escolares, de oficina y tecnología, junto con servicios
+          de impresión, sublimación, diseño y fotografía — con buen precio y atención cercana.
+        </p>
+        <div class="mt-8 flex items-center gap-4">
+          <div class="w-8 h-px bg-accent shrink-0"></div>
+          <p
+            class="text-[0.65rem] font-semibold tracking-[0.22em] uppercase"
+            style="color: rgba(43,43,43,0.32);"
+          >
+            Hatillo, San José
+          </p>
+        </div>
+      </div>
+
+      <!-- Imagen sangra al borde derecho -->
+      <div class="relative overflow-hidden" style="min-height: 360px;">
+        <img
+          src="https://res.cloudinary.com/daqragn9m/image/upload/v1781890376/libreria-chagui_i6uexr.jpg"
+          alt="Interior de Librería Chagui"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+        <!-- fade left para mezclar con fondo crema -->
+        <div
+          class="absolute inset-0 hidden md:block"
+          style="background: linear-gradient(to right, hsl(37 33% 96%) 0%, transparent 20%);"
+          aria-hidden="true"
+        ></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ PILARES — banda roja, sin tarjetas ══════════════════ -->
+  <section class="px-6 py-14 md:py-20" style="background: hsl(0 0% 14%);">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-10 md:gap-0 reveal">
+      {[
+        {
+          label: 'Comunidad',
+          text:  'Somos parte de Hatillo. Conocemos a nuestros clientes y entendemos lo que necesitan.',
+        },
+        {
+          label: 'Precio justo',
+          text:  'Productos de calidad sin sobrecargos. El buen precio no debería ser un privilegio.',
+        },
+        {
+          label: 'Atención cercana',
+          text:  'Cada consulta se atiende con calma. No hay pregunta pequeña.',
+        },
+      ].map((pilar, i) => (
+        <div class={`${i > 0 ? 'md:border-l md:border-white/10 md:pl-10' : 'md:pr-10'}`}>
+          <p class="font-heading font-black text-white mb-3" style="font-size: 1.35rem;">
+            {pilar.label}
+          </p>
+          <p class="font-body text-sm leading-relaxed" style="color: rgba(255,255,255,0.55);">
+            {pilar.text}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ══ UBICACIÓN — imagen sangra a la izquierda ═══════════ -->
+  <section class="bg-background overflow-hidden">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 items-stretch">
+
+      <!-- Imagen sangra al borde izquierdo -->
+      <div class="relative overflow-hidden order-2 md:order-1" style="min-height: 360px;">
+        <img
+          src="https://res.cloudinary.com/daqragn9m/image/upload/v1781890375/hatillo-sanjose_xu61if.jpg"
+          alt="Vista de Hatillo, San José"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+        <!-- fade right para mezclar con fondo crema -->
+        <div
+          class="absolute inset-0 hidden md:block"
+          style="background: linear-gradient(to left, hsl(37 33% 96%) 0%, transparent 20%);"
+          aria-hidden="true"
+        ></div>
+      </div>
+
+      <!-- Texto -->
+      <div
+        class="flex flex-col justify-center px-6 md:pr-16 lg:pr-24 py-14 md:py-24 order-1 md:order-2 reveal"
+        style="--d: 0.1s"
+      >
+        <p
+          class="text-[0.62rem] font-semibold tracking-[0.26em] uppercase text-accent mb-5"
+        >
+          Dónde estamos
+        </p>
+        <h2
+          class="font-heading font-black text-foreground leading-tight mb-6"
+          style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); text-wrap: balance; letter-spacing: -0.02em;"
+        >
+          Fácil de encontrar
+        </h2>
+        <p
+          class="font-body text-base leading-relaxed mb-8"
+          style="color: rgba(43,43,43,0.58); max-width: 42ch;"
+        >
+          De la rotonda de Hatillo, 75 metros norte, mano derecha —
+          diagonal al C.C. Plaza América.
+        </p>
+        <a
+          href={site.contact.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-[0.7rem] font-bold tracking-[0.18em] uppercase text-accent transition-opacity hover:opacity-70"
+          aria-label="Ver ubicación en Google Maps"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Ver en Google Maps
+        </a>
+      </div>
+
+    </div>
+  </section>
 
   <CtaBanner
     eyebrow="Encontranos en Hatillo"
@@ -45,4 +185,5 @@ import { site } from '../data/site'
     external={true}
     buttonIcon="arrow"
   />
+
 </BaseLayout>

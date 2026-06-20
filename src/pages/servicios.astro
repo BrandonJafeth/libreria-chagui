@@ -4,12 +4,12 @@ import PageHero from '../components/sections/PageHero.astro'
 import ServicesGrid from '../components/sections/ServicesGrid.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
 import { serviceGroups } from '../data/services'
-import { site } from '../data/site'
 ---
 
 <BaseLayout
-  title="Servicios"
-  description="Servicios de impresión, copias, sublimación de camisetas y tazas, diseño de tarjetas y afiches, fotografía y edición en Librería y Bazar Chagui, Hatillo. Consultá por WhatsApp."
+  title="Servicios de Impresión, Sublimación y Fotografía en Hatillo"
+  description="Impresión de documentos y fotos, copias, sublimación de camisetas y tazas, diseño gráfico y fotografía tipo pasaporte en Hatillo, San José. Cotizá por WhatsApp."
+  keywords="impresión Hatillo, copias San José, sublimación camisetas San José, diseño gráfico Hatillo, fotografía pasaporte San José, impresión documentos Hatillo Costa Rica"
 >
   <section class="relative">
     <div class="absolute inset-0 cuaderno-bg pointer-events-none" aria-hidden="true"></div>
@@ -19,6 +19,8 @@ import { site } from '../data/site'
         heading="Más que una librería"
         subtext="Impresión, sublimación, diseño y fotografía con la misma atención cercana de siempre. Consultá por WhatsApp y con gusto te cotizamos."
         breadcrumb="Servicios"
+        image="https://res.cloudinary.com/daqragn9m/image/upload/v1781889185/servicios-libreriachagui_imu69k.jpg"
+        imageAlt="Servicios de Librería y Bazar Chagui"
       />
 
       <ServicesGrid groups={serviceGroups} />
