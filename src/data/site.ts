@@ -9,7 +9,6 @@ export const site = {
     { label: 'Catálogo',       href: '/catalogo' },
     { label: 'Servicios',      href: '/servicios' },
     { label: 'Sobre nosotros', href: '/sobre-nosotros' },
-    { label: 'Contacto',       href: '/contacto' },
   ],
   cta: {
     label: 'WhatsApp',
@@ -21,6 +20,8 @@ export const site = {
     address: 'Hatillo, de la rotonda 75 metros norte, mano derecha — diagonal al C.C. Plaza América',
     whatsappBase:
       'https://api.whatsapp.com/send?phone=50663595383&text=Hola%20buenas%2C%20era%20para%20realizar%20una%20consulta',
+    mapsUrl:
+      'https://maps.google.com/?q=9.911819990189127,-84.10121512520762',
   },
   social: {
     instagram: 'https://www.instagram.com/libreria_chagui/',
