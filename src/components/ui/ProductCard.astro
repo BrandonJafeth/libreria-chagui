@@ -54,7 +54,8 @@ const isPlaceholder = !primaryImage || primaryImage.includes('PLACEHOLDER')
         src={primaryImage}
         alt={product.nombre}
         class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
-        inferSize={true}
+        width={400}
+        height={400}
         loading="lazy"
         decoding="async"
       />

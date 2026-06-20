@@ -28,7 +28,8 @@ const { rows } = Astro.props
                 src={row.imageSrc}
                 alt={row.imageAlt ?? row.title}
                 class="w-full h-full object-cover"
-                inferSize={true}
+                width={640}
+                height={480}
                 loading="lazy"
                 decoding="async"
               />
