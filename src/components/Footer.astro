@@ -10,16 +10,16 @@ const year = new Date().getFullYear()
 
       <!-- Brand -->
       <div>
-        <a href="/" class="inline-block mb-4">
+        <a href="/" class="inline-block mb-5">
           <img
             src={site.logo}
             alt={site.name}
-            height="40"
-            class="h-10 w-auto object-contain rounded"
+            height="56"
+            class="h-14 w-auto object-contain rounded"
             loading="lazy"
           />
         </a>
-        <p class="text-sm text-foreground/45 leading-relaxed max-w-xs">
+        <p class="text-sm text-foreground/75 leading-relaxed max-w-xs">
           Librería, bazar y servicios de impresión en Hatillo. Artículos escolares, de oficina,
           tecnología y más.
         </p>
@@ -29,7 +29,7 @@ const year = new Date().getFullYear()
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
-            class="liquid-glass rounded-full w-9 h-9 flex items-center justify-center text-foreground/45 hover:text-foreground transition-colors"
+            class="liquid-glass rounded-full w-9 h-9 flex items-center justify-center text-foreground/70 hover:text-foreground transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
@@ -42,7 +42,7 @@ const year = new Date().getFullYear()
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
-            class="liquid-glass rounded-full w-9 h-9 flex items-center justify-center text-foreground/45 hover:text-foreground transition-colors"
+            class="liquid-glass rounded-full w-9 h-9 flex items-center justify-center text-foreground/70 hover:text-foreground transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
@@ -53,7 +53,7 @@ const year = new Date().getFullYear()
             target="_blank"
             rel="noopener noreferrer"
             aria-label="TikTok"
-            class="liquid-glass rounded-full w-9 h-9 flex items-center justify-center text-foreground/45 hover:text-foreground transition-colors"
+            class="liquid-glass rounded-full w-9 h-9 flex items-center justify-center text-foreground/70 hover:text-foreground transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
@@ -64,7 +64,7 @@ const year = new Date().getFullYear()
 
       <!-- Navigation -->
       <div>
-        <p class="text-[11px] font-semibold tracking-[0.18em] uppercase text-foreground/30 mb-4">
+        <p class="text-[11px] font-semibold tracking-[0.18em] uppercase text-foreground/75 mb-4">
           Navegación
         </p>
         <ul class="flex flex-col gap-2.5">
@@ -72,7 +72,7 @@ const year = new Date().getFullYear()
             <li>
               <a
                 href={link.href}
-                class="text-sm text-foreground/50 hover:text-foreground transition-colors"
+                class="text-sm text-foreground/80 hover:text-foreground transition-colors"
               >
                 {link.label}
               </a>
@@ -83,11 +83,11 @@ const year = new Date().getFullYear()
 
       <!-- Contact -->
       <div>
-        <p class="text-[11px] font-semibold tracking-[0.18em] uppercase text-foreground/30 mb-4">
+        <p class="text-[11px] font-semibold tracking-[0.18em] uppercase text-foreground/75 mb-4">
           Contacto
         </p>
         <ul class="flex flex-col gap-3">
-          <li class="flex items-start gap-2 text-sm text-foreground/50">
+          <li class="flex items-start gap-2 text-sm text-foreground/80">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0 text-accent-2" aria-hidden="true">
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
             </svg>
@@ -96,7 +96,7 @@ const year = new Date().getFullYear()
           <li>
             <a
               href={`tel:${site.contact.phone}`}
-              class="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+              class="flex items-center gap-2 text-sm text-foreground/80 hover:text-foreground transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent-2" aria-hidden="true">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 14.4a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 4h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 11a16 16 0 0 0 6 6l.82-.82a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 18.5z"/>
@@ -123,7 +123,7 @@ const year = new Date().getFullYear()
 
     <!-- Bottom bar -->
     <div class="mt-10 pt-6 flex justify-between flex-wrap gap-4" style="border-top: 1px solid rgba(43,43,43,0.08);">
-      <p class="text-xs text-foreground/30">© {year} Librería y Bazar Chagui</p>
+      <p class="text-xs text-foreground/65">© {year} Librería y Bazar Chagui</p>
     </div>
   </div>
 </footer>
