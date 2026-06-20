@@ -10,6 +10,11 @@ export default defineConfig({
   output: 'server',
   adapter: cloudflare({ imageService: 'passthrough' }),
   integrations: [react(), sitemap(), icon()],
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    resolve: {
+      dedupe: ['react', 'react-dom', 'react-dom/server'],
+    },
+  },
   image: { domains: ['res.cloudinary.com', 'zhmpgxpvxitzrfrbitmp.supabase.co'] },
 })
