@@ -1,6 +1,5 @@
 ---
 import SectionHeader from '../ui/SectionHeader.astro'
-import Icon from '../ui/Icon.astro'
 import type { ServiceGroup } from '../../data/services'
 
 interface Props {
@@ -16,11 +15,11 @@ function serviceWA(nombre: string) {
 }
 
 const fallbackConfig: Record<string, { accent: string; tint: string }> = {
-  'Impresión':   { accent: '#2E5C8A', tint: 'rgba(46,92,138,0.09)'  },
-  'Sublimación': { accent: '#C0392B', tint: 'rgba(192,57,43,0.09)'  },
-  'Diseño':      { accent: '#B87C20', tint: 'rgba(232,163,61,0.11)' },
-  'Fotografía':  { accent: '#4A5568', tint: 'rgba(74,85,104,0.08)'  },
-  'Servicios':   { accent: '#C0392B', tint: 'rgba(192,57,43,0.09)'  },
+  'Impresión':   { accent: '#2E5C8A', tint: 'rgba(46,92,138,0.06)'  },
+  'Sublimación': { accent: '#C0392B', tint: 'rgba(192,57,43,0.06)'  },
+  'Diseño':      { accent: '#B87C20', tint: 'rgba(232,163,61,0.07)' },
+  'Fotografía':  { accent: '#4A5568', tint: 'rgba(74,85,104,0.05)'  },
+  'Servicios':   { accent: '#C0392B', tint: 'rgba(192,57,43,0.06)'  },
 }
 
 function cfgFor(group: ServiceGroup) {
@@ -29,33 +28,24 @@ function cfgFor(group: ServiceGroup) {
 }
 
 function slugify(s: string) {
-  return s
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
+  return s.toLowerCase().normalize('NFD')
+    .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-')
 }
 
 const useTabs = groups.length > 1
-const totalServices = groups.reduce((acc, g) => acc + g.servicios.length, 0)
 
-// CSS generada por categoría:
-// 1. Muestra el panel cuyo radio está activo (:has del contenedor).
-// 2. Pinta la label del radio activo usando el adyacente (+), sin
-//    contaminar las demás labels como haría peer-checked (~).
-const tabCss = groups
-  .map((g) => {
-    const id = slugify(g.categoria)
-    const accent = cfgFor(g).accent
-    return [
-      `.svc-tabs:has(#svc-tab-${id}:checked) [data-panel="${id}"]{display:block}`,
-      `#svc-tab-${id}:checked+label[for="svc-tab-${id}"]{background:${accent}!important;color:#fff!important;border-color:transparent!important}`,
-    ].join('\n')
-  })
-  .join('\n')
+// CSS puro para mostrar panel activo y marcar tab activo
+const tabCss = groups.map((g) => {
+  const id     = slugify(g.categoria)
+  const accent = cfgFor(g).accent
+  return [
+    `.svc-tabs:has(#svc-tab-${id}:checked) [data-panel="${id}"]{display:block}`,
+    `#svc-tab-${id}:checked+label[for="svc-tab-${id}"]{color:${accent}!important;border-bottom-color:${accent}!important;opacity:1!important}`,
+  ].join('\n')
+}).join('\n')
 ---
 
-<section class="bg-background py-12 md:py-28 px-6">
+<section class="bg-background py-12 md:py-24 px-6">
   <div class="max-w-5xl mx-auto">
 
     {heading && (
@@ -68,25 +58,32 @@ const tabCss = groups
       <div class="svc-tabs reveal">
         <style set:html={tabCss} />
 
+        {/* ── Tabs underline ── */}
         <fieldset class="border-0 p-0 m-0">
           <legend class="sr-only">Categoría de servicios</legend>
 
-          <div class="flex flex-wrap gap-2 mb-8 overflow-x-auto -mx-1 px-1 pb-1">
+          <div class="flex gap-6 sm:gap-10 border-b border-foreground/8 mb-10 overflow-x-auto -mx-1 px-1">
             {groups.map((g, gi) => {
-              const id = slugify(g.categoria)
+              const id  = slugify(g.categoria)
+              const cfg = cfgFor(g)
               return (
                 <Fragment>
                   <input
                     type="radio"
                     name="svc-tab"
                     id={`svc-tab-${id}`}
-                    class="peer sr-only"
+                    class="sr-only"
                     checked={gi === 0}
                   />
                   <label
                     for={`svc-tab-${id}`}
-                    class="svc-badge shrink-0 cursor-pointer select-none px-5 py-2.5 rounded-full font-body font-semibold text-sm border border-foreground/10 bg-card text-foreground/60 transition-all duration-300"
-                    style={`--badge-accent: ${cfgFor(g).accent}`}
+                    class="svc-tab-label shrink-0 cursor-pointer select-none
+                           pb-3 pt-1
+                           font-body font-bold text-[0.68rem] tracking-[0.2em] uppercase
+                           text-foreground/35 opacity-70
+                           border-b-2 border-transparent -mb-px
+                           transition-all duration-200 hover:text-foreground/60"
+                    style={`--tab-accent: ${cfg.accent}`}
                   >
                     {g.categoria}
                   </label>
@@ -96,29 +93,40 @@ const tabCss = groups
           </div>
         </fieldset>
 
+        {/* ── Panels ── */}
         <div class="svc-panels">
           {groups.map((g) => {
             const cfg = cfgFor(g)
-            const id = slugify(g.categoria)
+            const id  = slugify(g.categoria)
             return (
               <div class="svc-panel" data-panel={id}>
 
+                {/* ── Featured panel ── */}
                 <div
-                  class="rounded-3xl p-6 md:p-10 mb-6 flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10"
-                  style={`background: ${cfg.tint}`}
+                  class="relative bg-card border border-foreground/6 mb-8
+                         pl-6 pr-6 pt-8 pb-8 md:pl-10 md:pr-10 md:pt-10 md:pb-10
+                         flex flex-col md:flex-row items-start gap-8 md:gap-14
+                         shadow-sm overflow-hidden"
                 >
-                  <div class="flex-1">
+                  {/* Left accent border */}
+                  <div class="absolute left-0 top-0 bottom-0 w-0.75" style={`background: ${cfg.accent}`} aria-hidden="true" />
+
+                  {/* Content */}
+                  <div class="flex-1 min-w-0">
                     <span
-                      class="font-body text-[0.65rem] font-semibold tracking-[0.22em] uppercase"
+                      class="block font-body text-[0.6rem] font-bold tracking-[0.28em] uppercase mb-3"
                       style={`color: ${cfg.accent}`}
                     >
                       {g.categoria}
                     </span>
-                    <h3 class="font-heading font-bold text-2xl md:text-3xl text-foreground mt-2 mb-3 leading-tight">
+                    <h2
+                      class="font-heading font-black text-foreground leading-tight mb-4"
+                      style="font-size: clamp(1.4rem, 3vw, 2rem)"
+                    >
                       {g.titulo ?? g.categoria}
-                    </h3>
+                    </h2>
                     {g.descripcion && (
-                      <p class="font-body text-foreground/60 leading-relaxed max-w-md mb-6">
+                      <p class="font-body text-foreground/55 leading-relaxed text-[0.9rem] md:text-base mb-8 max-w-lg">
                         {g.descripcion}
                       </p>
                     )}
@@ -126,102 +134,125 @@ const tabCss = groups
                       href={serviceWA(g.categoria)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="inline-flex items-center gap-2 rounded-full px-5 py-3 font-body font-semibold text-sm text-white hover:opacity-90 active:scale-[0.98] transition-all duration-150"
+                      class="inline-flex items-center gap-2.5
+                             px-6 py-3
+                             font-body font-bold text-[0.7rem] tracking-[0.18em] uppercase
+                             text-white
+                             hover:opacity-90 active:scale-[0.98] transition-all duration-150"
                       style={`background: ${cfg.accent}`}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                           viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                       </svg>
                       Consultar por WhatsApp
                     </a>
                   </div>
 
-                  <div class="hidden sm:block relative w-32 h-28 shrink-0 mx-auto md:mx-0" aria-hidden="true">
-                    <div
-                      class="absolute inset-0 m-auto w-16 h-16 rounded-2xl flex items-center justify-center"
-                      style={`background: ${cfg.accent}1A`}
-                    >
-                      <Icon name={g.servicios[0]?.icono ?? 'file-text'} size={26} class="" style={`color: ${cfg.accent}`} />
-                    </div>
+                  {/* Right: large muted number */}
+                  <div
+                    class="hidden md:block select-none font-heading font-black leading-none text-[7rem] lg:text-[9rem] shrink-0"
+                    style={`color: ${cfg.accent}14`}
+                    aria-hidden="true"
+                  >
+                    {String(groups.findIndex(gr => gr.categoria === g.categoria) + 1).padStart(2, '0')}
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* ── Service cards ── */}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   {g.servicios.map((svc, si) => (
                     <a
                       href={serviceWA(svc.nombre)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="svc-card group bg-card rounded-2xl p-6 border border-foreground/[0.06] flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/[0.07]"
+                      class="svc-card group relative bg-card border border-foreground/6
+                             p-6 flex flex-col gap-4
+                             transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/6
+                             overflow-hidden"
                       style={`--d: ${si * 0.06}s`}
                     >
+                      {/* Accent top line — reveals on hover */}
                       <div
-                        class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
-                        style={`background: ${cfg.tint}`}
-                      >
-                        <Icon name={svc.icono} size={22} style={`color: ${cfg.accent}`} />
-                      </div>
+                        class="absolute top-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"
+                        style={`background: ${cfg.accent}`}
+                        aria-hidden="true"
+                      />
 
                       <div class="flex-1">
-                        <h3 class="font-heading font-semibold text-[0.95rem] text-foreground leading-snug mb-2">
+                        <h3
+                          class="font-heading font-black text-foreground leading-tight mb-2.5"
+                          style="font-size: clamp(1rem, 2vw, 1.15rem)"
+                        >
                           {svc.nombre}
                         </h3>
-                        <p class="font-body text-sm font-light text-foreground/50 leading-relaxed">
+                        <p class="font-body text-[0.82rem] text-foreground/45 leading-relaxed">
                           {svc.descripcion}
                         </p>
                       </div>
 
                       <div
-                        class="flex items-center gap-1.5 text-[0.65rem] font-body font-semibold tracking-[0.14em] uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-200"
+                        class="flex items-center gap-1.5 text-[0.58rem] font-body font-bold tracking-[0.2em] uppercase
+                               opacity-40 group-hover:opacity-100
+                               translate-x-0 group-hover:translate-x-0.5
+                               transition-all duration-200"
                         style={`color: ${cfg.accent}`}
                       >
                         Consultar por WhatsApp
-                        <Icon name="chevron-right" size={11} class="group-hover:translate-x-0.5 transition-transform duration-200" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2.5" aria-hidden="true">
+                          <path d="m9 18 6-6-6-6"/>
+                        </svg>
                       </div>
                     </a>
                   ))}
                 </div>
+
               </div>
             )
           })}
         </div>
       </div>
     ) : (
-      <div class="space-y-14">
+      <div class="space-y-12">
         {groups.map((group, gi) => {
           const cfg = cfgFor(group)
           return (
             <div class="reveal" style={`--d: ${gi * 0.1}s`}>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {group.servicios.map((svc) => (
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {group.servicios.map((svc, si) => (
                   <a
                     href={serviceWA(svc.nombre)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="group bg-card rounded-2xl p-6 border border-foreground/[0.06] flex flex-col gap-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/[0.07]"
+                    class="svc-card group relative bg-card border border-foreground/6
+                           p-6 flex flex-col gap-4
+                           transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/6
+                           overflow-hidden"
+                    style={`--d: ${si * 0.06}s`}
                   >
                     <div
-                      class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
-                      style={`background: ${cfg.tint}`}
-                    >
-                      <Icon name={svc.icono} size={22} style={`color: ${cfg.accent}`} />
-                    </div>
-
+                      class="absolute top-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"
+                      style={`background: ${cfg.accent}`}
+                      aria-hidden="true"
+                    />
                     <div class="flex-1">
-                      <h3 class="font-heading font-semibold text-[0.95rem] text-foreground leading-snug mb-2">
+                      <h3 class="font-heading font-black text-foreground leading-tight mb-2.5"
+                          style="font-size: clamp(1rem, 2vw, 1.15rem)">
                         {svc.nombre}
                       </h3>
-                      <p class="font-body text-sm font-light text-foreground/50 leading-relaxed">
+                      <p class="font-body text-[0.82rem] text-foreground/45 leading-relaxed">
                         {svc.descripcion}
                       </p>
                     </div>
-
-                    <div
-                      class="flex items-center gap-1.5 text-[0.65rem] font-body font-semibold tracking-[0.14em] uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-200"
-                      style={`color: ${cfg.accent}`}
-                    >
+                    <div class="flex items-center gap-1.5 text-[0.58rem] font-bold tracking-[0.2em] uppercase opacity-40 group-hover:opacity-100 transition-opacity duration-200"
+                         style={`color: ${cfg.accent}`}>
                       Consultar por WhatsApp
-                      <Icon name="chevron-right" size={11} class="group-hover:translate-x-0.5 transition-transform duration-200" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24"
+                           fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <path d="m9 18 6-6-6-6"/>
+                      </svg>
                     </div>
                   </a>
                 ))}
@@ -232,33 +263,18 @@ const tabCss = groups
       </div>
     )}
 
-    {totalServices <= 4 && (
-      <div class="reveal mt-10 pt-8 border-t border-foreground/8" style="--d: 0.3s">
-        <a
-          href="/servicios"
-          class="inline-flex items-center gap-2 font-body font-semibold text-sm text-accent hover:opacity-75 transition-opacity uppercase tracking-wider"
-        >
-          Ver todos los servicios
-          <Icon name="arrow-up-right" size={14} />
-        </a>
-      </div>
-    )}
-
   </div>
 </section>
 
 {useTabs && (
   <script>
     const tabs = document.querySelectorAll<HTMLInputElement>('.svc-tabs input[name="svc-tab"]')
-
     tabs.forEach((input) => {
       input.addEventListener('change', () => {
         const id = input.id.replace('svc-tab-', '')
         const panel = document.querySelector<HTMLElement>(`.svc-panel[data-panel="${id}"]`)
         if (!panel) return
-
         panel.classList.remove('is-animating')
-        // Forzar reflow para poder re-disparar la animación en cada cambio de tab.
         void panel.offsetWidth
         panel.classList.add('is-animating')
       })
@@ -269,13 +285,5 @@ const tabCss = groups
 <style>
   .svc-panel {
     display: none;
-  }
-
-  .svc-badge:hover {
-    box-shadow: 0 4px 20px -4px color-mix(in srgb, var(--badge-accent) 30%, transparent);
-  }
-
-  .svc-badge:active {
-    scale: 0.97;
   }
 </style>
