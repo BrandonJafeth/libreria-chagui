@@ -4,19 +4,14 @@ import ProductCard from '../../components/ui/ProductCard.astro'
 import CtaBanner from '../../components/sections/CtaBanner.astro'
 import ProductGallery from '../../components/islands/ProductGallery'
 import VariantSelector from '../../components/islands/VariantSelector'
-import { getProducts, getProductBySlug, getRelated } from '../../lib/products'
+import { getProductBySlug, getRelated } from '../../lib/products'
 import { formatPrice } from '../../lib/format'
 import { site } from '../../data/site'
 
-export async function getStaticPaths() {
-  const products = await getProducts()
-  return products.map((p) => ({
-    params: { slug: p.slug },
-    props:  { product: p },
-  }))
-}
+const { slug } = Astro.params
+const product = await getProductBySlug(slug!)
+if (!product) return Astro.redirect('/404')
 
-const { product } = Astro.props
 const related = await getRelated(product, 4)
 
 const ogImage = product.imagenes[0] && !product.imagenes[0].includes('PLACEHOLDER')
