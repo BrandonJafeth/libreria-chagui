@@ -1,0 +1,31 @@
+# Librería y Bazar Chagui
+
+> Librería, papelería y bazar ubicada en Hatillo, San José, Costa Rica. Ofrece útiles escolares, artículos de oficina, tecnología, impresión, sublimación, diseño gráfico y fotografía.
+
+## Información del negocio
+
+- **Nombre:** Librería y Bazar Chagui
+- **Ubicación:** Hatillo, San José, Costa Rica. De la rotonda 75 metros norte, mano derecha — diagonal al C.C. Plaza América.
+- **Teléfono:** +506 6359-5383
+- **WhatsApp:** https://api.whatsapp.com/send?phone=50663595383
+- **Sitio web:** https://libreriafchagui.com
+
+## Productos
+
+Venta de útiles escolares (cuadernos, lápices, colores, tijeras, reglas, pegamentos), artículos de oficina (papel bond, grapadoras, folders, marcadores, correctores) y tecnología (audífonos, mouse inalámbrico, cables USB-C, hubs USB). Ver catálogo completo en https://libreriafchagui.com/catalogo
+
+## Servicios
+
+- **Impresión:** Documentos, tareas, fotos en blanco y negro o a color. Copias rápidas.
+- **Sublimación:** Camisetas, tazas y artículos personalizados con diseño propio.
+- **Diseño gráfico:** Tarjetas de presentación, afiches, banners y material publicitario.
+- **Fotografía:** Fotos tipo pasaporte, carné y documentos oficiales.
+
+Ver servicios en https://libreriafchagui.com/servicios
+
+## Páginas principales
+
+- [Inicio](https://libreriafchagui.com/)
+- [Catálogo de productos](https://libreriafchagui.com/catalogo)
+- [Servicios](https://libreriafchagui.com/servicios)
+- [Sobre nosotros](https://libreriafchagui.com/sobre-nosotros)

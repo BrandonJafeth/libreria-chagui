@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://libreriachagui.com/sitemap-index.xml
+Sitemap: https://libreriafchagui.com/sitemap-index.xml

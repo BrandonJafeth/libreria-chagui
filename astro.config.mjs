@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import icon from 'astro-icon'
 
 export default defineConfig({
-  site: 'https://libreriachagui.com',
+  site: 'https://libreriafchagui.com',
   integrations: [react(), sitemap(), icon()],
   vite: { plugins: [tailwindcss()] },
   image: { domains: ['res.cloudinary.com'] },
