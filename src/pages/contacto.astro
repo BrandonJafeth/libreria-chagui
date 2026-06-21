@@ -129,9 +129,15 @@ const contactSchema = {
                 </p>
                 <a
                   href={`tel:${site.contact.phone}`}
-                  class="font-body text-foreground/75 hover:text-foreground transition-colors text-sm"
+                  class="font-body text-foreground/75 hover:text-foreground transition-colors text-sm block"
                 >
                   {site.contact.phone}
+                </a>
+                <a
+                  href={`tel:${site.contact.phone2}`}
+                  class="font-body text-foreground/75 hover:text-foreground transition-colors text-sm block mt-1"
+                >
+                  {site.contact.phone2} <span class="text-foreground/40 text-[11px]">Fijo</span>
                 </a>
               </div>
             </li>

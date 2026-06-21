@@ -17,6 +17,7 @@ export const site = {
   },
   contact: {
     phone: '+506 6359 5383',
+    phone2: '+506 4080 7942',
     whatsapp: '50663595383',
     address: 'Hatillo, de la rotonda 75 metros norte, mano derecha — diagonal al C.C. Plaza América',
     whatsappBase:
