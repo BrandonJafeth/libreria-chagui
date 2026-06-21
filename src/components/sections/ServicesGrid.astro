@@ -292,22 +292,25 @@ const tabCss = groups.map((g) => {
 
 {useTabs && (
   <script>
-    const tabs = document.querySelectorAll<HTMLInputElement>('.svc-tabs input[name="svc-tab"]')
-    tabs.forEach((input) => {
-      input.addEventListener('change', () => {
-        const id = input.id.replace('svc-tab-', '')
-        const panel = document.querySelector<HTMLElement>(`.svc-panel[data-panel="${id}"]`)
-        if (!panel) return
-        panel.classList.remove('is-animating')
-        void panel.offsetWidth
-        panel.classList.add('is-animating')
-      })
+    const tabs   = document.querySelectorAll<HTMLInputElement>('.svc-tabs input[name="svc-tab"]')
+    const panels = document.querySelectorAll<HTMLElement>('.svc-panel')
+
+    function showPanel(id: string) {
+      panels.forEach(p => { p.style.display = 'none' })
+      const panel = document.querySelector<HTMLElement>(`.svc-panel[data-panel="${id}"]`)
+      if (!panel) return
+      panel.style.display = ''
+      panel.classList.remove('is-animating')
+      void panel.offsetWidth
+      panel.classList.add('is-animating')
+    }
+
+    // Init: hide all except the active tab — SSR left all panels visible for crawlers
+    const checked = document.querySelector<HTMLInputElement>('.svc-tabs input[name="svc-tab"]:checked')
+    if (checked) showPanel(checked.id.replace('svc-tab-', ''))
+
+    tabs.forEach(input => {
+      input.addEventListener('change', () => showPanel(input.id.replace('svc-tab-', '')))
     })
   </script>
 )}
-
-<style>
-  .svc-panel {
-    display: none;
-  }
-</style>

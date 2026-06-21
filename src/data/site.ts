@@ -9,6 +9,7 @@ export const site = {
     { label: 'Catálogo',       href: '/catalogo' },
     { label: 'Servicios',      href: '/servicios' },
     { label: 'Sobre nosotros', href: '/sobre-nosotros' },
+    { label: 'Contacto',       href: '/contacto' },
   ],
   cta: {
     label: 'WhatsApp',

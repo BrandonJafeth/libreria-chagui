@@ -34,6 +34,26 @@ const tipos = await getTipos()
     </div>
   </section>
 
+  <section class="bg-background border-t border-foreground/5 py-10 px-6">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-foreground/35 mb-5">
+        Índice de productos
+      </p>
+      <ul class="columns-2 sm:columns-3 lg:columns-4 gap-x-8">
+        {products.map(p => (
+          <li class="mb-2">
+            <a
+              href={`/producto/${p.slug}`}
+              class="text-sm text-foreground/55 hover:text-foreground transition-colors leading-snug"
+            >
+              {p.nombre}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
   <CtaBanner
     eyebrow="¿Buscás algo en especial?"
     heading="Escribinos y te ayudamos"
