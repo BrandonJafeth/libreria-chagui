@@ -309,33 +309,91 @@ const categoryCards: FeatureCard[] = [
   const nextBtn = document.querySelector('.carousel-arrow--next') as HTMLElement | null
 
   if (carousel && dotsContainer) {
-    const slides = Array.from(carousel.querySelectorAll('.slide'))
-    const slideWidth = () => (slides[0] as HTMLElement)?.getBoundingClientRect().width ?? 260
+    const origSlides = Array.from(carousel.querySelectorAll('.slide')) as HTMLElement[]
+    const n = origSlides.length
+
+    // Clone for infinite loop: [clones-of-end][originals][clones-of-start]
+    if (n > 1) {
+      origSlides.slice().reverse().forEach(s => {
+        const c = s.cloneNode(true) as HTMLElement
+        c.setAttribute('aria-hidden', 'true')
+        c.setAttribute('tabindex', '-1')
+        carousel.insertBefore(c, carousel.firstChild)
+      })
+      origSlides.forEach(s => {
+        const c = s.cloneNode(true) as HTMLElement
+        c.setAttribute('aria-hidden', 'true')
+        c.setAttribute('tabindex', '-1')
+        carousel.appendChild(c)
+      })
+    }
+
+    // Slide pitch = element width + column-gap
+    const slideWidth = () => {
+      const el = carousel.querySelector('.slide') as HTMLElement
+      if (!el) return 260
+      const gapStr = getComputedStyle(carousel).columnGap
+      const gap = gapStr && gapStr !== 'normal' ? parseFloat(gapStr) : 0
+      return el.getBoundingClientRect().width + gap
+    }
+
+    // Silent jump: disable snap → set position → restore snap
+    const silentJump = (pos: number) => {
+      carousel.style.scrollSnapType = 'none'
+      carousel.scrollLeft = pos
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        carousel.style.scrollSnapType = ''
+      }))
+    }
+
+    // Start at first real slide
+    if (n > 1) setTimeout(() => silentJump(slideWidth() * n), 0)
 
     // Build dots
-    slides.forEach((_, i) => {
+    origSlides.forEach((_, i) => {
       const btn = document.createElement('button')
       btn.setAttribute('aria-label', `Ir a slide ${i + 1}`)
       if (i === 0) btn.classList.add('active')
       btn.addEventListener('click', () => {
-        carousel.scrollTo({ left: slideWidth() * i, behavior: 'smooth' })
+        const target = n > 1 ? slideWidth() * (n + i) : slideWidth() * i
+        carousel.scrollTo({ left: target, behavior: 'smooth' })
       })
       dotsContainer.appendChild(btn)
     })
-
     const dots = Array.from(dotsContainer.querySelectorAll('button'))
 
-    // Sync active dot on scroll
+    const updateDots = (scrollLeft: number) => {
+      const sw = slideWidth()
+      const rawIdx = Math.round(scrollLeft / sw)
+      const realIdx = n > 1 ? ((rawIdx - n) % n + n) % n : rawIdx
+      dots.forEach((d, i) => d.classList.toggle('active', i === realIdx))
+    }
+
+    // Scroll: update dots + wrap position when in clone zone
     let scrollTimer: ReturnType<typeof setTimeout>
+    let jumping = false
+
     carousel.addEventListener('scroll', () => {
+      if (jumping) return
+      updateDots(carousel.scrollLeft)
+      if (n <= 1) return
       clearTimeout(scrollTimer)
       scrollTimer = setTimeout(() => {
-        const idx = Math.round(carousel.scrollLeft / slideWidth())
-        dots.forEach((d, i) => d.classList.toggle('active', i === idx))
-      }, 50)
+        const sw = slideWidth()
+        const idx = Math.round(carousel.scrollLeft / sw)
+        if (idx < n) {
+          jumping = true
+          silentJump(sw * (idx + n))
+          setTimeout(() => { jumping = false }, 60)
+        } else if (idx >= n * 2) {
+          jumping = true
+          silentJump(sw * (idx - n))
+          setTimeout(() => { jumping = false }, 60)
+        }
+      }, 200)
     }, { passive: true })
 
-    // Arrow clicks
+    // Arrow buttons
     prevBtn?.addEventListener('click', () => {
       carousel.scrollBy({ left: -slideWidth(), behavior: 'smooth' })
     })
@@ -343,16 +401,14 @@ const categoryCards: FeatureCard[] = [
       carousel.scrollBy({ left: slideWidth(), behavior: 'smooth' })
     })
 
-    // Autoplay — pauses if user interacted
+    // Autoplay — pauses on interaction
     let userInteracted = false
     carousel.addEventListener('pointerdown', () => { userInteracted = true })
     carousel.addEventListener('touchstart', () => { userInteracted = true }, { passive: true })
 
     setInterval(() => {
       if (userInteracted) { userInteracted = false; return }
-      const idx = Math.round(carousel.scrollLeft / slideWidth())
-      const next = (idx + 1) % slides.length
-      carousel.scrollTo({ left: slideWidth() * next, behavior: 'smooth' })
+      carousel.scrollBy({ left: slideWidth(), behavior: 'smooth' })
     }, 4000)
   }
 </script>
