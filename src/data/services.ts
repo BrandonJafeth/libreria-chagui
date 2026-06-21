@@ -90,7 +90,7 @@ export const serviceGroups: ServiceGroup[] = [
   },
   {
     categoria: 'Fotografía',
-    titulo: 'Fotografía y revelado profesional',
+    titulo: 'Fotografía e impresión profesional',
     descripcion: 'Fotos para pasaporte, visa e impresión fotográfica en papel de alta calidad. También editamos y retocamos tus fotos para que queden tal como las imaginás.',
     accent: '#4A5568',
     tint: 'rgba(74,85,104,0.08)',
