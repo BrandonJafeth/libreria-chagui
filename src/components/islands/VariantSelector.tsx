@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Product } from '../../lib/products'
+import { formatPrice } from '../../lib/format'
 
 interface Props {
   product: Product
@@ -7,12 +8,13 @@ interface Props {
 
 const WA_PHONE = '50663595383'
 
-function buildWAUrl(nombre: string, color?: string, tipo?: string): string {
+function buildWAUrl(nombre: string, precio: number, color?: string, tipo?: string): string {
   let msg = `Hola buenas, me interesa el producto: ${nombre}`
   const extras: string[] = []
   if (color) extras.push(color)
   if (tipo && tipo !== nombre) extras.push(tipo)
   if (extras.length) msg += ` (${extras.join(', ')})`
+  msg += ` — Precio: ${formatPrice(precio)}`
   return `https://api.whatsapp.com/send?phone=${WA_PHONE}&text=${encodeURIComponent(msg)}`
 }
 
@@ -26,6 +28,7 @@ export default function VariantSelector({ product }: Props) {
   const agotado = product.estado === 'agotado'
   const waUrl = buildWAUrl(
     product.nombre,
+    product.precio,
     hasColors   ? selectedColor   : undefined,
     hasVariants ? selectedVariant : undefined,
   )
