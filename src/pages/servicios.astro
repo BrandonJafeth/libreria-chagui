@@ -4,6 +4,27 @@ import PageHero from '../components/sections/PageHero.astro'
 import ServicesGrid from '../components/sections/ServicesGrid.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
 import { serviceGroups } from '../data/services'
+import { site } from '../data/site'
+
+const allServices = serviceGroups.flatMap(g => g.servicios)
+const serviceListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Servicios de Librería y Bazar Chagui',
+  url: `${site.domain}/servicios`,
+  itemListElement: allServices.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Service',
+      name: s.nombre,
+      description: s.descripcion,
+      provider: { '@type': 'LocalBusiness', name: site.name },
+      areaServed: { '@type': 'City', name: 'Hatillo, San José' },
+      url: `${site.domain}/servicios`,
+    },
+  })),
+}
 ---
 
 <BaseLayout
@@ -11,6 +32,9 @@ import { serviceGroups } from '../data/services'
   description="Impresión de documentos y fotos, copias, sublimación de camisetas y tazas, diseño gráfico y fotografía tipo pasaporte en Hatillo, San José. Cotizá por WhatsApp."
   keywords="impresión Hatillo, copias San José, sublimación camisetas San José, diseño gráfico Hatillo, fotografía pasaporte San José, impresión documentos Hatillo Costa Rica"
 >
+  <Fragment slot="head">
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceListSchema)} />
+  </Fragment>
   <section class="relative">
     <div class="absolute inset-0 cuaderno-bg pointer-events-none" aria-hidden="true"></div>
     <div class="relative z-10">

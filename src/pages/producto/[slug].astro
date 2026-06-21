@@ -25,17 +25,22 @@ const plainDesc = stripHtml(product.descripcion)
 const descSeo   = plainDesc.slice(0, 155)
 const descShort = plainDesc.slice(0, 220)
 
+const priceValidUntil = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+  .toISOString().split('T')[0]
+
 const productSchema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: product.nombre,
   description: plainDesc || product.nombre,
   image: product.imagenes.filter(u => !u.includes('PLACEHOLDER')),
+  sku: product.id,
   brand: { '@type': 'Brand', name: 'Librería y Bazar Chagui' },
   offers: {
     '@type': 'Offer',
     price: product.precio,
     priceCurrency: 'CRC',
+    priceValidUntil,
     availability: product.estado === 'disponible'
       ? 'https://schema.org/InStock'
       : 'https://schema.org/OutOfStock',

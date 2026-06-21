@@ -138,7 +138,7 @@ const year = new Date().getFullYear()
       >
         <!-- Static map preview via Google Static Maps -->
         <img
-          src="https://maps.googleapis.com/maps/api/staticmap?center=9.911819,+-84.099190&zoom=16&size=800x280&markers=color:red%7C9.911819,-84.099190&style=element:geometry%7Ccolor:0xf5f0e8&style=feature:road%7Celement:geometry%7Ccolor:0xffffff&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY"
+          src={`https://maps.googleapis.com/maps/api/staticmap?center=9.911819,+-84.099190&zoom=16&size=800x280&markers=color:red%7C9.911819,-84.099190&style=element:geometry%7Ccolor:0xf5f0e8&style=feature:road%7Celement:geometry%7Ccolor:0xffffff&key=${import.meta.env.GOOGLE_MAPS_KEY}`}
           alt="Mapa de ubicación Librería Chagui"
           class="w-full h-full object-cover"
           width="800"

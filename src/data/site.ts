@@ -31,6 +31,6 @@ export const site = {
   social: {
     instagram: 'https://www.instagram.com/libreria_chagui/',
     facebook:  'https://www.facebook.com/isaias.chagui.7/',
-    tiktok:    'https://www.tiktok.com/@libreria.chagui?lang=es',
+    tiktok:    'https://www.tiktok.com/@libreria.chagui',
   },
 }

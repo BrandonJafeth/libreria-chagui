@@ -41,8 +41,8 @@ const localBusinessSchema = {
   name: site.name,
   description: 'Librería y bazar en Hatillo, San José, Costa Rica. Útiles escolares, oficina, tecnología. Servicios de impresión, sublimación, diseño y fotografía.',
   url: site.domain,
-  telephone: site.contact.phone,
-  image: site.logo,
+  telephone: `+${site.contact.whatsapp}`,
+  image: 'https://res.cloudinary.com/daqragn9m/image/upload/w_1200,h_630,c_fill,f_jpg,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg',
   logo: site.logo,
   address: {
     '@type': 'PostalAddress',
