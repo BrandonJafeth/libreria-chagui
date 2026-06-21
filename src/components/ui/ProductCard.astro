@@ -25,11 +25,6 @@ const isPlaceholder = !primaryImage || primaryImage.includes('PLACEHOLDER')
 
   <!-- Image -->
   <div class="aspect-square overflow-hidden relative bg-background">
-    {product.tipos.length > 0 && (
-      <span class="absolute top-3 left-3 z-10 rounded-full px-2.5 py-0.5 text-[10px] font-body font-semibold uppercase tracking-wide bg-accent-2/10 text-accent-2">
-        {product.tipos[0]}
-      </span>
-    )}
     {product.estado === 'agotado' && (
       <span class="absolute top-3 right-3 z-10 rounded-full px-2.5 py-0.5 text-[10px] font-body font-medium uppercase tracking-wide bg-foreground/8 text-foreground/60">
         Agotado
@@ -64,6 +59,11 @@ const isPlaceholder = !primaryImage || primaryImage.includes('PLACEHOLDER')
 
   <!-- Info -->
   <div class="p-4 flex flex-col gap-1.5 flex-1">
+    {product.tipos.length > 0 && (
+      <span class="self-start rounded-sm px-2 py-0.5 text-[9px] font-body font-bold uppercase tracking-wider bg-accent-2/10 text-accent-2">
+        {product.tipos[0]}
+      </span>
+    )}
     <p class="font-heading text-sm font-semibold text-foreground leading-snug">{product.nombre}</p>
     <p class={`font-heading text-lg font-bold ${product.estado === 'agotado' ? 'text-foreground/50' : 'text-accent'}`}>
       {formatPrice(product.precio)}

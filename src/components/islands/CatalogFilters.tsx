@@ -51,19 +51,6 @@ function ProductCard({ product }: { product: Product }) {
         className="aspect-square overflow-hidden relative"
         style={{ background: isPlaceholder ? meta.bg : 'hsl(37 33% 96%)' }}
       >
-        {product.tipos[0] && (
-          <span
-            className="absolute top-2.5 left-2.5 z-10 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider"
-            style={{
-              background:   `${meta.accent}18`,
-              color:        meta.accent,
-              borderRadius: '4px',
-            }}
-          >
-            {product.tipos[0]}
-          </span>
-        )}
-
         {isAgotado && (
           <div className="absolute inset-0 z-10 flex items-end justify-start p-2.5">
             <span
@@ -107,6 +94,20 @@ function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="p-4 flex flex-col gap-1 flex-1">
+        {product.tipos[0] && (
+          <span
+            className="self-start text-[9px] font-bold uppercase tracking-wider"
+            style={{
+              background:   `${meta.accent}15`,
+              color:        meta.accent,
+              borderRadius: '4px',
+              padding:      '2px 7px',
+              marginBottom: '2px',
+            }}
+          >
+            {product.tipos[0]}
+          </span>
+        )}
         <p
           className="text-sm font-medium leading-snug"
           style={{
