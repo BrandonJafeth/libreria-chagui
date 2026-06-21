@@ -2,6 +2,12 @@
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import '../styles/global.css'
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/500.css'
+import '@fontsource/poppins/600.css'
+import '@fontsource/poppins/700.css'
+import '@fontsource/poppins/800.css'
+import '@fontsource/poppins/900.css'
 import { site } from '../data/site'
 
 interface Props {
@@ -24,8 +30,8 @@ const fullTitle = title === 'Inicio'
   ? `${site.name} — Librería y Bazar en Hatillo, San José`
   : `${site.name} | ${title}`
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://libreriachagui.com')
-const ogImageUrl = ogImage ?? `${site.domain}/og-image.jpg`
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://libreriafchagui.com')
+const ogImageUrl = ogImage ?? 'https://res.cloudinary.com/daqragn9m/image/upload/w_1200,h_630,c_fill,f_jpg,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg'
 const isHome = Astro.url.pathname === '/'
 
 /* ── LocalBusiness + BookStore schema (sitewide) ── */
@@ -52,6 +58,20 @@ const localBusinessSchema = {
     longitude: -84.10121512520762,
   },
   hasMap: site.contact.mapsUrl,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens:  '08:00',
+      closes: '19:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens:  '09:00',
+      closes: '18:00',
+    },
+  ],
   priceRange: '₡',
   currenciesAccepted: 'CRC',
   areaServed: { '@type': 'City', name: 'San José' },
@@ -116,21 +136,12 @@ const breadcrumbSchema = !isHome ? {
     <meta name="geo.position" content="9.911819;-84.101215" />
     <meta name="ICBM" content="9.911819, -84.101215" />
 
+    <meta name="theme-color" content="#F5F1E8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-    <!-- Preconnect: Google Fonts (non-blocking) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Poppins cargado de forma asíncrona: no bloquea el renderizado -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" />
-    </noscript>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" sizes="any" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     {isHome && (
       <!-- Preload de la imagen LCP del hero -->
@@ -152,6 +163,8 @@ const breadcrumbSchema = !isHome ? {
     {breadcrumbSchema && (
       <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     )}
+
+    <slot name="head" />
   </head>
   <body class="bg-background text-foreground font-body antialiased">
     <Navbar />

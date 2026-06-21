@@ -20,7 +20,7 @@ export default function VariantSelector({ product }: Props) {
   const hasColors  = product.colores.length > 0
   const hasVariants = product.tipos.length > 1
 
-  const [selectedColor,   setSelectedColor]   = useState<string>(product.colores[0] ?? '')
+  const [selectedColor,   setSelectedColor]   = useState<string>(product.colores[0]?.nombre ?? '')
   const [selectedVariant, setSelectedVariant] = useState<string>(product.tipos[0] ?? '')
 
   const agotado = product.estado === 'agotado'
@@ -41,15 +41,21 @@ export default function VariantSelector({ product }: Props) {
           <div className="flex flex-wrap gap-2">
             {product.colores.map((color) => (
               <button
-                key={color}
-                onClick={() => setSelectedColor(color)}
-                className={`px-4 py-2 text-sm font-body font-medium border transition-all ${
-                  selectedColor === color
+                key={color.nombre}
+                onClick={() => setSelectedColor(color.nombre)}
+                className={`px-4 py-2 text-sm font-body font-medium border transition-all flex items-center gap-2 ${
+                  selectedColor === color.nombre
                     ? 'border-accent bg-accent/10 text-foreground'
                     : 'border-foreground/25 text-foreground/70 hover:border-foreground/50 hover:text-foreground'
                 }`}
               >
-                {color}
+                {color.hex && (
+                  <span
+                    className="w-3.5 h-3.5 rounded-full border border-black/10 shrink-0"
+                    style={{ background: color.hex }}
+                  />
+                )}
+                {color.nombre}
               </button>
             ))}
           </div>

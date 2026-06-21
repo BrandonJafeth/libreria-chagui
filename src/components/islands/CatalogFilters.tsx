@@ -9,7 +9,11 @@ interface Props {
 const PAGE_SIZE = 8
 
 function formatPrice(n: number): string {
-  return '₡' + n.toLocaleString('es-CR')
+  return new Intl.NumberFormat('es-CR', {
+    style: 'currency',
+    currency: 'CRC',
+    minimumFractionDigits: 0,
+  }).format(n)
 }
 
 const tipoMeta: Record<string, { bg: string; accent: string }> = {

@@ -18,7 +18,31 @@ const ogImage = product.imagenes[0] && !product.imagenes[0].includes('PLACEHOLDE
   ? product.imagenes[0]
   : undefined
 
-const descSeo = product.descripcion.replace(/\n/g, ' ').slice(0, 155)
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+}
+const plainDesc = stripHtml(product.descripcion)
+const descSeo   = plainDesc.slice(0, 155)
+const descShort = plainDesc.slice(0, 220)
+
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.nombre,
+  description: plainDesc || product.nombre,
+  image: product.imagenes.filter(u => !u.includes('PLACEHOLDER')),
+  brand: { '@type': 'Brand', name: 'Librería y Bazar Chagui' },
+  offers: {
+    '@type': 'Offer',
+    price: product.precio,
+    priceCurrency: 'CRC',
+    availability: product.estado === 'disponible'
+      ? 'https://schema.org/InStock'
+      : 'https://schema.org/OutOfStock',
+    url: `https://libreriafchagui.com/producto/${product.slug}`,
+    seller: { '@type': 'Organization', name: 'Librería y Bazar Chagui' },
+  },
+}
 ---
 
 <BaseLayout
@@ -26,6 +50,9 @@ const descSeo = product.descripcion.replace(/\n/g, ' ').slice(0, 155)
   description={descSeo}
   ogImage={ogImage}
 >
+  <Fragment slot="head">
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+  </Fragment>
   <!-- Product Detail -->
   <section class="bg-background pt-32 pb-16 md:pt-40 md:pb-20 px-6">
     <div class="max-w-6xl mx-auto">
@@ -76,19 +103,21 @@ const descSeo = product.descripcion.replace(/\n/g, ' ').slice(0, 155)
           </div>
 
           <!-- Short description -->
-          <p class="font-body font-light text-sm text-foreground/60 leading-relaxed mt-6">
-            {product.descripcion.split('\n')[0]}
-          </p>
+          {descShort && (
+            <p class="font-body font-light text-sm text-foreground/60 leading-relaxed mt-6">
+              {descShort}
+            </p>
+          )}
         </div>
       </div>
 
       <!-- Long description -->
-      <div class="bg-card rounded-3xl p-8 md:p-10 mt-12 max-w-4xl mx-auto reveal">
-        <h2 class="font-heading font-semibold text-xl text-foreground mb-4">Descripción</h2>
-        <div class="font-body font-light text-foreground/70 leading-[1.72] whitespace-pre-line text-sm md:text-base">
-          {product.descripcion}
+      {product.descripcion && (
+        <div class="bg-card rounded-3xl p-8 md:p-10 mt-12 max-w-4xl mx-auto reveal">
+          <h2 class="font-heading font-semibold text-xl text-foreground mb-4">Descripción</h2>
+          <div class="prose" set:html={product.descripcion} />
         </div>
-      </div>
+      )}
     </div>
   </section>
 

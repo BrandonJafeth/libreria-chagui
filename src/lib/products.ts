@@ -7,7 +7,7 @@ export interface Product {
   precio: number
   descripcion: string
   estado: 'disponible' | 'agotado'
-  colores: string[]
+  colores: { nombre: string; hex: string | null }[]
   tipos: string[]
   imagenes: string[]
   destacado?: boolean
@@ -39,7 +39,7 @@ function mapProductRecord(record: any): Product {
     estado: record.estado,
     destacado: record.destacado,
     created_at: record.created_at,
-    colores: colors.map((c: any) => c.nombre),
+    colores: colors.map((c: any) => ({ nombre: c.nombre, hex: c.hex ?? null })),
     tipos: tipos,
     imagenes: images.map((i: any) => i.url),
   }
@@ -99,6 +99,8 @@ export async function getFeatured(limit = 4): Promise<Product[]> {
       )
     `)
     .eq('destacado', true)
+    .eq('estado', 'disponible')
+    .order('updated_at', { ascending: false })
     .limit(limit)
 
   if (error) {

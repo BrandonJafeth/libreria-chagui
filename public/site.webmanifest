@@ -1,0 +1,21 @@
+{
+  "name": "Librería y Bazar Chagui",
+  "short_name": "Chagui",
+  "description": "Librería y bazar en Hatillo, San José. Útiles escolares, oficina, tecnología e impresión.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#F5F1E8",
+  "theme_color": "#F5F1E8",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

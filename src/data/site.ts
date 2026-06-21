@@ -23,6 +23,11 @@ export const site = {
     mapsUrl:
       'https://maps.google.com/?q=9.911819990189127,-84.10121512520762',
   },
+  hours: {
+    weekdays: { open: '8:00', close: '19:00', label: 'Lun–Vie: 8 a. m. – 7 p. m.' },
+    saturday: { open: '9:00', close: '18:00', label: 'Sáb: 9 a. m. – 6 p. m.' },
+    sunday:   { label: 'Dom: Cerrado' },
+  },
   social: {
     instagram: 'https://www.instagram.com/libreria_chagui/',
     facebook:  'https://www.facebook.com/isaias.chagui.7/',

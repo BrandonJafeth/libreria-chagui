@@ -2,14 +2,23 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import HeroHome from '../components/sections/HeroHome.astro'
 import FeaturesGrid from '../components/sections/FeaturesGrid.astro'
-import ProductGrid from '../components/sections/ProductGrid.astro'
 import BentoHomeServices from '../components/sections/BentoHomeServices.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
-import { getFeatured } from '../lib/products'
+import { supabase } from '../lib/supabase'
+import { formatPrice } from '../lib/format'
 import { serviceGroups } from '../data/services'
 import type { FeatureCard } from '../components/sections/FeaturesGrid.astro'
 
-const featured = await getFeatured(4)
+const { data: destacados } = await supabase
+  .from('products')
+  .select('id, slug, nombre, precio, product_images(url, es_principal, alt)')
+  .eq('destacado', true)
+  .eq('estado', 'disponible')
+  .order('updated_at', { ascending: false })
+  .limit(12)
+
+const mainImage = (p: any) =>
+  p.product_images?.find((i: any) => i.es_principal) ?? p.product_images?.[0] ?? null
 
 // Build service items with their category color configs for the bento grid
 const svcConfig: Record<string, { accent: string; tint: string; imagen: string }> = {
@@ -80,14 +89,68 @@ const categoryCards: FeatureCard[] = [
     cards={categoryCards}
   />
 
-  {featured.length > 0 && (
-    <ProductGrid
-      products={featured}
-      heading="Productos destacados"
-      subtext="Algunos de nuestros favoritos."
-      viewAllHref="/catalogo"
-      viewAllLabel="Ver todo el catálogo"
-    />
+  {destacados && destacados.length > 0 && (
+    <section class="bg-background py-16 md:py-20">
+      <div class="max-w-6xl mx-auto px-6">
+
+        <!-- Header -->
+        <div class="flex items-end justify-between mb-8 reveal">
+          <div>
+            <p class="text-xs font-body font-semibold uppercase tracking-[0.2em] text-foreground/40 mb-1.5">Destacados</p>
+            <h2 class="font-heading font-bold text-2xl md:text-3xl text-foreground">Productos destacados</h2>
+            <p class="font-body text-foreground/55 text-sm mt-1.5">Algunos de nuestros favoritos.</p>
+          </div>
+          <a
+            href="/catalogo"
+            class="hidden sm:inline-flex items-center gap-1.5 text-accent font-body font-semibold text-[13px] uppercase tracking-[0.12em] hover:opacity-75 transition-opacity"
+          >
+            Ver catálogo
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+
+        <!-- Carousel -->
+        <div class="carousel-wrapper">
+          <button class="carousel-arrow carousel-arrow--prev" aria-label="Anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+
+          <blossom-carousel id="destacados-carousel" class="carousel">
+            {destacados.map((p: any) => {
+              const img = mainImage(p)
+              return (
+                <a href={`/producto/${p.slug}`} class="slide">
+                  <div class="h-1 w-full" style="background: hsl(6 63% 46%)"></div>
+                  <div class="slide-img">
+                    {img
+                      ? <img src={img.url} alt={img.alt ?? p.nombre} loading="lazy" width="400" height="400" />
+                      : <div class="slide-placeholder"><span>{p.nombre.charAt(0).toUpperCase()}</span></div>
+                    }
+                  </div>
+                  <div class="slide-info">
+                    <p class="slide-nombre">{p.nombre}</p>
+                    <p class="slide-precio">{formatPrice(p.precio)}</p>
+                  </div>
+                </a>
+              )
+            })}
+          </blossom-carousel>
+
+          <button class="carousel-arrow carousel-arrow--next" aria-label="Siguiente">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+
+        <div class="carousel-dots" id="carousel-dots"></div>
+
+        <div class="text-center mt-6 sm:hidden">
+          <a href="/catalogo" class="text-accent font-body font-semibold text-[13px] uppercase tracking-[0.12em] hover:opacity-75 transition-opacity">
+            Ver todo el catálogo →
+          </a>
+        </div>
+
+      </div>
+    </section>
   )}
 
   <BentoHomeServices
@@ -105,3 +168,191 @@ const categoryCards: FeatureCard[] = [
     buttonIcon="arrow"
   />
 </BaseLayout>
+
+<style is:global>
+  .carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  blossom-carousel.carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: clamp(180px, 26vw, 260px);
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    flex: 1;
+  }
+  blossom-carousel.carousel::-webkit-scrollbar { display: none; }
+
+  .slide {
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid rgba(43,43,43,0.07);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
+    transition: transform 0.22s, box-shadow 0.22s;
+  }
+  .slide:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  .slide-img {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: hsl(37 33% 96%);
+  }
+  .slide-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+  .slide:hover .slide-img img { transform: scale(1.04); }
+
+  .slide-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, hsl(37 33% 93%), hsl(37 33% 87%));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .slide-placeholder span {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(0,0,0,0.06);
+    font-family: Poppins, sans-serif;
+    user-select: none;
+  }
+
+  .slide-info { padding: 0.875rem; }
+  .slide-nombre {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0 0 0.3rem;
+    line-height: 1.35;
+    color: hsl(0 0% 17%);
+    font-family: Poppins, sans-serif;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .slide-precio {
+    font-size: 1rem;
+    font-weight: 700;
+    color: hsl(6 63% 46%);
+    margin: 0;
+    font-family: Poppins, sans-serif;
+  }
+
+  .carousel-arrow {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(43,43,43,0.12);
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    color: hsl(0 0% 17%);
+    transition: background 0.15s;
+  }
+  .carousel-arrow:hover { background: hsl(37 33% 96%); }
+
+  @media (max-width: 640px) { .carousel-arrow { display: none; } }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.25rem;
+  }
+  .carousel-dots button {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(43,43,43,0.2);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, width 0.2s, border-radius 0.2s;
+  }
+  .carousel-dots button.active {
+    background: hsl(6 63% 46%);
+    width: 20px;
+    border-radius: 3px;
+  }
+</style>
+
+<script>
+  import '@blossom-carousel/web'
+
+  const carousel = document.getElementById('destacados-carousel') as HTMLElement | null
+  const dotsContainer = document.getElementById('carousel-dots') as HTMLElement | null
+  const prevBtn = document.querySelector('.carousel-arrow--prev') as HTMLElement | null
+  const nextBtn = document.querySelector('.carousel-arrow--next') as HTMLElement | null
+
+  if (carousel && dotsContainer) {
+    const slides = Array.from(carousel.querySelectorAll('.slide'))
+    const slideWidth = () => (slides[0] as HTMLElement)?.getBoundingClientRect().width ?? 260
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const btn = document.createElement('button')
+      btn.setAttribute('aria-label', `Ir a slide ${i + 1}`)
+      if (i === 0) btn.classList.add('active')
+      btn.addEventListener('click', () => {
+        carousel.scrollTo({ left: slideWidth() * i, behavior: 'smooth' })
+      })
+      dotsContainer.appendChild(btn)
+    })
+
+    const dots = Array.from(dotsContainer.querySelectorAll('button'))
+
+    // Sync active dot on scroll
+    let scrollTimer: ReturnType<typeof setTimeout>
+    carousel.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer)
+      scrollTimer = setTimeout(() => {
+        const idx = Math.round(carousel.scrollLeft / slideWidth())
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx))
+      }, 50)
+    }, { passive: true })
+
+    // Arrow clicks
+    prevBtn?.addEventListener('click', () => {
+      carousel.scrollBy({ left: -slideWidth(), behavior: 'smooth' })
+    })
+    nextBtn?.addEventListener('click', () => {
+      carousel.scrollBy({ left: slideWidth(), behavior: 'smooth' })
+    })
+
+    // Autoplay — pauses if user interacted
+    let userInteracted = false
+    carousel.addEventListener('pointerdown', () => { userInteracted = true })
+    carousel.addEventListener('touchstart', () => { userInteracted = true }, { passive: true })
+
+    setInterval(() => {
+      if (userInteracted) { userInteracted = false; return }
+      const idx = Math.round(carousel.scrollLeft / slideWidth())
+      const next = (idx + 1) % slides.length
+      carousel.scrollTo({ left: slideWidth() * next, behavior: 'smooth' })
+    }, 4000)
+  }
+</script>

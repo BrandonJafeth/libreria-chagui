@@ -1,3 +1,7 @@
 export function formatPrice(n: number): string {
-  return '₡' + n.toLocaleString('es-CR')
+  return new Intl.NumberFormat('es-CR', {
+    style: 'currency',
+    currency: 'CRC',
+    minimumFractionDigits: 0,
+  }).format(n)
 }
