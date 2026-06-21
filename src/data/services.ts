@@ -64,7 +64,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     categoria: 'Diseño',
     titulo: 'Diseño gráfico a tu medida',
-    descripcion: 'Creamos piezas gráficas profesionales para que tu negocio o evento cause impacto. Desde tarjetas de presentación hasta afiches y material promocional. Solo decinos qué necesitás.',
+    descripcion: 'Creamos piezas gráficas profesionales para que tu negocio o evento cause impacto. Desde tarjetas de presentación hasta afiches y material promocional. Dime qué necesitas y con gusto te ayudo.',
     accent: '#B87C20',
     tint: 'rgba(232,163,61,0.11)',
     servicios: [
