@@ -43,7 +43,7 @@ export const serviceGroups: ServiceGroup[] = [
   {
     categoria: 'Sublimación',
     titulo: 'Productos personalizados',
-    descripcion: 'Personalizamos camisetas, tazas y más con el diseño o imagen que quieras. Ideal para regalos originales, uniformes de equipo, recuerdos de eventos o promoción de tu negocio.',
+    descripcion: 'Personalizamos camisetas, tazas y más con el diseño o imagen que prefieras. También te ofrecemos servicio de DTF con acabados de alta calidad.',
     accent: '#C0392B',
     tint: 'rgba(192,57,43,0.09)',
     servicios: [
