@@ -11,6 +11,8 @@ export type Database = {
           orden: number
           created_at: string
         }
+        Insert: Record<string, unknown>
+        Update: Record<string, unknown>
       }
       products: {
         Row: {
@@ -24,12 +26,16 @@ export type Database = {
           created_at: string
           updated_at: string
         }
+        Insert: Record<string, unknown>
+        Update: Record<string, unknown>
       }
       product_categories: {
         Row: {
           product_id: string
           category_id: string
         }
+        Insert: Record<string, unknown>
+        Update: Record<string, unknown>
       }
       product_images: {
         Row: {
@@ -41,6 +47,8 @@ export type Database = {
           alt: string | null
           created_at: string
         }
+        Insert: Record<string, unknown>
+        Update: Record<string, unknown>
       }
       product_colors: {
         Row: {
@@ -50,6 +58,8 @@ export type Database = {
           hex: string | null
           orden: number
         }
+        Insert: Record<string, unknown>
+        Update: Record<string, unknown>
       }
       product_reviews: {
         Row: {
@@ -67,12 +77,15 @@ export type Database = {
           rating: number
           comment?: string | null
         }
+        Update: {
+          approved?: boolean
+        }
       }
     }
   }
 }
 
-export const supabase = createClient<Database>(
-  import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+export const supabase = createClient(
+  import.meta.env.PUBLIC_SUPABASE_URL as string,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string
 )
