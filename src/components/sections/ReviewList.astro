@@ -1,0 +1,61 @@
+---
+export interface Review {
+  id: string
+  author_name: string
+  rating: number
+  comment: string | null
+  created_at: string
+}
+
+interface Props {
+  reviews: Review[]
+}
+
+const { reviews } = Astro.props
+
+function formatDate(dateStr: string): string {
+  return new Intl.DateTimeFormat('es-CR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(dateStr))
+}
+---
+
+{reviews.length === 0 ? (
+  <p class="font-body text-sm text-foreground/50 text-center py-10">
+    Sé el primero en dejar una reseña.
+  </p>
+) : (
+  <div class="space-y-4">
+    {reviews.map((review) => (
+      <article class="bg-card border border-foreground/8 p-6">
+        <div class="flex items-start justify-between gap-4 mb-1">
+          <span class="font-body font-semibold text-sm text-foreground">{review.author_name}</span>
+          <time
+            class="font-body text-xs text-foreground/40 shrink-0"
+            datetime={review.created_at}
+          >
+            {formatDate(review.created_at)}
+          </time>
+        </div>
+        <div
+          class="flex gap-0.5 mt-1.5"
+          role="img"
+          aria-label={`${review.rating} de 5 estrellas`}
+        >
+          {[1, 2, 3, 4, 5].map((n) => (
+            <span
+              class="text-base leading-none"
+              style={n <= review.rating ? 'color: hsl(6 63% 46%)' : 'color: hsl(0 0% 80%)'}
+              aria-hidden="true"
+            >★</span>
+          ))}
+        </div>
+        {review.comment && (
+          <p class="font-body text-sm text-foreground/65 leading-relaxed mt-3">{review.comment}</p>
+        )}
+      </article>
+    ))}
+  </div>
+)}

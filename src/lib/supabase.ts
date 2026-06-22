@@ -51,11 +51,28 @@ export type Database = {
           orden: number
         }
       }
+      product_reviews: {
+        Row: {
+          id: string
+          product_id: string
+          author_name: string
+          rating: number
+          comment: string | null
+          approved: boolean
+          created_at: string
+        }
+        Insert: {
+          product_id: string
+          author_name: string
+          rating: number
+          comment?: string | null
+        }
+      }
     }
   }
 }
 
 export const supabase = createClient<Database>(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY
 )

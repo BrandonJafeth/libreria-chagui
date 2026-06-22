@@ -7,12 +7,35 @@ import VariantSelector from '../../components/islands/VariantSelector'
 import { getProductBySlug, getRelated } from '../../lib/products'
 import { formatPrice } from '../../lib/format'
 import { site } from '../../data/site'
+import { supabase } from '../../lib/supabase'
+import ReviewForm from '../../components/islands/ReviewForm'
+import ReviewList from '../../components/sections/ReviewList.astro'
 
 const { slug } = Astro.params
 const product = await getProductBySlug(slug!)
 if (!product) return Astro.redirect('/404')
 
 const related = await getRelated(product, 4)
+
+type ReviewRow = {
+  id: string
+  author_name: string
+  rating: number
+  comment: string | null
+  created_at: string
+}
+
+const { data: reviewsRaw } = await supabase
+  .from('product_reviews')
+  .select('id, author_name, rating, comment, created_at')
+  .eq('product_id', product.id)
+  .eq('approved', true)
+  .order('created_at', { ascending: false })
+
+const reviewList = (reviewsRaw ?? []) as ReviewRow[]
+const avg = reviewList.length
+  ? (reviewList.reduce((s, r) => s + r.rating, 0) / reviewList.length).toFixed(1)
+  : null
 
 const ogImage = product.imagenes[0] && !product.imagenes[0].includes('PLACEHOLDER')
   ? product.imagenes[0]
@@ -36,6 +59,21 @@ const productSchema = {
   image: product.imagenes.filter(u => !u.includes('PLACEHOLDER')),
   sku: product.id,
   brand: { '@type': 'Brand', name: 'Librería y Bazar Chagui' },
+  ...(avg ? {
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: avg,
+      reviewCount: String(reviewList.length),
+      bestRating: '5',
+      worstRating: '1',
+    },
+    review: reviewList.map(r => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.author_name },
+      reviewRating: { '@type': 'Rating', ratingValue: String(r.rating) },
+      ...(r.comment ? { reviewBody: r.comment } : {}),
+    })),
+  } : {}),
   offers: {
     '@type': 'Offer',
     price: product.precio,
@@ -138,6 +176,26 @@ const productSchema = {
           <div class="prose" set:html={product.descripcion} />
         </div>
       )}
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="bg-background py-16 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-baseline gap-4 mb-8 reveal">
+        <h2 class="font-heading font-bold text-2xl text-foreground">Reseñas</h2>
+        {avg && (
+          <span class="font-body text-sm text-foreground/50">
+            {avg}/5 · {reviewList.length} reseña{reviewList.length !== 1 ? 's' : ''}
+          </span>
+        )}
+      </div>
+
+      <ReviewList reviews={reviewList} />
+
+      <div class="mt-10">
+        <ReviewForm productId={product.id} client:only="react" />
+      </div>
     </div>
   </section>
 
