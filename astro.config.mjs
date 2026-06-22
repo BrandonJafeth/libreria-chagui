@@ -4,12 +4,17 @@ import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import icon from 'astro-icon'
 import cloudflare from '@astrojs/cloudflare'
+import { products } from './src/data/products.ts'
+
+const productUrls = products.map(
+  (p) => `https://libreriafchagui.com/producto/${p.slug}`
+)
 
 export default defineConfig({
   site: 'https://libreriafchagui.com',
   output: 'server',
   adapter: cloudflare({ imageService: 'passthrough' }),
-  integrations: [react(), sitemap(), icon()],
+  integrations: [react(), sitemap({ customPages: productUrls }), icon()],
   vite: {
     plugins: [tailwindcss()],
     resolve: {

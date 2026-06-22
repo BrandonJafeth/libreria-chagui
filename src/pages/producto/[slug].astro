@@ -46,6 +46,21 @@ const productSchema = {
       : 'https://schema.org/OutOfStock',
     url: `https://libreriafchagui.com/producto/${product.slug}`,
     seller: { '@type': 'Organization', name: 'Librería y Bazar Chagui' },
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'CR',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+    },
+    shippingDetails: {
+      '@type': 'OfferShippingDetails',
+      shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'CRC' },
+      shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'CR' },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 0, unitCode: 'DAY' },
+        transitTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 0, unitCode: 'DAY' },
+      },
+    },
   },
 }
 ---
