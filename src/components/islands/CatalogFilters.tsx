@@ -200,128 +200,129 @@ export default function CatalogFilters({ products, tipos }: Props) {
           padding:      '10px 12px',
         }}
       >
-        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-0">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
 
-          {/* LEFT — category tabs */}
-          <div className="flex flex-wrap gap-1.5 flex-1 min-w-0">
-            {['Todos', ...tipos].map((t) => {
-              const active = selectedTipo === t
-              const m      = tipoMeta[t]
-              return (
-                <button
-                  key={t}
-                  onClick={() => handleTipo(t)}
-                  style={{
-                    ...pillBase,
-                    background:  active ? 'hsl(6 63% 46%)' : 'transparent',
-                    color:       active ? 'white' : 'rgba(43,43,43,0.52)',
-                    borderColor: active ? 'hsl(6 63% 46%)' : 'rgba(43,43,43,0.10)',
-                    fontWeight:  active ? 600 : 500,
-                  }}
-                >
-                  {active && (
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(255,255,255,0.7)', flexShrink: 0 }} />
-                  )}
-                  {t}
-                </button>
-              )
-            })}
+          {/* Category select */}
+          <div className="relative shrink-0">
+            <select
+              value={selectedTipo}
+              onChange={(e) => handleTipo(e.target.value)}
+              style={{
+                ...pillBase,
+                borderColor:  selectedTipo !== 'Todos' ? 'hsl(6 63% 46%)' : 'rgba(43,43,43,0.10)',
+                background:   selectedTipo !== 'Todos' ? 'hsl(6 63% 46% / 0.06)' : 'transparent',
+                color:        selectedTipo !== 'Todos' ? 'hsl(6 63% 46%)' : 'rgba(43,43,43,0.52)',
+                paddingRight: '28px',
+                appearance:   'none',
+                cursor:       'pointer',
+                fontWeight:   selectedTipo !== 'Todos' ? 600 : 500,
+              } as React.CSSProperties}
+            >
+              {['Todos', ...tipos].map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+            <svg
+              className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
+              xmlns="http://www.w3.org/2000/svg" width="10" height="10"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+              style={{ color: selectedTipo !== 'Todos' ? 'hsl(6 63% 46%)' : 'rgba(43,43,43,0.35)' }}
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
           </div>
 
-          {/* DIVIDER — desktop only */}
+          {/* DIVIDER */}
           <div
-            className="hidden md:block shrink-0 self-stretch"
-            style={{ width: '1px', background: 'rgba(43,43,43,0.08)', margin: '0 12px' }}
+            className="hidden sm:block shrink-0 self-stretch"
+            style={{ width: '1px', background: 'rgba(43,43,43,0.08)' }}
             aria-hidden="true"
           />
 
-          {/* RIGHT — availability + sort + search */}
-          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+          {/* Solo disponibles */}
+          <button
+            onClick={handleDisponible}
+            style={{
+              ...pillBase,
+              background:  soloDisponible ? 'rgba(46,92,138,0.08)' : 'transparent',
+              color:       soloDisponible ? '#2E5C8A'              : 'rgba(43,43,43,0.52)',
+              borderColor: soloDisponible ? 'rgba(46,92,138,0.25)' : 'rgba(43,43,43,0.10)',
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ opacity: soloDisponible ? 1 : 0.4 }}>
+              {soloDisponible
+                ? <polyline points="20 6 9 17 4 12"/>
+                : <circle cx="12" cy="12" r="8"/>
+              }
+            </svg>
+            Disponibles
+          </button>
 
-            {/* Solo disponibles */}
-            <button
-              onClick={handleDisponible}
+          {/* Sort select */}
+          <div className="relative shrink-0">
+            <select
+              value={sortBy}
+              onChange={(e) => handleSort(e.target.value as SortKey)}
               style={{
                 ...pillBase,
-                background:  soloDisponible ? 'rgba(46,92,138,0.08)' : 'transparent',
-                color:       soloDisponible ? '#2E5C8A'              : 'rgba(43,43,43,0.52)',
-                borderColor: soloDisponible ? 'rgba(46,92,138,0.25)' : 'rgba(43,43,43,0.10)',
-              }}
+                borderColor:  'rgba(43,43,43,0.10)',
+                background:   'transparent',
+                color:        'rgba(43,43,43,0.52)',
+                paddingRight: '28px',
+                appearance:   'none',
+                cursor:       'pointer',
+              } as React.CSSProperties}
             >
-              {/* checkmark icon */}
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ opacity: soloDisponible ? 1 : 0.4 }}>
-                {soloDisponible
-                  ? <polyline points="20 6 9 17 4 12"/>
-                  : <circle cx="12" cy="12" r="8"/>
-                }
-              </svg>
-              Disponibles
-            </button>
-
-            {/* Sort select */}
-            <div className="relative shrink-0">
-              <select
-                value={sortBy}
-                onChange={(e) => handleSort(e.target.value as SortKey)}
-                style={{
-                  ...pillBase,
-                  borderColor: 'rgba(43,43,43,0.10)',
-                  background:  'transparent',
-                  color:       'rgba(43,43,43,0.52)',
-                  paddingRight: '28px',
-                  appearance:  'none',
-                  cursor:      'pointer',
-                } as React.CSSProperties}
-              >
-                <option value="relevante">Relevantes</option>
-                <option value="precio-asc">Menor precio</option>
-                <option value="precio-desc">Mayor precio</option>
-              </select>
-              <svg
-                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
-                xmlns="http://www.w3.org/2000/svg" width="10" height="10"
-                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                style={{ color: 'rgba(43,43,43,0.35)' }} aria-hidden="true"
-              >
-                <path d="m6 9 6 6 6-6"/>
-              </svg>
-            </div>
-
-            {/* Search */}
-            <div className="relative flex-1 sm:flex-none" style={{ minWidth: '160px' }}>
-              <svg
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
-                xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                style={{ color: 'rgba(43,43,43,0.32)' }} aria-hidden="true"
-              >
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-              </svg>
-              <input
-                type="search"
-                placeholder="Buscar…"
-                value={query}
-                onChange={(e) => handleQuery(e.target.value)}
-                style={{
-                  fontFamily:  'Inter, sans-serif',
-                  fontSize:    '0.8125rem',
-                  width:       '100%',
-                  paddingLeft: '30px',
-                  paddingRight:'12px',
-                  paddingTop:  '6px',
-                  paddingBottom:'6px',
-                  border:      '1px solid rgba(43,43,43,0.10)',
-                  borderRadius:'6px',
-                  background:  'transparent',
-                  color:       'hsl(0 0% 17%)',
-                  outline:     'none',
-                }}
-              />
-            </div>
-
+              <option value="relevante">Relevantes</option>
+              <option value="precio-asc">Menor precio</option>
+              <option value="precio-desc">Mayor precio</option>
+            </select>
+            <svg
+              className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
+              xmlns="http://www.w3.org/2000/svg" width="10" height="10"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+              style={{ color: 'rgba(43,43,43,0.35)' }} aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
           </div>
+
+          {/* Search — fills remaining space */}
+          <div className="relative flex-1" style={{ minWidth: '140px' }}>
+            <svg
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
+              xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ color: 'rgba(43,43,43,0.32)' }} aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input
+              type="search"
+              placeholder="Buscar…"
+              value={query}
+              onChange={(e) => handleQuery(e.target.value)}
+              style={{
+                fontFamily:   'Inter, sans-serif',
+                fontSize:     '0.8125rem',
+                width:        '100%',
+                paddingLeft:  '30px',
+                paddingRight: '12px',
+                paddingTop:   '6px',
+                paddingBottom:'6px',
+                border:       '1px solid rgba(43,43,43,0.10)',
+                borderRadius: '6px',
+                background:   'transparent',
+                color:        'hsl(0 0% 17%)',
+                outline:      'none',
+              }}
+            />
+          </div>
+
         </div>
       </div>
 
