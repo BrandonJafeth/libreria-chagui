@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets'
-
+import { clImg } from '../lib/cloudinary'
 import { site } from '../data/site'
 
 const year = new Date().getFullYear()
@@ -13,15 +12,14 @@ const year = new Date().getFullYear()
       <!-- Brand -->
       <div>
         <a href="/" class="inline-block mb-5">
-          <Image
-            src={site.logo}
+          <img
+            src={clImg(site.logo, 'h_112,f_auto,q_auto')}
             alt={site.name}
-            width={300}
-            height={200}
-            inferSize={true}
-            quality={95}
+            width={168}
+            height={112}
             class="h-14 w-auto object-contain rounded"
             loading="lazy"
+            decoding="async"
           />
         </a>
         <p class="text-sm text-foreground/75 leading-relaxed max-w-xs">

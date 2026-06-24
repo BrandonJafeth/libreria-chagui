@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import { clImg, clSrcSet } from '../../lib/cloudinary'
 
 interface Props {
   heading: string
@@ -113,12 +113,14 @@ const { heading, subtext, ctaPrimary, ctaSecondary } = Astro.props
            block h-52 sm:h-64
            lg:h-auto lg:w-[52%] xl:w-[54%] lg:shrink-0"
   >
-    <Image
-      src="https://res.cloudinary.com/daqragn9m/image/upload/v1781889539/libreria-chagui-hero_ok8jez.jpg"
+    <img
+      src={clImg('https://res.cloudinary.com/daqragn9m/image/upload/v1781889539/libreria-chagui-hero_ok8jez.jpg', 'w_800,f_auto,q_auto')}
+      srcset={clSrcSet('https://res.cloudinary.com/daqragn9m/image/upload/v1781889539/libreria-chagui-hero_ok8jez.jpg', [480, 800, 1200])}
+      sizes="(min-width: 1024px) 54vw, 100vw"
       alt="Productos de Librería Chagui"
       class="absolute inset-0 w-full h-full object-cover"
-      width={720}
-      height={1080}
+      width={800}
+      height={1200}
       loading="eager"
       decoding="async"
       fetchpriority="high"

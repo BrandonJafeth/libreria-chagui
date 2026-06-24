@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets'
-
+import { clImg } from '../lib/cloudinary'
 import { site } from '../data/site'
 
 const pathname = Astro.url.pathname
@@ -20,15 +19,14 @@ function isActive(href: string): boolean {
 
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2.5 shrink-0">
-      <Image
-        src={site.logo}
+      <img
+        src={clImg(site.logo, 'h_224,f_auto,q_auto')}
         alt={site.name}
-        width={400}
-        height={268}
-        inferSize={true}
-        quality={95}
+        width={335}
+        height={224}
         class="h-28 w-auto object-contain"
         loading="eager"
+        decoding="async"
         style="max-width: 360px;"
       />
     </a>

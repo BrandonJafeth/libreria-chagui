@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets'
-
+import { clImg } from '../../lib/cloudinary'
 import type { Product } from '../../lib/products'
 import { formatPrice } from '../../lib/format'
 
@@ -45,8 +44,8 @@ const isPlaceholder = !primaryImage || primaryImage.includes('PLACEHOLDER')
         </span>
       </div>
     ) : (
-      <Image
-        src={primaryImage}
+      <img
+        src={clImg(primaryImage, 'w_600,f_auto,q_auto,c_fill')}
         alt={product.nombre}
         class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
         width={400}

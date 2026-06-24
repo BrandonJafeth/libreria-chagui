@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets'
+import { clImg } from '../../lib/cloudinary'
 
 interface Props {
   eyebrow: string
@@ -86,8 +86,8 @@ const ghost = (breadcrumb ?? eyebrow.split(' ').at(-1) ?? eyebrow).toUpperCase()
   >
     {image ? (
       <>
-        <Image
-          src={image}
+        <img
+          src={clImg(image, 'w_800,f_auto,q_auto,c_fill')}
           alt={imageAlt ?? ''}
           class="absolute inset-0 w-full h-full object-cover"
           width={800}

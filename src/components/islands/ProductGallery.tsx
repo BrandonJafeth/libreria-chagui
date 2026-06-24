@@ -1,5 +1,10 @@
 import { useState } from 'react'
 
+function clImg(url: string, transforms: string): string {
+  if (!url.includes('res.cloudinary.com')) return url
+  return url.replace('/image/upload/', `/image/upload/${transforms}/`)
+}
+
 interface Props {
   images: string[]
   alt: string
@@ -30,11 +35,11 @@ export default function ProductGallery({ images, alt }: Props) {
           </span>
         ) : (
           <img
-            src={images[active]}
+            src={clImg(images[active], 'w_800,f_auto,q_auto')}
             alt={`${alt} — imagen ${active + 1}`}
             className="w-full h-full object-cover"
-            width={600}
-            height={600}
+            width={800}
+            height={800}
             loading="eager"
             fetchPriority="high"
           />
@@ -60,7 +65,7 @@ export default function ProductGallery({ images, alt }: Props) {
                   {alt ? alt.charAt(0).toUpperCase() : ''}
                 </span>
               ) : (
-                <img src={src} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" width={64} height={64} loading="lazy" />
+                <img src={clImg(src, 'w_128,f_auto,q_auto')} alt={`Miniatura ${i + 1}`} className="w-full h-full object-cover" width={64} height={64} loading="lazy" />
               )}
             </button>
           ))}

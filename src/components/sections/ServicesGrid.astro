@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets'
-
+import { clImg } from '../../lib/cloudinary'
 import SectionHeader from '../ui/SectionHeader.astro'
 import type { ServiceGroup } from '../../data/services'
 
@@ -164,12 +163,12 @@ const tabCss = groups.map((g) => {
                   {/* Right: service photo */}
                   {categoryImages[g.categoria] && (
                     <div class="hidden md:block relative shrink-0 w-52 lg:w-64 self-stretch overflow-hidden -my-10 -mr-10">
-                      <Image
-                        src={categoryImages[g.categoria]}
+                      <img
+                        src={clImg(categoryImages[g.categoria], 'w_600,f_auto,q_auto,c_fill')}
                         alt={g.categoria}
                         class="absolute inset-0 w-full h-full object-cover object-left"
-                        width={640}
-                        height={640}
+                        width={600}
+                        height={600}
                         loading="lazy"
                         decoding="async"
                       />

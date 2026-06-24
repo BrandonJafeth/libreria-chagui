@@ -1,6 +1,11 @@
 import { useState, useMemo } from 'react'
 import type { Product } from '../../lib/products'
 
+function clImg(url: string, transforms: string): string {
+  if (!url.includes('res.cloudinary.com')) return url
+  return url.replace('/image/upload/', `/image/upload/${transforms}/`)
+}
+
 interface Props {
   products: Product[]
   tipos: string[]
@@ -82,7 +87,7 @@ function ProductCard({ product }: { product: Product }) {
           </div>
         ) : (
           <img
-            src={product.imagenes[0]}
+            src={clImg(product.imagenes[0], 'w_600,f_auto,q_auto,c_fill')}
             alt={product.nombre}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
             width={400}

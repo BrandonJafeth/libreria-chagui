@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/sections/PageHero.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
 import { site } from '../data/site'
-import { Image } from 'astro:assets'
+import { clImg } from '../lib/cloudinary'
 ---
 
 <BaseLayout
@@ -66,8 +66,8 @@ import { Image } from 'astro:assets'
 
       <!-- Imagen sangra al borde derecho -->
       <div class="relative overflow-hidden" style="min-height: 360px;">
-        <Image
-          src="https://res.cloudinary.com/daqragn9m/image/upload/v1781890376/libreria-chagui_i6uexr.jpg"
+        <img
+          src={clImg('https://res.cloudinary.com/daqragn9m/image/upload/v1781890376/libreria-chagui_i6uexr.jpg', 'w_800,f_auto,q_auto,c_fill')}
           alt="Interior de Librería Chagui"
           class="absolute inset-0 w-full h-full object-cover"
           width={800}
@@ -121,8 +121,8 @@ import { Image } from 'astro:assets'
 
       <!-- Imagen sangra al borde izquierdo -->
       <div class="relative overflow-hidden order-2 md:order-1" style="min-height: 360px;">
-        <Image
-          src="https://res.cloudinary.com/daqragn9m/image/upload/v1781890375/hatillo-sanjose_xu61if.jpg"
+        <img
+          src={clImg('https://res.cloudinary.com/daqragn9m/image/upload/v1781890375/hatillo-sanjose_xu61if.jpg', 'w_800,f_auto,q_auto,c_fill')}
           alt="Vista de Hatillo, San José"
           class="absolute inset-0 w-full h-full object-cover"
           width={800}
