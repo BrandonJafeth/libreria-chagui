@@ -25,7 +25,7 @@ const { rows } = Astro.props
           <div class="liquid-glass rounded-3xl overflow-hidden aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-background to-card">
             {row.imageSrc ? (
               <img
-                src={clImg(row.imageSrc, 'w_800,f_auto,q_auto,c_fill')}
+                src={clImg(row.imageSrc, 'w_1000,f_auto,q_90,c_fill')}
                 alt={row.imageAlt ?? row.title}
                 class="w-full h-full object-cover"
                 width={800}

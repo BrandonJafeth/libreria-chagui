@@ -87,11 +87,11 @@ const ghost = (breadcrumb ?? eyebrow.split(' ').at(-1) ?? eyebrow).toUpperCase()
     {image ? (
       <>
         <img
-          src={clImg(image, 'w_800,f_auto,q_auto,c_fill')}
+          src={clImg(image, 'w_1200,f_auto,q_90,c_fill')}
           alt={imageAlt ?? ''}
           class="absolute inset-0 w-full h-full object-cover"
-          width={800}
-          height={800}
+          width={1200}
+          height={900}
           loading="eager"
           decoding="async"
           fetchpriority="high"
@@ -99,7 +99,7 @@ const ghost = (breadcrumb ?? eyebrow.split(' ').at(-1) ?? eyebrow).toUpperCase()
         <!-- fade edge toward left content -->
         <div
           class="absolute inset-0 pointer-events-none"
-          style="background: linear-gradient(to right, var(--color-background) 0%, transparent 22%);"
+          style="background: linear-gradient(to right, hsl(37 33% 96%) 0%, hsl(37 33% 96% / 0.50) 18%, hsl(37 33% 96% / 0.08) 40%, transparent 55%);"
         ></div>
         <!-- subtle red tint overlay -->
         <div
