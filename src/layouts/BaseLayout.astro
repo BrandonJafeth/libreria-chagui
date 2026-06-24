@@ -2,12 +2,11 @@
 import Navbar from '../components/Navbar.astro'
 import Footer from '../components/Footer.astro'
 import '../styles/global.css'
-import '@fontsource/poppins/400.css'
-import '@fontsource/poppins/500.css'
-import '@fontsource/poppins/600.css'
-import '@fontsource/poppins/700.css'
-import '@fontsource/poppins/800.css'
-import '@fontsource/poppins/900.css'
+import '@fontsource/poppins/latin-400.css'
+import '@fontsource/poppins/latin-500.css'
+import '@fontsource/poppins/latin-600.css'
+import '@fontsource/poppins/latin-700.css'
+import '@fontsource/poppins/latin-900.css'
 import { site } from '../data/site'
 
 interface Props {
@@ -144,11 +143,12 @@ const breadcrumbSchema = !isHome ? {
     <link rel="manifest" href="/site.webmanifest" />
 
     {isHome && (
-      <!-- Preload de la imagen LCP del hero -->
       <link
         rel="preload"
         as="image"
-        href="https://res.cloudinary.com/daqragn9m/image/upload/w_720,h_1080,c_fill,f_webp,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg"
+        href="https://res.cloudinary.com/daqragn9m/image/upload/w_800,f_auto,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg"
+        imagesrcset="https://res.cloudinary.com/daqragn9m/image/upload/w_480,f_auto,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg 480w, https://res.cloudinary.com/daqragn9m/image/upload/w_800,f_auto,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg 800w, https://res.cloudinary.com/daqragn9m/image/upload/w_1200,f_auto,q_auto/v1781889539/libreria-chagui-hero_ok8jez.jpg 1200w"
+        imagesizes="(min-width: 1024px) 54vw, 100vw"
         fetchpriority="high"
       />
     )}
