@@ -61,6 +61,46 @@ export type Database = {
         Insert: Record<string, unknown>
         Update: Record<string, unknown>
       }
+      orders: {
+        Row: {
+          id: string
+          customer_name: string
+          customer_phone: string
+          notes: string | null
+          total: number
+          status: 'pendiente' | 'confirmado' | 'cancelado'
+          created_at: string
+        }
+        Insert: {
+          customer_name: string
+          customer_phone: string
+          notes?: string | null
+          total: number
+        }
+        Update: Record<string, unknown>
+      }
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          product_id: string | null
+          product_nombre: string
+          color: string | null
+          precio_unitario: number
+          cantidad: number
+          subtotal: number
+        }
+        Insert: {
+          order_id: string
+          product_id?: string | null
+          product_nombre: string
+          color?: string | null
+          precio_unitario: number
+          cantidad: number
+          subtotal: number
+        }
+        Update: Record<string, unknown>
+      }
       product_reviews: {
         Row: {
           id: string

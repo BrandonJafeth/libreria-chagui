@@ -19,6 +19,7 @@ export const site = {
     phone: '+506 6359 5383',
     phone2: '+506 4080 7942',
     whatsapp: '50663595383',
+    sinpe: '6359-5383',
     address: 'Hatillo, de la rotonda 75 metros norte, mano derecha — diagonal al C.C. Plaza América',
     whatsappBase:
       'https://api.whatsapp.com/send?phone=50663595383&text=Hola%20buenas%2C%20era%20para%20realizar%20una%20consulta',
