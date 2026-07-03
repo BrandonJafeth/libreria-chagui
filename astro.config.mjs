@@ -4,7 +4,18 @@ import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import icon from 'astro-icon'
 import cloudflare from '@astrojs/cloudflare'
-import { products } from './src/data/products.ts'
+import { createClient } from '@supabase/supabase-js'
+import { existsSync } from 'node:fs'
+
+if (existsSync('.env')) process.loadEnvFile('.env')
+
+const supabase = createClient(
+  process.env.PUBLIC_SUPABASE_URL,
+  process.env.PUBLIC_SUPABASE_ANON_KEY
+)
+
+const { data: products, error } = await supabase.from('products').select('slug')
+if (error) throw new Error(`Sitemap: failed to fetch product slugs: ${error.message}`)
 
 const productUrls = products.map(
   (p) => `https://libreriafchagui.com/producto/${p.slug}`
