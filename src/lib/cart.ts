@@ -39,6 +39,30 @@ export function closeCart() {
   isCartOpen.set(false)
 }
 
+export interface ToastPayload {
+  nombre: string
+  imagen?: string
+  precio: number
+  cantidad: number
+}
+
+export const toastItem = atom<ToastPayload | null>(null)
+
+let toastTimer: ReturnType<typeof setTimeout> | null = null
+
+export const TOAST_DURATION = 2800
+
+export function showToast(item: ToastPayload) {
+  toastItem.set(item)
+  if (toastTimer) clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => toastItem.set(null), TOAST_DURATION)
+}
+
+export function hideToast() {
+  if (toastTimer) clearTimeout(toastTimer)
+  toastItem.set(null)
+}
+
 function itemKey(productId: string, color?: string): string {
   return `${productId}::${color ?? ''}`
 }
@@ -73,9 +97,9 @@ export function clearCart(): void {
   cartItems.set([])
 }
 
-export const cartCount = computed(cartItems, (items) =>
-  items.reduce((sum, i) => sum + i.cantidad, 0),
-)
+// Counts distinct product types (line items), not summed quantities —
+// 5 cuadernos + 1 lápiz reads as "2", not "6".
+export const cartCount = computed(cartItems, (items) => items.length)
 
 export const cartTotal = computed(cartItems, (items) =>
   items.reduce((sum, i) => sum + i.precio * i.cantidad, 0),

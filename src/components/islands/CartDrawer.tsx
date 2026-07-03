@@ -41,7 +41,6 @@ export default function CartDrawer() {
   const storeTotal = useStore(cartTotal)
   const items = mounted ? storeItems : []
   const total = mounted ? storeTotal : 0
-  const totalQty = items.reduce((s, i) => s + i.cantidad, 0)
 
   const [customerName, setCustomerName] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
@@ -159,17 +158,18 @@ export default function CartDrawer() {
           <div>
             <h2 className="font-heading font-bold text-lg text-foreground leading-none">Tu carrito</h2>
             <p className="font-body text-[11px] text-foreground/45 mt-1.5 uppercase tracking-[0.1em]">
-              {items.length === 0 ? 'Sin productos' : `${totalQty} producto${totalQty === 1 ? '' : 's'}`}
+              {items.length === 0 ? 'Sin productos' : `${items.length} producto${items.length === 1 ? '' : 's'}`}
             </p>
           </div>
           <button
             onClick={closeCart}
-            aria-label="Cerrar carrito"
-            className="w-9 h-9 flex items-center justify-center text-foreground/50 hover:text-foreground transition-colors active:scale-90"
+            aria-label="Cerrar carrito y seguir comprando"
+            className="flex items-center gap-1.5 text-foreground/60 hover:text-accent transition-colors active:scale-95"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" aria-hidden="true">
-              <path d="M18 6 6 18M6 6l12 12" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
+            <span className="font-body text-[12px] font-semibold uppercase tracking-[0.06em]">Seguir comprando</span>
           </button>
         </div>
 

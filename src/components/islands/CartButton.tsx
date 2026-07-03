@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { addToCart, openCart } from '../../lib/cart'
+import { addToCart, showToast } from '../../lib/cart'
 
 interface Props {
   productId: string
@@ -18,7 +18,7 @@ export default function CartButton({ productId, slug, nombre, precio, imagen, co
   function handleAdd() {
     addToCart({ productId, slug, nombre, precio, imagen, color }, qty)
     setJustAdded(true)
-    openCart()
+    showToast({ nombre, imagen, precio, cantidad: qty })
     setTimeout(() => setJustAdded(false), 1800)
     setQty(1)
   }

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import type { Product } from '../../lib/products'
+import { addToCart, showToast } from '../../lib/cart'
 
 function clImg(url: string, transforms: string): string {
   if (!url.includes('res.cloudinary.com')) return url
@@ -57,6 +58,27 @@ function ProductCard({ product }: { product: Product }) {
   const isPlaceholder = !product.imagenes[0] || product.imagenes[0].includes('PLACEHOLDER')
   const meta = getPlaceholderMeta(product.tipos)
   const isAgotado = product.estado === 'agotado'
+  const [added, setAdded] = useState(false)
+
+  function handleQuickAdd(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (isAgotado) return
+    addToCart(
+      {
+        productId: product.id,
+        slug: product.slug,
+        nombre: product.nombre,
+        precio: product.precio,
+        imagen: product.imagenes[0],
+        color: product.colores[0]?.nombre,
+      },
+      1,
+    )
+    showToast({ nombre: product.nombre, imagen: product.imagenes[0], precio: product.precio, cantidad: 1 })
+    setAdded(true)
+    setTimeout(() => setAdded(false), 1200)
+  }
 
   return (
     <a
@@ -116,29 +138,57 @@ function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="p-4 flex flex-col gap-1 flex-1">
-        {product.tipos[0] && (
-          <span
-            className="self-start text-[9px] font-bold uppercase tracking-wider"
-            style={{
-              background:   `${meta.accent}15`,
-              color:        meta.accent,
-              borderRadius: '4px',
-              padding:      '2px 7px',
-              marginBottom: '2px',
-            }}
-          >
-            {product.tipos[0]}
-          </span>
-        )}
-        <p
-          className="text-sm font-medium leading-snug"
-          style={{
-            fontFamily: 'Inter, sans-serif',
-            color:      isAgotado ? 'rgba(43,43,43,0.4)' : 'hsl(0 0% 17%)',
-          }}
-        >
-          {product.nombre}
-        </p>
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            {product.tipos[0] && (
+              <span
+                className="self-start text-[9px] font-bold uppercase tracking-wider"
+                style={{
+                  background:   `${meta.accent}15`,
+                  color:        meta.accent,
+                  borderRadius: '4px',
+                  padding:      '2px 7px',
+                  marginBottom: '2px',
+                  display:      'inline-block',
+                }}
+              >
+                {product.tipos[0]}
+              </span>
+            )}
+            <p
+              className="text-sm font-medium leading-snug"
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                color:      isAgotado ? 'rgba(43,43,43,0.4)' : 'hsl(0 0% 17%)',
+              }}
+            >
+              {product.nombre}
+            </p>
+          </div>
+
+          {!isAgotado && (
+            <button
+              type="button"
+              onClick={handleQuickAdd}
+              aria-label={`Agregar ${product.nombre} al carrito`}
+              className="shrink-0 flex items-center justify-center w-7 h-7 -mt-0.5 -mr-0.5 transition-all duration-200 active:scale-90"
+              style={{ color: added ? 'hsl(150 40% 32%)' : 'rgba(43,43,43,0.4)' }}
+            >
+              {added ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                  <path d="M3 6h18" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+              )}
+            </button>
+          )}
+        </div>
+
         <p
           className="text-base font-semibold mt-1"
           style={{
