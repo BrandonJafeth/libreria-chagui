@@ -8,6 +8,7 @@
   --color-accent:     hsl(6 63% 46%);
   --color-accent-2:   hsl(211 50% 36%);
   --color-accent-3:   hsl(36 80% 58%);
+  --color-success:    hsl(130 38% 34%);
   --font-heading:     'Poppins', sans-serif;
   --font-body:        'Poppins', sans-serif;
 }
@@ -104,6 +105,23 @@
 @media (prefers-reduced-motion: reduce) {
   .svc-panel.is-animating,
   .svc-panel.is-animating .svc-card {
+    animation: none;
+  }
+}
+
+/* ── Qty stepper bump ── */
+@keyframes qty-bump {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+.qty-bump {
+  animation: qty-bump 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qty-bump {
     animation: none;
   }
 }

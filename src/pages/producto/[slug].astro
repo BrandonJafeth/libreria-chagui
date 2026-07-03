@@ -173,16 +173,20 @@ const productSchema = {
           </p>
 
           <!-- Estado -->
-          <div class="flex items-center gap-2 mt-3">
-            <span class="text-sm font-body font-semibold text-foreground/55 uppercase tracking-wide">Stock:</span>
-            <span class={`inline-block w-2 h-2 rounded-full ${product.estado === 'disponible' ? 'bg-green-500' : 'bg-foreground/35'}`}></span>
-            <span class={`text-sm font-body font-medium ${product.estado === 'disponible' ? 'text-accent-2' : 'text-foreground/60'}`}>
+          <div class="flex items-center gap-2 mt-4">
+            <span class="relative flex h-2 w-2 shrink-0">
+              {product.estado === 'disponible' && (
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/50"></span>
+              )}
+              <span class={`relative inline-flex h-2 w-2 rounded-full ${product.estado === 'disponible' ? 'bg-success' : 'bg-foreground/35'}`}></span>
+            </span>
+            <span class={`text-[12px] font-semibold tracking-[0.65px] uppercase ${product.estado === 'disponible' ? 'text-success' : 'text-foreground/50'}`}>
               {product.estado === 'disponible' ? 'Disponible' : 'Agotado'}
             </span>
           </div>
 
           <!-- Variant selector + CTA (island) -->
-          <div class="mt-6">
+          <div class="mt-7">
             <VariantSelector product={product} client:visible />
           </div>
 
