@@ -36,6 +36,23 @@ function getPlaceholderMeta(tipos: string[]) {
   return fallbackMeta
 }
 
+// Collapses long page runs to "1 … 4 5 6 … 16" so pagination stays a fixed,
+// thumb-friendly width instead of cramming every page number into one row.
+type PageItem = number | 'ellipsis'
+function getPageItems(current: number, total: number): PageItem[] {
+  const delta = 1
+  const left = Math.max(2, current - delta)
+  const right = Math.min(total - 1, current + delta)
+  const items: PageItem[] = [1]
+
+  if (left > 2) items.push('ellipsis')
+  for (let i = left; i <= right; i++) items.push(i)
+  if (right < total - 1) items.push('ellipsis')
+  if (total > 1) items.push(total)
+
+  return items
+}
+
 function ProductCard({ product }: { product: Product }) {
   const isPlaceholder = !product.imagenes[0] || product.imagenes[0].includes('PLACEHOLDER')
   const meta = getPlaceholderMeta(product.tipos)
@@ -375,14 +392,14 @@ export default function CatalogFilters({ products, tipos }: Props) {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-1.5 mt-10">
+            <nav aria-label="Paginación" className="flex items-center justify-center gap-1 sm:gap-1.5 mt-10">
               <button
                 onClick={() => setPage(p => p - 1)}
                 disabled={page === 1}
-                className="flex items-center justify-center transition-all duration-200 disabled:opacity-25 disabled:cursor-not-allowed"
+                className="flex items-center justify-center shrink-0 transition-all duration-200 disabled:opacity-25 disabled:cursor-not-allowed"
                 style={{
-                  width:        '32px',
-                  height:       '32px',
+                  width:        '34px',
+                  height:       '34px',
                   border:       '1px solid rgba(43,43,43,0.12)',
                   borderRadius: '6px',
                   background:   'transparent',
@@ -396,39 +413,54 @@ export default function CatalogFilters({ products, tipos }: Props) {
                 </svg>
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => {
-                const active = n === page
-                return (
-                  <button
-                    key={n}
-                    onClick={() => setPage(n)}
-                    className="transition-all duration-200"
+              {getPageItems(page, totalPages).map((item, i) =>
+                item === 'ellipsis' ? (
+                  <span
+                    key={`e${i}`}
+                    aria-hidden="true"
+                    className="flex items-center justify-center shrink-0"
                     style={{
-                      width:        '32px',
-                      height:       '32px',
-                      border:       `1px solid ${active ? 'hsl(6 63% 46%)' : 'rgba(43,43,43,0.12)'}`,
+                      width:      '34px',
+                      height:     '34px',
+                      color:      'rgba(43,43,43,0.35)',
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize:   '0.8125rem',
+                    }}
+                  >
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={item}
+                    onClick={() => setPage(item)}
+                    className="shrink-0 transition-all duration-200"
+                    style={{
+                      width:        '34px',
+                      height:       '34px',
+                      border:       `1px solid ${item === page ? 'hsl(6 63% 46%)' : 'rgba(43,43,43,0.12)'}`,
                       borderRadius: '6px',
-                      background:   active ? 'hsl(6 63% 46%)' : 'transparent',
-                      color:        active ? 'white' : 'rgba(43,43,43,0.55)',
+                      background:   item === page ? 'hsl(6 63% 46%)' : 'transparent',
+                      color:        item === page ? 'white' : 'rgba(43,43,43,0.55)',
                       fontFamily:   'Inter, sans-serif',
                       fontSize:     '0.8125rem',
-                      fontWeight:   active ? 600 : 400,
+                      fontWeight:   item === page ? 600 : 400,
                       cursor:       'pointer',
                     }}
-                    aria-current={active ? 'page' : undefined}
+                    aria-current={item === page ? 'page' : undefined}
+                    aria-label={`Página ${item}`}
                   >
-                    {n}
+                    {item}
                   </button>
-                )
-              })}
+                ),
+              )}
 
               <button
                 onClick={() => setPage(p => p + 1)}
                 disabled={page === totalPages}
-                className="flex items-center justify-center transition-all duration-200 disabled:opacity-25 disabled:cursor-not-allowed"
+                className="flex items-center justify-center shrink-0 transition-all duration-200 disabled:opacity-25 disabled:cursor-not-allowed"
                 style={{
-                  width:        '32px',
-                  height:       '32px',
+                  width:        '34px',
+                  height:       '34px',
                   border:       '1px solid rgba(43,43,43,0.12)',
                   borderRadius: '6px',
                   background:   'transparent',
@@ -441,7 +473,7 @@ export default function CatalogFilters({ products, tipos }: Props) {
                   <path d="m9 18 6-6-6-6"/>
                 </svg>
               </button>
-            </div>
+            </nav>
           )}
         </>
       )}
