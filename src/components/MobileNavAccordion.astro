@@ -1,0 +1,73 @@
+---
+interface Item {
+  label: string
+  href: string
+}
+
+interface Section {
+  label: string
+  href: string
+  items?: Item[]
+}
+
+interface Props {
+  label: string
+  active: boolean
+  sections: Section[]
+  viewAllLabel: string
+  viewAllHref: string
+}
+
+const { label, active, sections, viewAllLabel, viewAllHref } = Astro.props
+---
+
+<details class="group">
+  <summary
+    class={`flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-lg transition-colors cursor-pointer list-none ${
+      active
+        ? 'text-white bg-white/[0.14]'
+        : 'text-white/80 hover:text-white hover:bg-white/10'
+    }`}
+  >
+    {label}
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </summary>
+  <div class="flex flex-col gap-0.5 pl-3 pt-1 pb-1.5">
+    {sections.map((sec) => (
+      sec.items && sec.items.length > 0 ? (
+        <div class="mb-0.5 last:mb-0">
+          <a
+            href={sec.href}
+            class="block px-3 py-1.5 text-[13px] font-bold text-white/90 hover:text-white transition-colors"
+          >
+            {sec.label}
+          </a>
+          {sec.items.map((item) => (
+            <a
+              href={item.href}
+              class="flex items-center gap-1.5 px-3 py-1.5 pl-6 text-[12.5px] text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <span class="w-1 h-1 rounded-full bg-white/35 shrink-0" aria-hidden="true"></span>
+              {item.label}
+            </a>
+          ))}
+        </div>
+      ) : (
+        <a
+          href={sec.href}
+          class="px-3 py-2 text-[13px] font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+        >
+          {sec.label}
+        </a>
+      )
+    ))}
+    <a
+      href={viewAllHref}
+      class="px-3 py-2 text-[13px] font-semibold text-white hover:bg-white/10 rounded-lg transition-colors"
+    >
+      {viewAllLabel} →
+    </a>
+  </div>
+</details>

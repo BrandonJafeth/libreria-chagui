@@ -1,0 +1,87 @@
+---
+interface Item {
+  label: string
+  href: string
+}
+
+interface Section {
+  label: string
+  href: string
+  items?: Item[]
+}
+
+interface Props {
+  label: string
+  href: string
+  active: boolean
+  sections: Section[]
+  viewAllLabel: string
+  viewAllHref: string
+}
+
+const { label, href, active, sections, viewAllLabel, viewAllHref } = Astro.props
+---
+
+<div class="relative group">
+  <a
+    href={href}
+    class={`flex items-center gap-1 px-4 py-1.5 text-[13.5px] font-medium transition-colors rounded-full ${
+      active
+        ? 'text-white border border-white/30 bg-white/[0.14]'
+        : 'text-white/80 hover:text-white hover:bg-white/10'
+    }`}
+  >
+    {label}
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:rotate-180" aria-hidden="true">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </a>
+
+  <!-- Hover mega-menu -->
+  <div class="absolute left-1/2 -translate-x-1/2 top-full w-64 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 pt-2">
+    <div class="bg-card border border-foreground/10 shadow-2xl overflow-hidden" style="border-radius: 10px;">
+      <p class="px-4 pt-3.5 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/35">
+        Categorías
+      </p>
+      <div class="px-1.5 pb-2">
+        {sections.map((sec) => (
+          sec.items && sec.items.length > 0 ? (
+            <div class="mb-0.5 last:mb-0">
+              <a
+                href={sec.href}
+                class="block px-2.5 pt-2 pb-1 text-[13px] font-bold text-foreground/85 hover:text-accent-2 transition-colors"
+              >
+                {sec.label}
+              </a>
+              {sec.items.map((item) => (
+                <a
+                  href={item.href}
+                  class="flex items-center gap-1.5 px-2.5 py-1.5 pl-5 text-[13px] text-foreground/55 hover:text-accent-2 hover:bg-accent-2/6 rounded-md transition-colors"
+                >
+                  <span class="w-1 h-1 rounded-full bg-foreground/25 shrink-0" aria-hidden="true"></span>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <a
+              href={sec.href}
+              class="block px-2.5 py-2 text-sm font-medium text-foreground/70 hover:text-accent-2 hover:bg-accent-2/6 rounded-md transition-colors"
+            >
+              {sec.label}
+            </a>
+          )
+        ))}
+      </div>
+      <a
+        href={viewAllHref}
+        class="flex items-center justify-between px-4 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-accent border-t border-foreground/10 hover:bg-accent/5 transition-colors"
+      >
+        {viewAllLabel}
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

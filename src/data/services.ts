@@ -1,3 +1,8 @@
+export function slugifyCategoria(s: string): string {
+  return s.toLowerCase().normalize('NFD')
+    .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-')
+}
+
 export interface Service {
   id: string
   nombre: string
@@ -29,13 +34,13 @@ export const serviceGroups: ServiceGroup[] = [
       {
         id: 'imp-1',
         nombre: 'Impresiones',
-        descripcion: 'Imprimimos documentos, tareas, trabajos universitarios, formularios y cualquier archivo que nos traigás en USB o por WhatsApp. Disponible en blanco y negro o a color, en tamaños carta, oficio y más. B&N desde ₡50, color desde ₡100. Descuento por volumen en trabajos grandes.',
+        descripcion: 'Imprimimos documentos, tareas, trabajos universitarios, formularios y cualquier archivo que nos envíes por WhatsApp o traigás en USB. Disponible en blanco y negro o a color, en tamaño carta u oficio. Blanco y negro ₡100, a color ₡200. Descuentos por volumen en trabajos grandes — consultá por WhatsApp.',
         icono: 'printer',
       },
       {
         id: 'imp-2',
         nombre: 'Copias',
-        descripcion: 'Fotocopias rápidas a precios accesibles. Traé tu original y te hacemos las copias al instante, en blanco y negro o a color. Ideal para documentos, contratos, tareas o cualquier papel que necesités duplicar. Precios que no duelen.',
+        descripcion: 'Fotocopias rápidas a precios accesibles: blanco y negro ₡35, a color ₡100. Traé tu original y te las hacemos al instante — documentos, contratos, tareas o cualquier papel que necesités duplicar. Descuentos por volumen en trabajos grandes.',
         icono: 'copy',
       },
     ],

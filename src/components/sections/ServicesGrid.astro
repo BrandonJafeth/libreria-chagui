@@ -1,14 +1,15 @@
 ---
 import { clImg } from '../../lib/cloudinary'
 import SectionHeader from '../ui/SectionHeader.astro'
-import type { ServiceGroup } from '../../data/services'
+import { slugifyCategoria, type ServiceGroup } from '../../data/services'
 
 interface Props {
   heading?: string
   subtext?: string
   groups: ServiceGroup[]
+  activeCategory?: string
 }
-const { heading, subtext, groups } = Astro.props
+const { heading, subtext, groups, activeCategory } = Astro.props
 
 const WA_BASE = 'https://api.whatsapp.com/send?phone=50663595383&text='
 function serviceWA(nombre: string) {
@@ -28,11 +29,6 @@ function cfgFor(group: ServiceGroup) {
   return { accent: group.accent ?? fb.accent, tint: group.tint ?? fb.tint }
 }
 
-function slugify(s: string) {
-  return s.toLowerCase().normalize('NFD')
-    .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-')
-}
-
 const categoryImages: Record<string, string> = {
   'Impresión':   'https://res.cloudinary.com/daqragn9m/image/upload/v1782084445/libreria-chagui-impresiones_bobuja.jpg',
   'Sublimación': 'https://res.cloudinary.com/daqragn9m/image/upload/v1781919412/libreria-chagui-sublimacion_qnpjju.jpg',
@@ -41,10 +37,12 @@ const categoryImages: Record<string, string> = {
 }
 
 const useTabs = groups.length > 1
+const groupIds = groups.map((g) => slugifyCategoria(g.categoria))
+const activeId = activeCategory && groupIds.includes(activeCategory) ? activeCategory : groupIds[0]
 
 // CSS puro para mostrar panel activo y marcar tab activo
 const tabCss = groups.map((g) => {
-  const id     = slugify(g.categoria)
+  const id     = slugifyCategoria(g.categoria)
   const accent = cfgFor(g).accent
   return [
     `.svc-tabs:has(#svc-tab-${id}:checked) [data-panel="${id}"]{display:block}`,
@@ -73,8 +71,8 @@ const tabCss = groups.map((g) => {
           <!-- full-bleed scroll wrapper: clips tab overflow so it never leaks to page level -->
           <div class="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0 border-b border-foreground/8 mb-10 svc-tabs-scroll">
             <div class="flex gap-6 sm:gap-10 min-w-max">
-              {groups.map((g, gi) => {
-                const id  = slugify(g.categoria)
+              {groups.map((g) => {
+                const id  = slugifyCategoria(g.categoria)
                 const cfg = cfgFor(g)
                 return (
                   <Fragment>
@@ -83,7 +81,7 @@ const tabCss = groups.map((g) => {
                       name="svc-tab"
                       id={`svc-tab-${id}`}
                       class="sr-only"
-                      checked={gi === 0}
+                      checked={id === activeId}
                     />
                     <label
                       for={`svc-tab-${id}`}
@@ -108,7 +106,7 @@ const tabCss = groups.map((g) => {
         <div class="svc-panels">
           {groups.map((g) => {
             const cfg = cfgFor(g)
-            const id  = slugify(g.categoria)
+            const id  = slugifyCategoria(g.categoria)
             return (
               <div class="svc-panel" data-panel={id}>
 
@@ -186,6 +184,7 @@ const tabCss = groups.map((g) => {
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   {g.servicios.map((svc, si) => (
                     <a
+                      id={slugifyCategoria(svc.nombre)}
                       href={serviceWA(svc.nombre)}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -193,7 +192,7 @@ const tabCss = groups.map((g) => {
                              p-6 flex flex-col gap-4
                              transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/6
                              overflow-hidden"
-                      style={`--d: ${si * 0.06}s`}
+                      style={`--d: ${si * 0.06}s; scroll-margin-top: 160px;`}
                     >
                       {/* Accent top line — reveals on hover */}
                       <div
@@ -246,6 +245,7 @@ const tabCss = groups.map((g) => {
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {group.servicios.map((svc, si) => (
                   <a
+                    id={slugifyCategoria(svc.nombre)}
                     href={serviceWA(svc.nombre)}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -253,7 +253,7 @@ const tabCss = groups.map((g) => {
                            p-6 flex flex-col gap-4
                            transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/6
                            overflow-hidden"
-                    style={`--d: ${si * 0.06}s`}
+                    style={`--d: ${si * 0.06}s; scroll-margin-top: 160px;`}
                   >
                     <div
                       class="absolute top-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"

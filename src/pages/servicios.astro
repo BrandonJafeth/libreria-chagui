@@ -3,8 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import PageHero from '../components/sections/PageHero.astro'
 import ServicesGrid from '../components/sections/ServicesGrid.astro'
 import CtaBanner from '../components/sections/CtaBanner.astro'
-import { serviceGroups } from '../data/services'
+import { serviceGroups, slugifyCategoria } from '../data/services'
 import { site } from '../data/site'
+
+const catParam = Astro.url.searchParams.get('cat')
+const groupSlugs = serviceGroups.map(g => slugifyCategoria(g.categoria))
+const activeCategory = catParam && groupSlugs.includes(catParam) ? catParam : undefined
 
 const allServices = serviceGroups.flatMap(g => g.servicios)
 const serviceListSchema = {
@@ -47,7 +51,7 @@ const serviceListSchema = {
         imageAlt="Servicios de Librería y Bazar Chagui"
       />
 
-      <ServicesGrid groups={serviceGroups} />
+      <ServicesGrid groups={serviceGroups} activeCategory={activeCategory} />
     </div>
   </section>
 

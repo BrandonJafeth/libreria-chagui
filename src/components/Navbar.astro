@@ -2,7 +2,10 @@
 import { clImg } from '../lib/cloudinary'
 import { site } from '../data/site'
 import { getTipos } from '../lib/products'
+import { serviceGroups, slugifyCategoria } from '../data/services'
 import CartIcon from './islands/CartIcon'
+import NavMegaMenu from './NavMegaMenu.astro'
+import MobileNavAccordion from './MobileNavAccordion.astro'
 
 const pathname = Astro.url.pathname
 const tipos = await getTipos()
@@ -10,6 +13,37 @@ const tipos = await getTipos()
 function isActive(href: string): boolean {
   if (href === '/') return pathname === '/'
   return pathname.startsWith(href)
+}
+
+interface MenuSection {
+  label: string
+  href: string
+  items?: { label: string; href: string }[]
+}
+
+// Nav links that get a category hover mega-menu (desktop) / accordion (mobile)
+// instead of a plain link — lets shoppers jump straight into a filtered view.
+const navMenus: Record<string, { sections: MenuSection[]; viewAllLabel: string; viewAllHref: string }> = {
+  '/catalogo': {
+    sections: tipos.map((t) => ({ label: t, href: `/catalogo?tipo=${encodeURIComponent(t)}` })),
+    viewAllLabel: 'Ver todo el catálogo',
+    viewAllHref: '/catalogo',
+  },
+  '/servicios': {
+    sections: serviceGroups.map((g) => {
+      const catSlug = slugifyCategoria(g.categoria)
+      return {
+        label: g.categoria,
+        href: `/servicios?cat=${catSlug}`,
+        items: g.servicios.map((s) => ({
+          label: s.nombre,
+          href: `/servicios?cat=${catSlug}#${slugifyCategoria(s.nombre)}`,
+        })),
+      }
+    }),
+    viewAllLabel: 'Ver todos los servicios',
+    viewAllHref: '/servicios',
+  },
 }
 ---
 
@@ -36,58 +70,17 @@ function isActive(href: string): boolean {
 
     <!-- Desktop links -->
     <nav class="hidden md:flex items-center gap-1" aria-label="Navegación principal">
-      {site.nav.map((link) => (
-        link.href === '/catalogo' && tipos.length > 0 ? (
-          <div class="relative group">
-            <a
-              href={link.href}
-              class={`flex items-center gap-1 px-4 py-1.5 text-[13.5px] font-medium transition-colors rounded-full ${
-                isActive(link.href)
-                  ? 'text-white border border-white/30 bg-white/[0.14]'
-                  : 'text-white/80 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              {link.label}
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:rotate-180" aria-hidden="true">
-                <path d="m6 9 6 6 6-6"/>
-              </svg>
-            </a>
-
-            <!-- Hover mega-menu: category shortcuts -->
-            <div
-              class="absolute left-1/2 -translate-x-1/2 top-full w-60 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 pt-2"
-            >
-              <div
-                class="bg-card border border-foreground/10 shadow-2xl overflow-hidden"
-                style="border-radius: 10px;"
-              >
-                <p class="px-4 pt-3.5 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/35">
-                  Categorías
-                </p>
-                <ul class="px-1.5 pb-2">
-                  {tipos.map((tipo) => (
-                    <li>
-                      <a
-                        href={`/catalogo?tipo=${encodeURIComponent(tipo)}`}
-                        class="block px-2.5 py-2 text-sm font-medium text-foreground/70 hover:text-accent-2 hover:bg-accent-2/6 rounded-md transition-colors"
-                      >
-                        {tipo}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="/catalogo"
-                  class="flex items-center justify-between px-4 py-3 text-[12px] font-bold uppercase tracking-[0.08em] text-accent border-t border-foreground/10 hover:bg-accent/5 transition-colors"
-                >
-                  Ver todo el catálogo
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M5 12h14M13 6l6 6-6 6"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
+      {site.nav.map((link) => {
+        const menu = navMenus[link.href]
+        return menu && menu.sections.length > 0 ? (
+          <NavMegaMenu
+            label={link.label}
+            href={link.href}
+            active={isActive(link.href)}
+            sections={menu.sections}
+            viewAllLabel={menu.viewAllLabel}
+            viewAllHref={menu.viewAllHref}
+          />
         ) : (
           <a
             href={link.href}
@@ -100,7 +93,7 @@ function isActive(href: string): boolean {
             {link.label}
           </a>
         )
-      ))}
+      })}
     </nav>
 
     <!-- Right cluster: WhatsApp CTA (desktop) + cart + mobile toggle -->
@@ -149,38 +142,16 @@ function isActive(href: string): boolean {
     aria-label="Menú móvil"
   >
     <nav class="flex flex-col gap-0.5" aria-label="Navegación móvil">
-      {site.nav.map((link) => (
-        link.href === '/catalogo' && tipos.length > 0 ? (
-          <details class="group">
-            <summary
-              class={`flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-lg transition-colors cursor-pointer list-none ${
-                isActive(link.href)
-                  ? 'text-white bg-white/[0.14]'
-                  : 'text-white/80 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              {link.label}
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
-                <path d="m6 9 6 6 6-6"/>
-              </svg>
-            </summary>
-            <div class="flex flex-col gap-0.5 pl-3 pt-1 pb-1.5">
-              {tipos.map((tipo) => (
-                <a
-                  href={`/catalogo?tipo=${encodeURIComponent(tipo)}`}
-                  class="px-3 py-2 text-[13px] font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-                >
-                  {tipo}
-                </a>
-              ))}
-              <a
-                href="/catalogo"
-                class="px-3 py-2 text-[13px] font-semibold text-white hover:bg-white/10 rounded-lg transition-colors"
-              >
-                Ver todo el catálogo →
-              </a>
-            </div>
-          </details>
+      {site.nav.map((link) => {
+        const menu = navMenus[link.href]
+        return menu && menu.sections.length > 0 ? (
+          <MobileNavAccordion
+            label={link.label}
+            active={isActive(link.href)}
+            sections={menu.sections}
+            viewAllLabel={menu.viewAllLabel}
+            viewAllHref={menu.viewAllHref}
+          />
         ) : (
           <a
             href={link.href}
@@ -193,7 +164,7 @@ function isActive(href: string): boolean {
             {link.label}
           </a>
         )
-      ))}
+      })}
       <div class="mt-4 pt-4" style="border-top: 1px solid rgba(255,255,255,0.15);">
         <a
           href={site.contact.whatsappBase}
