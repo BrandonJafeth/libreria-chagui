@@ -46,23 +46,30 @@ const { label, href, active, sections, viewAllLabel, viewAllHref } = Astro.props
       <div class="px-1.5 pb-2">
         {sections.map((sec) => (
           sec.items && sec.items.length > 0 ? (
-            <div class="mb-0.5 last:mb-0">
-              <a
-                href={sec.href}
-                class="block px-2.5 pt-2 pb-1 text-[13px] font-bold text-foreground/85 hover:text-accent-2 transition-colors"
-              >
-                {sec.label}
-              </a>
-              {sec.items.map((item) => (
+            <details class="group/sec mb-0.5 last:mb-0">
+              <summary class="flex items-center justify-between gap-1 px-2.5 py-2 rounded-md cursor-pointer list-none hover:bg-accent-2/6 transition-colors">
                 <a
-                  href={item.href}
-                  class="flex items-center gap-1.5 px-2.5 py-1.5 pl-5 text-[13px] text-foreground/55 hover:text-accent-2 hover:bg-accent-2/6 rounded-md transition-colors"
+                  href={sec.href}
+                  class="text-[13px] font-bold text-foreground/85 hover:text-accent-2 transition-colors"
                 >
-                  <span class="w-1 h-1 rounded-full bg-foreground/25 shrink-0" aria-hidden="true"></span>
-                  {item.label}
+                  {sec.label}
                 </a>
-              ))}
-            </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-foreground/35 transition-transform duration-200 group-open/sec:rotate-180" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </summary>
+              <div class="pb-1">
+                {sec.items.map((item) => (
+                  <a
+                    href={item.href}
+                    class="flex items-center gap-1.5 px-2.5 py-1.5 pl-5 text-[13px] text-foreground/55 hover:text-accent-2 hover:bg-accent-2/6 rounded-md transition-colors"
+                  >
+                    <span class="w-1 h-1 rounded-full bg-foreground/25 shrink-0" aria-hidden="true"></span>
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </details>
           ) : (
             <a
               href={sec.href}

@@ -9,6 +9,8 @@ import { site } from '../data/site'
 const products = await getProducts()
 const tipos = await getTipos()
 
+const productsAZ = [...products].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+
 const tipoParam = Astro.url.searchParams.get('tipo')
 const initialTipo = tipoParam && tipos.includes(tipoParam) ? tipoParam : 'Todos'
 ---
@@ -44,7 +46,7 @@ const initialTipo = tipoParam && tipos.includes(tipoParam) ? tipoParam : 'Todos'
         Índice de productos
       </p>
       <ul class="columns-2 sm:columns-3 lg:columns-4 gap-x-8">
-        {products.map(p => (
+        {productsAZ.map(p => (
           <li class="mb-2">
             <a
               href={`/producto/${p.slug}`}

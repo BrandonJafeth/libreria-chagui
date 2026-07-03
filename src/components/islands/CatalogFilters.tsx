@@ -200,7 +200,7 @@ function ProductCard({ product }: { product: Product }) {
   )
 }
 
-type SortKey = 'relevante' | 'precio-asc' | 'precio-desc'
+type SortKey = 'relevante' | 'alfabetico' | 'precio-asc' | 'precio-desc'
 
 interface PriceRange {
   label: string
@@ -216,9 +216,9 @@ const PRICE_RANGES: PriceRange[] = [
 ]
 
 /* ─── sidebar filter section — native <details>, zero JS ───── */
-function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
+function FilterSection({ title, open, children }: { title: string; open: boolean; children: React.ReactNode }) {
   return (
-    <details className="group border-b border-foreground/8 py-3.5 first:pt-0 last:border-b-0" open>
+    <details className="group border-b border-foreground/8 py-3.5 first:pt-0 last:border-b-0" open={open}>
       <summary className="flex items-center justify-between cursor-pointer list-none select-none">
         <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-foreground/70">{title}</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-foreground/35 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
@@ -293,7 +293,11 @@ export default function CatalogFilters({ products, tipos, initialTipo }: Props) 
     })
     if (sortBy === 'precio-asc')  result = [...result].sort((a, b) => a.precio - b.precio)
     if (sortBy === 'precio-desc') result = [...result].sort((a, b) => b.precio - a.precio)
-    if (sortBy === 'relevante')   result = [...result].sort((a, b) => (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0))
+    if (sortBy === 'alfabetico')  result = [...result].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+    if (sortBy === 'relevante')   result = [...result].sort((a, b) => {
+      const destacadoDiff = (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0)
+      return destacadoDiff !== 0 ? destacadoDiff : a.nombre.localeCompare(b.nombre, 'es')
+    })
     return result
   }, [products, selectedTipo, selectedPrice, soloDisponible, query, sortBy])
 
@@ -313,14 +317,14 @@ export default function CatalogFilters({ products, tipos, initialTipo }: Props) 
         Filtrar por
       </p>
 
-      <FilterSection title="Categoría">
+      <FilterSection title="Categoría" open={selectedTipo !== 'Todos'}>
         <FilterRow active={selectedTipo === 'Todos'} onClick={() => handleTipo('Todos')}>Todas</FilterRow>
         {tipos.map((t) => (
           <FilterRow key={t} active={selectedTipo === t} onClick={() => handleTipo(t)}>{t}</FilterRow>
         ))}
       </FilterSection>
 
-      <FilterSection title="Precio">
+      <FilterSection title="Precio" open={selectedPrice !== null}>
         {PRICE_RANGES.map((r) => (
           <FilterRow
             key={r.label}
@@ -475,6 +479,7 @@ export default function CatalogFilters({ products, tipos, initialTipo }: Props) 
                 } as React.CSSProperties}
               >
                 <option value="relevante">Relevantes</option>
+                <option value="alfabetico">Alfabético (A-Z)</option>
                 <option value="precio-asc">Menor precio</option>
                 <option value="precio-desc">Mayor precio</option>
               </select>
