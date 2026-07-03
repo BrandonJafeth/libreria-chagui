@@ -114,6 +114,32 @@ const productSchema = {
   <!-- Product Detail -->
   <section class="bg-background pt-32 pb-16 md:pt-40 md:pb-20 px-6">
     <div class="max-w-6xl mx-auto">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6 md:mb-8 reveal">
+        <ol class="flex flex-wrap items-center gap-1.5 text-[12px] font-body text-foreground/45">
+          <li><a href="/" class="hover:text-accent transition-colors">Inicio</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href="/catalogo" class="hover:text-accent transition-colors">Catálogo</a></li>
+          {product.tipos[0] && (
+            <Fragment>
+              <li aria-hidden="true">/</li>
+              <li>
+                <a
+                  href={`/catalogo?tipo=${encodeURIComponent(product.tipos[0])}`}
+                  class="hover:text-accent transition-colors"
+                >
+                  {product.tipos[0]}
+                </a>
+              </li>
+            </Fragment>
+          )}
+          <li aria-hidden="true">/</li>
+          <li class="text-foreground/70 truncate max-w-55 sm:max-w-none" aria-current="page">
+            {product.nombre}
+          </li>
+        </ol>
+      </nav>
+
       <div class="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
 
         <!-- Gallery -->

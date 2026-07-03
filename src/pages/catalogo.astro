@@ -8,6 +8,9 @@ import { site } from '../data/site'
 
 const products = await getProducts()
 const tipos = await getTipos()
+
+const tipoParam = Astro.url.searchParams.get('tipo')
+const initialTipo = tipoParam && tipos.includes(tipoParam) ? tipoParam : 'Todos'
 ---
 
 <BaseLayout
@@ -29,6 +32,7 @@ const tipos = await getTipos()
       <CatalogFilters
         products={products}
         tipos={tipos}
+        initialTipo={initialTipo}
         client:visible
       />
     </div>
