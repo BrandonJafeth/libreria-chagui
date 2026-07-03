@@ -40,7 +40,7 @@ const { label, href, active, sections, viewAllLabel, viewAllHref } = Astro.props
   <!-- Hover mega-menu -->
   <div class="absolute left-1/2 -translate-x-1/2 top-full w-64 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 pt-2">
     <div class="bg-card border border-foreground/10 shadow-2xl overflow-hidden" style="border-radius: 10px;">
-      <p class="px-4 pt-3.5 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/35">
+      <p class="px-4 pt-3.5 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/70">
         Categorías
       </p>
       <div class="px-1.5 pb-2">
@@ -54,7 +54,7 @@ const { label, href, active, sections, viewAllLabel, viewAllHref } = Astro.props
                 >
                   {sec.label}
                 </a>
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-foreground/35 transition-transform duration-200 group-open/sec:rotate-180" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-foreground/55 transition-transform duration-200 group-open/sec:rotate-180" aria-hidden="true">
                   <path d="m6 9 6 6 6-6"/>
                 </svg>
               </summary>
@@ -62,9 +62,9 @@ const { label, href, active, sections, viewAllLabel, viewAllHref } = Astro.props
                 {sec.items.map((item) => (
                   <a
                     href={item.href}
-                    class="flex items-center gap-1.5 px-2.5 py-1.5 pl-5 text-[13px] text-foreground/55 hover:text-accent-2 hover:bg-accent-2/6 rounded-md transition-colors"
+                    class="flex items-center gap-1.5 px-2.5 py-1.5 pl-5 text-[13px] text-foreground/70 hover:text-accent-2 hover:bg-accent-2/6 rounded-md transition-colors"
                   >
-                    <span class="w-1 h-1 rounded-full bg-foreground/25 shrink-0" aria-hidden="true"></span>
+                    <span class="w-1 h-1 rounded-full bg-foreground/40 shrink-0" aria-hidden="true"></span>
                     {item.label}
                   </a>
                 ))}
