@@ -40,8 +40,10 @@ const useTabs = groups.length > 1
 const groupIds = groups.map((g) => slugifyCategoria(g.categoria))
 const activeId = activeCategory && groupIds.includes(activeCategory) ? activeCategory : groupIds[0]
 
-// CSS puro para mostrar panel activo y marcar tab activo
-const tabCss = groups.map((g) => {
+// CSS puro para mostrar panel activo y marcar tab activo — sin esta regla base,
+// los paneles inactivos nunca se ocultan (parpadeo al cargar, o quedan todos
+// visibles si el usuario no tiene JS).
+const tabCss = '.svc-panel{display:none}\n' + groups.map((g) => {
   const id     = slugifyCategoria(g.categoria)
   const accent = cfgFor(g).accent
   return [

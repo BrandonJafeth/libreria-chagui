@@ -61,7 +61,7 @@ function ProductCard({ product }: { product: Product }) {
   const isAgotado = product.estado === 'agotado'
   const [added, setAdded] = useState(false)
 
-  function handleQuickAdd(e: React.MouseEvent<HTMLButtonElement>) {
+  function handleQuickAdd(e: React.SyntheticEvent) {
     e.preventDefault()
     e.stopPropagation()
     if (isAgotado) return
@@ -174,11 +174,18 @@ function ProductCard({ product }: { product: Product }) {
           </p>
 
           {!isAgotado && (
-            <button
-              type="button"
+            // Not a real <button> — nesting interactive content inside the card's
+            // outer <a> is invalid HTML and breaks screen-reader/keyboard nav.
+            // role="button" + manual key handling keeps it accessible without nesting.
+            <span
+              role="button"
+              tabIndex={0}
               onClick={handleQuickAdd}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') handleQuickAdd(e)
+              }}
               aria-label={`Agregar ${product.nombre} al carrito`}
-              className="shrink-0 flex items-center justify-center w-7 h-7 -mr-0.5 transition-all duration-200 active:scale-90"
+              className="shrink-0 flex items-center justify-center w-7 h-7 -mr-0.5 cursor-pointer transition-all duration-200 active:scale-90"
               style={{ color: added ? 'hsl(150 40% 32%)' : 'rgba(43,43,43,0.4)' }}
             >
               {added ? (
@@ -192,7 +199,7 @@ function ProductCard({ product }: { product: Product }) {
                   <path d="M16 10a4 4 0 0 1-8 0" />
                 </svg>
               )}
-            </button>
+            </span>
           )}
         </div>
       </div>
