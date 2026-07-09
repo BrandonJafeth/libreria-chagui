@@ -42,21 +42,39 @@ const initialTipo = tipoParam && tipos.includes(tipoParam) ? tipoParam : 'Todos'
 
   <section class="bg-background border-t border-foreground/5 py-10 px-6">
     <div class="max-w-6xl mx-auto">
-      <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-foreground/35 mb-5">
-        Índice de productos
-      </p>
-      <ul class="columns-2 sm:columns-3 lg:columns-4 gap-x-8">
-        {productsAZ.map(p => (
-          <li class="mb-2">
-            <a
-              href={`/producto/${p.slug}`}
-              class="text-sm text-foreground/55 hover:text-foreground transition-colors leading-snug"
-            >
-              {p.nombre}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <details class="group">
+        <summary class="flex items-center justify-between cursor-pointer list-none select-none py-2 [&::-webkit-details-marker]:hidden">
+          <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-foreground/35">
+            Índice de productos
+            <span class="text-foreground/25 normal-case tracking-normal font-normal">
+              ({productsAZ.length})
+            </span>
+          </span>
+          <svg
+            class="w-4 h-4 text-foreground/35 shrink-0 transition-transform duration-200 group-open:rotate-180"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </summary>
+        <ul class="columns-2 sm:columns-3 lg:columns-4 gap-x-8 mt-5">
+          {productsAZ.map(p => (
+            <li class="mb-2">
+              <a
+                href={`/producto/${p.slug}`}
+                class="text-sm text-foreground/55 hover:text-foreground transition-colors leading-snug"
+              >
+                {p.nombre}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
     </div>
   </section>
 
