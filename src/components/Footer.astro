@@ -10,7 +10,7 @@ const year = new Date().getFullYear()
     <div class="grid md:grid-cols-3 gap-10">
 
       <!-- Brand -->
-      <div>
+      <div class="text-center md:text-left">
         <a href="/" class="inline-block mb-5">
           <img
             src={clImg(site.logo, 'h_280,f_auto,q_auto')}
@@ -22,11 +22,11 @@ const year = new Date().getFullYear()
             decoding="async"
           />
         </a>
-        <p class="text-sm text-foreground/75 leading-relaxed max-w-xs">
+        <p class="text-sm text-foreground/75 leading-relaxed max-w-xs mx-auto md:mx-0">
           Librería, bazar y servicios de impresión en Hatillo. Artículos escolares, de oficina,
           tecnología y más.
         </p>
-        <div class="flex gap-3 mt-5">
+        <div class="flex gap-3 mt-5 justify-center md:justify-start">
           <a
             href={site.social.instagram}
             target="_blank"
