@@ -3,7 +3,7 @@ export const site = {
   domain: 'https://libreriafchagui.com',
   description:
     'Librería y Bazar Chagui en Hatillo, San José. Útiles escolares, artículos de oficina y tecnología. Servicios de impresión, copias, sublimación, diseño y fotografía. Diagonal al C.C. Plaza América.',
-  logo: 'https://res.cloudinary.com/daqragn9m/image/upload/v1781916229/logo-libreria-chagui-png-removebg-preview_anqdcg.png',
+  logo: 'https://res.cloudinary.com/daqragn9m/image/upload/v1784074151/logo-libreria_epmgbt.png',
   nav: [
     { label: 'Inicio',         href: '/' },
     { label: 'Catálogo',       href: '/catalogo' },
