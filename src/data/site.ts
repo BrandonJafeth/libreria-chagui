@@ -4,6 +4,7 @@ export const site = {
   description:
     'Librería y Bazar Chagui en Hatillo, San José. Útiles escolares, artículos de oficina y tecnología. Servicios de impresión, copias, sublimación, diseño y fotografía. Diagonal al C.C. Plaza América.',
   logo: 'https://res.cloudinary.com/daqragn9m/image/upload/v1784074151/logo-libreria_epmgbt.png',
+  logoWhite: 'https://res.cloudinary.com/daqragn9m/image/upload/v1784074986/logo-libreria-blanco_nojdlk.png',
   nav: [
     { label: 'Inicio',         href: '/' },
     { label: 'Catálogo',       href: '/catalogo' },
